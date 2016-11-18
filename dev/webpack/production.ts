@@ -70,7 +70,7 @@ export default <any> smart(common, <any> {
       },
     }),
     new webpack.optimize.DedupePlugin(),
-    new ExtractTextPlugin({ filename: '[name]-[hash].css', allChunks: true }),
+    new ExtractTextPlugin('[name]-[contenthash].css', { allChunks: true }),
     new HtmlWebpackPlugin(<IExtendedHtmlWebpackPluginConfiguration> {
       filename      : 'index.html',
       template      : './src/index.pug',

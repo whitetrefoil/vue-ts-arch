@@ -23,7 +23,6 @@
     "@types/chokidar"                              : "^1.4.29",
     "@types/connect"                               : "^3.4.30",
     "@types/del"                                   : "^2.2.31",
-    "@types/extract-text-webpack-plugin"           : "^2.0.0",
     "@types/fs-extra"                              : "^0.0.34",
     "@types/gulp"                                  : "^3.8.32",
     "@types/gulp-plumber"                          : "^0.0.29",
