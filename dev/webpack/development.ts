@@ -41,7 +41,7 @@ export default <any> smart(common, <any> {
       },
       {
         test  : /\.(?:png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(?:\?\w*)?$/,
-        loader: 'url',
+        loader: 'url-loader',
       },
     ],
   },
@@ -49,13 +49,13 @@ export default <any> smart(common, <any> {
   vue: {
     loaders: {
       sass: 'vue-style-loader'
-        + '!css-loader?sourceMap'
-        + '!resolve-url-loader?sourceMap'
-        + '!sass-loader?config=sassLoader&sourceMap',
+            + '!css-loader?sourceMap'
+            + '!resolve-url-loader?sourceMap'
+            + '!sass-loader?config=sassLoader&sourceMap',
       scss: 'vue-style-loader'
-        + '!css-loader?sourceMap'
-        + '!resolve-url-loader?sourceMap'
-        + '!sass-loader?config=scssLoader&sourceMap',
+            + '!css-loader?sourceMap'
+            + '!resolve-url-loader?sourceMap'
+            + '!sass-loader?config=scssLoader&sourceMap',
     },
   },
 
