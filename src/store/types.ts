@@ -9,6 +9,6 @@ export const CLEAR_ERROR_MESSAGE   = 'CLEAR_ERROR_MESSAGE'
 // ----------
 
 // ### Actions
-export const MOCK_RANDOM_RECEPTIONIST = 'hello/MOCK_RANDOM_RECEPTIONIST'
+export const FETCH_RANDOM_RECEPTIONIST = 'hello/FETCH_RANDOM_RECEPTIONIST'
 // ### Mutations
 export const SET_RECEPTIONIST = 'hello/SET_RECEPTIONIST'

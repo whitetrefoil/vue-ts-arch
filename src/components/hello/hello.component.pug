@@ -1,3 +1,5 @@
 .hello.vue-component
   h1.h1 Hello!!!
-  p Greetings from {{receptionist.name}}
+  p {{greeting}}
+  p
+    button.btn.btn-danger(@click="changeReceptionist()") Another receptionist!

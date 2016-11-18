@@ -1,7 +1,12 @@
-import { Module }    from 'vuex'
-import Receptionist  from '../../models/receptionist'
-import { IAppState } from '../index'
-import * as t        from '../types'
+import { Module }        from 'vuex'
+import Receptionist      from '../../models/receptionist'
+import API, {
+  IServerResponseXHR,
+  getErrorMessage,
+}                        from '../../api'
+import { IReceptionist } from '../../api/endpoints/receptionist'
+import { IAppState }     from '../index'
+import * as t            from '../types'
 
 export interface IHelloState {
   receptionist: Receptionist
@@ -13,17 +18,24 @@ const hello: Module<IHelloState, IAppState> = {
   },
 
   actions: {
-    [t.MOCK_RANDOM_RECEPTIONIST]({ commit }) {
-      setTimeout(() => {
-        const randomNumber: string = Math.random().toString().substr(2)
-        const receptionist = new Receptionist(`Employee ${randomNumber}`)
-        commit(t.SET_RECEPTIONIST, receptionist)
-      }, 1000)
+    async [t.FETCH_RANDOM_RECEPTIONIST]({ commit }) {
+      let receptionist: Receptionist
+
+      try {
+        const response: IServerResponseXHR<IReceptionist>
+                = <IServerResponseXHR<IReceptionist>> await API.get('receptionists/random')
+        const receptionistData = response.data._data
+        receptionist = new Receptionist(receptionistData.name)
+      } catch (e) {
+        console.warn(getErrorMessage(e))  // TODO
+      }
+
+      commit(t.SET_RECEPTIONIST, receptionist)
     },
   },
 
   mutations: {
-    [t.SET_RECEPTIONIST](state, receptionist) {
+    [t.SET_RECEPTIONIST](state: IHelloState, receptionist: Receptionist) {
       state.receptionist = receptionist
     },
   },
