@@ -20,20 +20,20 @@ export default <any> smart(common, <any> {
     loaders: [
       {
         test  : /\.css$/,
-        loader: ExtractTextPlugin.extract('css'),
+        loader: ExtractTextPlugin.extract('css-loader'),
       },
       {
         test  : /\.sass$/,
-        loader: ExtractTextPlugin.extract('css!resolve-url!sass?config=sassLoader'),
+        loader: ExtractTextPlugin.extract('css-loader!resolve-url-loader!sass-loader?config=sassLoader'),
       },
       {
         test  : /\.scss$/,
-        loader: ExtractTextPlugin.extract('css!resolve-url!sass?config=scssLoader'),
+        loader: ExtractTextPlugin.extract('css-loader!resolve-url-loader!sass-loader?config=scssLoader'),
       },
       {
         test   : /\.(?:png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(?:\?\w*)?$/,
         exclude: /weixin/,
-        loader : 'url',
+        loader : 'url-loader',
         query  : {
           // limit for base64 inlining in bytes
           limit: SIZE_14KB,
@@ -44,7 +44,7 @@ export default <any> smart(common, <any> {
       },
       {
         test  : /weixin.*\.(?:png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(?:\?\w*)?$/,
-        loader: 'file',
+        loader: 'file-loader',
         query : {
           name: 'assets/[hash].[ext]',
         },
@@ -54,10 +54,10 @@ export default <any> smart(common, <any> {
 
   vue: {
     loaders: {
-      js  : 'babel',
-      css : ExtractTextPlugin.extract('css'),
-      sass: ExtractTextPlugin.extract('css!resolve-url!sass?config=sassLoader'),
-      scss: ExtractTextPlugin.extract('css!resolve-url!sass?config=scssLoader'),
+      js  : 'babel-loader',
+      css : ExtractTextPlugin.extract('css-loader'),
+      sass: ExtractTextPlugin.extract('css-loader!resolve-url-loader!sass-loader?config=sassLoader'),
+      scss: ExtractTextPlugin.extract('css-loader!resolve-url-loader!sass-loader?config=scssLoader'),
     },
   },
 

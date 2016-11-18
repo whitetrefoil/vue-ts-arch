@@ -49,37 +49,37 @@ export default <any> {
     preLoaders: [
       {
         test   : /\.(?:js|vue)$/,
-        loader : 'eslint',
+        loader : 'eslint-loader',
         exclude: /(node_modules|vendor)/,
       },
       {
         test   : /\.ts$/,
-        loader : 'tslint',
+        loader : 'tslint-loader',
         exclude: /(node_modules|vendor)/,
       },
     ],
     loaders   : [
       {
+        test  : /\.vue/,
+        loader: 'vue-loader',
+      },
+      {
         test  : /\.html$/,
-        loader: 'html',
+        loader: 'html-loader',
       },
       {
         test   : /\.js$/,
-        loader : 'babel?cacheDirectory=.building',
+        loader : 'babel-loader?cacheDirectory=.building',
         exclude: /(node_modules)/,
       },
       {
         test   : /\.ts$/,
-        loader : 'awesome-typescript?tsconfig=tsconfig.aw.json',
+        loader : 'awesome-typescript-loader?tsconfig=tsconfig.aw.json',
         exclude: /(node_modules)/,
       },
       {
-        test  : /\.vue/,
-        loader: 'vue',
-      },
-      {
         test  : /\.(pug|jade)$/,
-        loader: 'pug',
+        loader: 'pug-loader',
       },
       // Use below code if need to handle dependencies among external libraries.
       // ```
@@ -96,7 +96,7 @@ export default <any> {
       browsers: ['last 2 versions'],
     },
     loaders     : {
-      ts: 'awesome-typescript',
+      ts: 'awesome-typescript-loader',
     },
     // esModule: true,
   },

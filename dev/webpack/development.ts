@@ -19,15 +19,25 @@ export default <any> smart(common, <any> {
     loaders: [
       {
         test  : /\.css$/,
-        loader: ['style', 'css?sourceMap'],
+        loader: ['style-loader', 'css-loader?sourceMap'],
       },
       {
         test   : /\.sass$/,
-        loaders: ['style', 'css?sourceMap', 'resolve-url?sourceMap', 'sass?config=sassLoader&sourceMap'],
+        loaders: [
+          'style-loader',
+          'css-loader?sourceMap',
+          'resolve-url-loader?sourceMap',
+          'sass-loader?config=sassLoader&sourceMap',
+        ],
       },
       {
         test   : /\.scss$/,
-        loaders: ['style', 'css?sourceMap', 'resolve-url?sourceMap', 'sass?config=scssLoader&sourceMap'],
+        loaders: [
+          'style-loader',
+          'css-loader?sourceMap',
+          'resolve-url-loader?sourceMap',
+          'sass-loader?config=scssLoader&sourceMap',
+        ],
       },
       {
         test  : /\.(?:png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(?:\?\w*)?$/,
@@ -38,8 +48,14 @@ export default <any> smart(common, <any> {
 
   vue: {
     loaders: {
-      sass: 'vue-style!css?sourceMap!resolve-url?sourceMap!sass?config=sassLoader&sourceMap',
-      scss: 'vue-style!css?sourceMap!resolve-url?sourceMap!sass?config=scssLoader&sourceMap',
+      sass: 'vue-style-loader'
+        + '!css-loader?sourceMap'
+        + '!resolve-url-loader?sourceMap'
+        + '!sass-loader?config=sassLoader&sourceMap',
+      scss: 'vue-style-loader'
+        + '!css-loader?sourceMap'
+        + '!resolve-url-loader?sourceMap'
+        + '!sass-loader?config=scssLoader&sourceMap',
     },
   },
 
