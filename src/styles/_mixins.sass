@@ -1,0 +1,25 @@
+@charset "UTF-8"
+
+@import "variables"
+
+// See: http://nicolasgallagher.com/micro-clearfix-hack/
+
+=clearfix
+  &:before,
+  &:after
+    content: " "
+    display: table
+  &:after
+    clear: both
+
+=phark
+  text-indent: -99999em
+
+=color($_color)
+  &, a
+    color: $_color
+
+=content-width
+  width: $dimen-content-width
+  @media (max-width: $dimen-pad-width-max)
+    width: 100%

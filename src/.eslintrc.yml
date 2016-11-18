@@ -1,0 +1,38 @@
+---
+env:
+  browser: true
+
+parserOptions:
+  sourceType: module
+  ecmaVersion: 7
+
+parser: babel-eslint
+
+plugins:
+  - babel
+  - html
+
+rules:
+  global-require: 0
+
+  # `eslint-plugin-babel` specific rules
+  # -----
+  # see [https://github.com/babel/eslint-plugin-babel]()
+  babel/generator-star-spacing: [2, before]
+  babel/new-cap: [1, {capIsNew: true, newIsCap: true}]
+  babel/array-bracket-spacing: [2, never]
+  babel/object-curly-spacing: [2, always, {objectsInObjects: true, arraysInObjects: true}]
+  babel/object-shorthand: 0
+  babel/arrow-parens: 0
+  babel/no-await-in-loop: 1
+  babel/flow-object-type: 1
+  babel/func-params-comma-dangle: [2, always-multiline]
+
+  # Disable some internal rules which conflict with babel rules above
+  array-bracket-spacing: 0
+  new-cap: 0
+  object-curly-spacing: 0
+  generator-star-spacing: 0
+
+globals:
+  componentHandler: false

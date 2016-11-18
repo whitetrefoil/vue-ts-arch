@@ -1,0 +1,19 @@
+{
+  "compilerOptions"               : {
+    "allowJs"                       : true,
+    "target"                        : "es2017",
+    "lib"                           : ["es2017", "dom.iterable"],
+    "module"                        : "commonjs",
+    "moduleResolution"              : "node",
+    "sourceMap"                     : true,
+    "emitDecoratorMetadata"         : true,
+    "experimentalDecorators"        : true,
+    "removeComments"                : false,
+    "noImplicitAny"                 : true,
+    "suppressImplicitAnyIndexErrors": true
+  },
+  "awesomeTypescriptLoaderOptions": {
+    "useBabel": true,
+    "useCache": true
+  }
+}

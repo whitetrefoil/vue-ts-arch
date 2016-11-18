@@ -1,0 +1,20 @@
+{
+  "extends": "tslint:latest",
+  "rules"  : {
+    "interface-name"            : false,
+    "member-access"             : false,
+    "member-ordering"           : false,
+    "no-consecutive-blank-lines": [true, 2],
+    "no-console"                : false,
+    "no-namespace"              : false,
+    "no-reference"              : false,
+    "no-string-literal"         : false,
+    "no-var-requires"           : false,
+    "object-literal-sort-keys"  : false,
+    "only-arrow-functions"      : [true, "allow-declarations"],
+    "ordered-imports"           : false,
+    "quotemark"                 : [true, "single", "avoid-escape"],
+    "semicolon"                 : [true, "never"],
+    "typedef-whitespace"        : false
+  }
+}

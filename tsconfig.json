@@ -1,0 +1,14 @@
+{
+  "compilerOptions"               : {
+    "allowJs"                       : true,
+    "target"                        : "es2016",
+    "module"                        : "commonjs",
+    "moduleResolution"              : "node",
+    "sourceMap"                     : true,
+    "emitDecoratorMetadata"         : true,
+    "experimentalDecorators"        : true,
+    "removeComments"                : false,
+    "noImplicitAny"                 : true,
+    "suppressImplicitAnyIndexErrors": true
+  }
+}

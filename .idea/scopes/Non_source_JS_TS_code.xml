@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Non-source JS/TS code" pattern="file[Vue_TS_Arch]:dev//*||file:Gulpfile.js||file:Gulpfile.ts" />
+</component>
