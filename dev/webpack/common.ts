@@ -52,11 +52,11 @@ export default <any> {
         loader : 'eslint-loader',
         exclude: /(node_modules|vendor)/,
       },
-      {
-        test   : /\.ts$/,
-        loader : 'tslint-loader',
-        exclude: /(node_modules|vendor)/,
-      },
+      // {
+      //   test   : /\.ts$/,
+      //   loader : 'tslint-loader',
+      //   exclude: /(node_modules|vendor)/,
+      // },
     ],
     loaders   : [
       {
