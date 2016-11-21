@@ -12,7 +12,7 @@
 
 // Vue
 // ----------
+import 'av-ts'
 import 'vue'
-import 'vuex'
 import 'vue-router'
-import 'vuex-router-sync'
+import 'kilimanjaro'

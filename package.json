@@ -7,17 +7,16 @@
   "private"        : true,
   "license"        : "ISC",
   "dependencies"   : {
-    "av-ts"           : "^0.5.4",
-    "axios"           : "^0.15.2",
-    "babel-polyfill"  : "^6.16.0",
-    "bluebird"        : "^3.4.6",
-    "bootstrap"       : "^4.0.0-alpha.5",
-    "jquery"          : "^3.1.1",
-    "lodash"          : "^4.16.4",
-    "vue"             : "^2.0.8",
-    "vue-router"      : "^2.0.3",
-    "vuex"            : "^2.0.0",
-    "vuex-router-sync": "^2.1.1"
+    "av-ts"         : "^0.5.4",
+    "axios"         : "^0.15.2",
+    "babel-polyfill": "^6.16.0",
+    "bluebird"      : "^3.4.6",
+    "bootstrap"     : "^4.0.0-alpha.5",
+    "jquery"        : "^3.1.1",
+    "kilimanjaro"   : "^0.5.0",
+    "lodash"        : "^4.16.4",
+    "vue"           : "^2.0.8",
+    "vue-router"    : "^2.0.3"
   },
   "devDependencies": {
     "@types/axios"                                 : "^0.9.33",

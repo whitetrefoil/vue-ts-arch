@@ -1,34 +1,23 @@
-import { Vue }                from 'av-ts'
-import Vuex                 = require('vuex')
-import * as t                 from './types'
-import hello, { IHelloState } from './modules/hello'
-
-// noinspection TypeScriptUnresolvedFunction
-Vue.use(Vuex)
+import { create } from 'kilimanjaro'
+import * as t     from './types'
+import hello      from './modules/hello'
 
 export interface IAppState {
   errorMessages: string[]
-  hello?: IHelloState
 }
 
 const initialState: IAppState = {
   errorMessages: [],
 }
 
-const store = new Vuex.Store({
-  strict: process.env.NODE_ENV !== 'production',
+const store = create(initialState)
 
-  state: initialState,
+  .module('hello', hello)
 
-  mutations: {
-    [t.QUEUE_ERROR_MESSAGE](state: IAppState, errorMessage: string) {
-      state.errorMessages.push(errorMessage)
-    },
-  },
+  .mutation(t.QUEUE_ERROR_MESSAGE, (state) => (errorMessage: string) => {
+    state.errorMessages.push(errorMessage)
+  })
 
-  modules: {
-    hello,
-  },
-})
+  .done()
 
 export default store
