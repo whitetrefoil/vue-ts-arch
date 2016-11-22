@@ -4,12 +4,11 @@ import { AsyncComponent } from 'vue'
 import { RouteConfig }    from 'vue-router'
 import VueRouter        = require('vue-router')
 
-const Hello: AsyncComponent =
-        r => require.ensure(
-          [],
-          () => r(require('../components/hello/hello.component.vue')),
-          'hello',
-        )
+const Hello: AsyncComponent = (r) => require.ensure(
+  [],
+  () => r(require('../components/hello/hello.component.vue')),
+  'hello',
+)
 
 Vue.use(VueRouter)
 

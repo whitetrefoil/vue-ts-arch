@@ -5,7 +5,6 @@
     "member-access"             : false,
     "member-ordering"           : false,
     "no-consecutive-blank-lines": [true, 2],
-    "no-console"                : false,
     "no-namespace"              : false,
     "no-reference"              : false,
     "no-string-literal"         : false,

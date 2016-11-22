@@ -74,7 +74,7 @@ export default <any> {
       },
       {
         test   : /\.ts$/,
-        loader : 'awesome-typescript-loader?tsconfig=tsconfig.aw.json',
+        loader : 'awesome-typescript-loader?tsconfig=tsconfig.json',
         exclude: /(node_modules)/,
       },
       {

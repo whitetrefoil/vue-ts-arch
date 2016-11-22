@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Playground" pattern="file[Vue_TS_Arch]:~playground//*" />
+</component>

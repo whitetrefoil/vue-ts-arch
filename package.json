@@ -15,6 +15,7 @@
     "jquery"        : "^3.1.1",
     "kilimanjaro"   : "^0.5.0",
     "lodash"        : "^4.16.4",
+    "rxjs"          : "^5.0.0-rc.4",
     "vue"           : "^2.0.8",
     "vue-router"    : "^2.0.3"
   },
@@ -36,6 +37,7 @@
     "@types/webpack-dev-server"                    : "^1.12.3",
     "@types/webpack-merge"                         : "^0.0.3",
     "@types/webpack-stream"                        : "^3.2.4",
+    "@types/zone.js"                               : "^0.0.27",
     "awesome-typescript-loader"                    : "^2.2.4",
     "babel-core"                                   : "^6.17.0",
     "babel-eslint"                                 : "^7.0.0",

@@ -1,8 +1,7 @@
 {
   "compilerOptions"               : {
     "allowJs"                       : true,
-    "target"                        : "es2017",
-    "lib"                           : ["es2017", "dom.iterable"],
+    "target"                        : "es2016",
     "module"                        : "commonjs",
     "moduleResolution"              : "node",
     "sourceMap"                     : true,
@@ -11,9 +10,5 @@
     "removeComments"                : false,
     "noImplicitAny"                 : true,
     "suppressImplicitAnyIndexErrors": true
-  },
-  "awesomeTypescriptLoaderOptions": {
-    "useBabel": true,
-    "useCache": true
   }
 }
