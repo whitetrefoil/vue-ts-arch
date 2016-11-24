@@ -130,6 +130,14 @@ export const config: IConfig = {
 
 export function initialize(appRoot: string) {
 
+  if (config.isInitialized) {
+    if (config.appRoot !== appRoot) {
+      console.warn(`Project has already been initialized in ${config.appRoot}.`)
+      console.warn(`The new location ${appRoot} will not been applied.`)
+    }
+    return
+  }
+
   // tslint:disable-next-line:no-console
   console.log(`Initializing project in "${appRoot}"`)
 
@@ -157,7 +165,7 @@ export function initialize(appRoot: string) {
   if (isNil(process.env.API_PREFIX)) {
     process.env.API_PREFIX = (argv.flags.prefix) || DEFAULT_PREVIEW_SERVER_BACKEND_PREFIX
   }
-  config.backendPrefix = process.env.API_PREFIX
+  config.backendPrefix = process.env.API_PREFIX.split(',')
 
   config.previewServerIndex = argv.flags.index || DEFAULT_PREVIEW_SERVER_INDEX
 

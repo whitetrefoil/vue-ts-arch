@@ -1,4 +1,6 @@
 import gulp             = require('gulp')
+import forEach          = require('lodash/forEach')
+import map              = require('lodash/map')
 import webpack          = require('webpack')
 import WebpackDevServer = require('webpack-dev-server')
 import webpackDevConfig   from '../webpack/development'
@@ -30,11 +32,11 @@ gulp.task('devServer', () => {
     // publicPath: '/assets/',
     // headers: { 'X-Custom-Header': 'yes' },
     stats             : 'minimal',
-    proxy             : {},
+    proxy             : [{
+      context: map(config.backendPrefix, (p) => p + '**'),
+      target: `http://localhost:${config.previewServerPort + 1}`,
+    }],
   }
-
-  webpackCompilerConfig.proxy[`${config.backendPrefix}*`]
-    = `http://localhost:${config.previewServerPort + 1}`
 
   new WebpackDevServer(<any> webpackCompiler, webpackCompilerConfig)
     .listen(config.previewServerPort, (error: Error) => {

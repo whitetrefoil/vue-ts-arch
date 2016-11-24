@@ -2,16 +2,18 @@
 // ==========
 //
 // The backend server
-import { NextHandleFunction } from 'connect'
-import { IncomingMessage, ServerResponse } from 'http'
-import { config } from '../config'
-import { IProxyServer, proxyServer } from './proxy'
-import gulp = require('gulp')
-import gutil = require('gulp-util')
-import every = require('lodash/every')
 
-const connect    = require('gulp-connect')
-const requireNew = require('require-new')
+import { NextHandleFunction }              from 'connect'
+import { IncomingMessage, ServerResponse } from 'http'
+import { config }                          from '../config'
+import { IProxyServer, proxyServer }       from './proxy'
+import gulp                              = require('gulp')
+import gutil                             = require('gulp-util')
+import every                             = require('lodash/every')
+
+const connect                = require('gulp-connect')
+const { green, red, yellow } = gutil.colors
+const requireNew             = require('require-new')
 
 const HTTP_NOT_FOUND             = 404
 const HTTP_INTERNAL_SERVER_ERROR = 500
@@ -42,13 +44,14 @@ const stubApiMiddlewareFactory = () => {
       try {
         const handler: NextHandleFunction = <NextHandleFunction> requireNew(modulePath)
         handler(req, res, next)
+        gutil.log(green('Using StubAPI: ') + modulePath)
       } catch (e) {
         if (e.code === 'MODULE_NOT_FOUND') {
-          gutil.log(gutil.colors.yellow('StubAPI not found: ') + modulePath)
+          gutil.log(yellow('StubAPI not found: ') + modulePath)
           res.statusCode = HTTP_NOT_FOUND
           res.end(JSON.stringify(e))
         } else {
-          gutil.log(gutil.colors.red('Errors in StubAPI: ') + modulePath)
+          gutil.log(red('Errors in StubAPI: ') + modulePath)
           gutil.log(e)
           res.statusCode = HTTP_INTERNAL_SERVER_ERROR
           res.end(JSON.stringify(e))
@@ -66,15 +69,16 @@ gulp.task('backend', () => {
     // assets files in `../node_modules/` can be found in browser.
     root      : [config.sourceDir, '.'],
     port      : config.previewServerPort + 1,
-    livereload: true,
     fallback  : `${config.sourceDir}/${config.previewServerIndex}`,
     middleware: () => {
       const middleware = []
 
       if (proxyServer.server == null) {
+        // tslint:disable-next-line:no-console
         console.log('No proxy server exists, will use StubAPI mode.')
         middleware.push(stubApiMiddlewareFactory())
       } else {
+        // tslint:disable-next-line:no-console
         console.log('Existing proxy server found, will use proxy mode.')
         middleware.push(proxyMiddlewareFactory(proxyServer.server))
       }
