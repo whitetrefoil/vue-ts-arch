@@ -1,5 +1,5 @@
 import { Axios, IServerResponseXHR, request }  from '..'
-import { Observable } from 'rxjs'
+import { Observable } from 'rxjs/Observable'
 import Receptionist from '../../models/receptionist'
 
 export interface IReceptionist {

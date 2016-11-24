@@ -13,6 +13,7 @@
 // Vue
 // ----------
 import 'av-ts'
+import 'axios'
 import 'vue'
 import 'vue-router'
 import 'kilimanjaro'

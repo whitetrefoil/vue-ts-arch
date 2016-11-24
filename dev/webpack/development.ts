@@ -1,9 +1,12 @@
-import isEmpty = require('lodash/isEmpty')
-import { smart } from 'webpack-merge'
-import common, { IExtendedHtmlWebpackPluginConfiguration } from './common'
-
-import fs = require('fs-extra')
+import fs                = require('fs-extra')
 import HtmlWebpackPlugin = require('html-webpack-plugin')
+import isEmpty           = require('lodash/isEmpty')
+import webpack           = require('webpack')
+import { smart }           from 'webpack-merge'
+import common, {
+  IExtendedHtmlWebpackPluginConfiguration,
+}                          from './common'
+
 const babelrc = fs.readJsonSync('.babelrc')
 
 export default <any> smart(common, <any> {
@@ -48,20 +51,31 @@ export default <any> smart(common, <any> {
 
   vue: {
     loaders: {
-      sass: 'vue-style-loader'
-            + '!css-loader?sourceMap'
-            + '!resolve-url-loader?sourceMap'
-            + '!sass-loader?config=sassLoader&sourceMap',
-      scss: 'vue-style-loader'
-            + '!css-loader?sourceMap'
-            + '!resolve-url-loader?sourceMap'
-            + '!sass-loader?config=scssLoader&sourceMap',
+      sass: ''
+      + 'vue-style-loader'
+      + '!css-loader?sourceMap'
+      + '!resolve-url-loader?sourceMap'
+      + '!sass-loader?config=sassLoader&sourceMap'
+      ,
+      scss: ''
+      + 'vue-style-loader'
+      + '!css-loader?sourceMap'
+      + '!resolve-url-loader?sourceMap'
+      + '!sass-loader?config=scssLoader&sourceMap'
+      ,
     },
   },
 
   babel: babelrc,
 
   plugins: [
+    new webpack.SourceMapDevToolPlugin({
+      filename: null,  // if no value is provided the sourcemap is inlined
+      test    : /\.(ts|js)($|\?)/i,  // process .js and .ts files only
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ['index', 'vendor', 'polyfills'],
+    }),
     new HtmlWebpackPlugin(<IExtendedHtmlWebpackPluginConfiguration> {
       filename      : 'index.html',
       template      : './src/index.pug',

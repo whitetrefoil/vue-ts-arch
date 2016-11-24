@@ -24,11 +24,13 @@ function startWatching() {
     },
   })
     .on('ready', () => {
+      // tslint:disable-next-line:no-console
       console.log(`Electron is watching in ${watchingFiles}`)
     })
     .on('all', (type: string, absPath: string) => {
       const sourcePath = path.relative(config.outputDir, absPath)
 
+      // tslint:disable-next-line:no-console
       console.log(`${type}: "${sourcePath}"`)
 
       clearTimeout(restartTimer)
@@ -36,15 +38,16 @@ function startWatching() {
     })
 }
 
-gulp.task('watch', async(): Promise<NodeJS.ReadableStream> => {
+gulp.task('watch', (): Promise<NodeJS.ReadableStream> => {
 
-  await del('lib')
+  return del('lib').then(() => {
 
-  return gulp.src(config.sourceAnd('main.js'))
-    .pipe(plumber())
-    .pipe(webpackStream(watchConfig))
-    .pipe(gulp.dest(config.outputDir))
-    .on('finish', () => {
-      startWatching()
-    })
+    return gulp.src(config.sourceAnd('main.js'))
+      .pipe(plumber())
+      .pipe(webpackStream(watchConfig))
+      .pipe(gulp.dest(config.outputDir))
+      .on('finish', () => {
+        startWatching()
+      })
+  })
 })

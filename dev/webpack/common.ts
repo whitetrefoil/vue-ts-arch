@@ -96,7 +96,7 @@ export default <any> {
       browsers: ['last 2 versions'],
     },
     loaders     : {
-      ts: 'awesome-typescript-loader',
+      ts: 'awesome-typescript-loader?tsconfig=tsconfig.json',
     },
     // esModule: true,
   },
@@ -134,9 +134,6 @@ export default <any> {
         NODE_ENV       : JSON.stringify(process.env.NODE_ENV),
         VUE_ROUTER_BASE: JSON.stringify(process.env.VUE_ROUTER_BASE),
       },
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      names: ['index', 'vendor', 'polyfills'],
     }),
   ],
 }

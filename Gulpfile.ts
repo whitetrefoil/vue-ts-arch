@@ -13,3 +13,6 @@ import './dev/gulp/proxy'
 import './dev/gulp/serve'
 import './dev/gulp/watch'
 import './dev/gulp/webpack'
+
+// Wired BUG......
+import './dev/gulp/test'

@@ -64,6 +64,9 @@ export default <any> smart(common, <any> {
   babel: babelrc,
 
   plugins: [
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ['index', 'vendor', 'polyfills'],
+    }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,

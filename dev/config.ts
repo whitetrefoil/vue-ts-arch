@@ -100,7 +100,7 @@ const argv: IArgv = meow(`
       x: 'prefix',
       e: 'backend',
     },
-  }
+  },
 )
 
 export class ConfigNotInitializedError extends Error {}
@@ -130,12 +130,16 @@ export const config: IConfig = {
 
 export function initialize(appRoot: string) {
 
+  // tslint:disable-next-line:no-console
+  console.log(`Initializing project in "${appRoot}"`)
+
   if (isNil(process.env.NODE_ENV)) {
     process.env.NODE_ENV = (argv.flags.development || DEFAULT_IS_DEVELOPMENT)
       ? 'development' : 'production'
   }
   process.env.BABEL_ENV = process.env.NODE_ENV
 
+  // tslint:disable-next-line:no-console
   console.log(`Running gulp & babel for ${process.env.NODE_ENV} environment.`)
 
   config.argv = argv

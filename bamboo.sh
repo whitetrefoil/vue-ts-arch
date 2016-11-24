@@ -27,7 +27,7 @@ lint() {
 }
 
 ut() {
-  echo "No UT yet!"
+  npm test
 }
 
 fail() {

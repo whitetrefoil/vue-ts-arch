@@ -3,7 +3,7 @@
 import * as axios from 'axios'
 import isNil    = require('lodash/isNil')
 import AxiosXHR = Axios.AxiosXHR
-import { Observable } from 'rxjs'
+import { Observable } from 'rxjs/Observable'
 
 const DURATION_10_SECONDS = 10000
 const MAX_RETRY_LIMIT     = 2

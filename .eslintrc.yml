@@ -162,7 +162,7 @@ rules:
   computed-property-spacing: [2, never]
   consistent-this: [1, _this]
   eol-last: 0
-  func-names: 2
+  func-names: 0
   func-style: [2, expression, {allowArrowFunctions: true}]
   id-blacklist: 0
   id-length: 0

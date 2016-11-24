@@ -5,15 +5,16 @@ import devConfig       from '../webpack/development'
 import prodConfig      from '../webpack/production'
 import { config }      from '../config'
 
-gulp.task('webpack', async(): Promise<NodeJS.ReadableStream> => {
+gulp.task('webpack', (): Promise<NodeJS.ReadableStream> => {
 
-  await del(config.outputDir)
+  return del(config.outputDir)
+    .then(() => {
+      const webpackConfig = process.env.NODE_ENV === 'development'
+        ? devConfig
+        : prodConfig
 
-  const webpackConfig = process.env.NODE_ENV === 'development'
-    ? devConfig
-    : prodConfig
-
-  return gulp.src(config.sourceAnd('*.[jt]s'))
-    .pipe(webpackStream(webpackConfig))
-    .pipe(gulp.dest(config.outputDir))
+      return gulp.src(config.sourceAnd('*.[jt]s'))
+        .pipe(webpackStream(webpackConfig))
+        .pipe(gulp.dest(config.outputDir))
+    })
 })

@@ -39,10 +39,13 @@ gulp.task('devServer', () => {
   new WebpackDevServer(<any> webpackCompiler, webpackCompilerConfig)
     .listen(config.previewServerPort, (error: Error) => {
       if (error) {
+        // tslint:disable-next-line:no-console
         console.error('Webpack Dev Server startup failed!  Detail:')
+        // tslint:disable-next-line:no-console
         console.error(error)
         return
       }
+      // tslint:disable-next-line:no-console
       console.log(`Webpack Dev Server started at port ${config.previewServerPort}`)
     })
 })
