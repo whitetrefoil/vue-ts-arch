@@ -11,7 +11,7 @@ error () {
 }
 
 install_deps() {
-  env yarn --prefer-offline
+  env yarn --no-lockfile --no-emoji --no-progress
 }
 
 build() {
