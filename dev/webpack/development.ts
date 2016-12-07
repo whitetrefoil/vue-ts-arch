@@ -15,7 +15,7 @@ export default <any> smart(common, <any> {
   output: {
     // publicPath   : 'assets',
     filename     : '[name].js',
-    chunkFilename: '[id].chunk.js',
+    chunkFilename: '[id]-[name].chunk.js',
   },
 
   module: {
@@ -69,17 +69,14 @@ export default <any> smart(common, <any> {
   babel: babelrc,
 
   plugins: [
-    new webpack.SourceMapDevToolPlugin({
-      filename: null,  // if no value is provided the sourcemap is inlined
-      test    : /\.(ts|js)($|\?)/i,  // process .js and .ts files only
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      names: ['index', 'vendor', 'polyfills'],
-    }),
+    // new webpack.SourceMapDevToolPlugin({
+    //   filename: null,  // if no value is provided the sourcemap is inlined
+    //   test    : /\.(ts|js)($|\?)/i,  // process .js and .ts files only
+    // }),
     new HtmlWebpackPlugin(<IExtendedHtmlWebpackPluginConfiguration> {
       filename      : 'index.html',
       template      : './src/index.pug',
-      chunks        : ['polyfills', 'vendor', 'index'],
+      chunks        : ['polyfills', 'vendor', 'children-common', 'index'],
       hash          : false,
       minify        : false,
       inject        : 'body',

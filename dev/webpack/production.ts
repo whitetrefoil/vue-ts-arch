@@ -1,19 +1,21 @@
 const SIZE_14KB = 14336
 
-import isEmpty = require('lodash/isEmpty')
+import isEmpty           = require('lodash/isEmpty')
 import ExtractTextPlugin = require('extract-text-webpack-plugin')
-import fs = require('fs-extra')
+import fs                = require('fs-extra')
 import HtmlWebpackPlugin = require('html-webpack-plugin')
-import webpack = require('webpack')
-import { smart } from 'webpack-merge'
-import common, { IExtendedHtmlWebpackPluginConfiguration } from './common'
+import webpack           = require('webpack')
+import { smart }           from 'webpack-merge'
+import common, {
+  IExtendedHtmlWebpackPluginConfiguration,
+}                          from './common'
 
 const babelrc = fs.readJsonSync('.babelrc')
 
 export default <any> smart(common, <any> {
   output: {
     filename     : '[name]-[hash].js',
-    chunkFilename: 'chunks/[name]-[chunkHash].chunk.js',
+    chunkFilename: 'chunks/[id]-[chunkHash].chunk.js',
   },
 
   module: {
@@ -64,9 +66,6 @@ export default <any> smart(common, <any> {
   babel: babelrc,
 
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin({
-      names: ['index', 'vendor', 'polyfills'],
-    }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
@@ -77,7 +76,7 @@ export default <any> smart(common, <any> {
     new HtmlWebpackPlugin(<IExtendedHtmlWebpackPluginConfiguration> {
       filename      : 'index.html',
       template      : './src/index.pug',
-      chunks        : ['polyfills', 'vendor', 'index'],
+      chunks        : ['polyfills', 'vendor', 'children-common', 'index'],
       hash          : false,
       minify        : false,
       inject        : 'body',

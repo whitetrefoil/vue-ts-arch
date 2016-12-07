@@ -72,16 +72,18 @@ function wrapFormatterWithRelativePath(formatter: string | Function = 'stylish')
       // eslint-disable-next-line global-require
       format = require(`eslint/lib/formatters/${formatter}`)
     } catch (e) {
-      throw new gutil.PluginError('Task "eslint"'
-        , 'No such formatter found!'
-        , { showStack: false }
+      throw new gutil.PluginError(
+        'Task "eslint"',
+        'No such formatter found!',
+        { showStack: false },
       )
     }
   } else {
-    throw new gutil.PluginError('Task "eslint"'
-      , 'ESLint formatter must be a string, '
-      + 'function or `undefined` (default value is "stylish").'
-      , { showStack: false }
+    throw new gutil.PluginError(
+      'Task "eslint"',
+      'ESLint formatter must be a string, '
+      + 'function or `undefined` (default value is "stylish").',
+      { showStack: false },
     )
   }
 

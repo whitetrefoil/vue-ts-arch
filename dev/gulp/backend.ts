@@ -13,7 +13,7 @@ import every                             = require('lodash/every')
 
 const connect                = require('gulp-connect')
 const { green, red, yellow } = gutil.colors
-const requireNew             = require('require-new')
+const requireNew             = require('require-uncached')
 
 const HTTP_NOT_FOUND             = 404
 const HTTP_INTERNAL_SERVER_ERROR = 500

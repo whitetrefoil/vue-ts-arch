@@ -23,7 +23,6 @@ process.chdir(config.appRoot)
 const karmaConfig = require('./ut-config').karmaConfig
 
 module.exports = function setupKarma(karma) {
-  karmaConfig.logLevel = karma.LOG_DEBUG
   karmaConfig.autoWatch = true
   karmaConfig.singleRun = false
   karma.set(karmaConfig)

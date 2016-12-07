@@ -3,6 +3,9 @@ const BOOTSTRAP_REQUIRED_MINIMAL_PRECISION = 8
 import webpack = require('webpack')
 import { config } from '../config'
 
+const sourceTest = new RegExp('^' + config.rootAnd(config.sourceDir))
+
+
 export interface IExtendedHtmlWebpackPluginConfiguration {
   title?: string
   filename?: string
@@ -21,6 +24,7 @@ export interface IExtendedHtmlWebpackPluginConfiguration {
 }
 
 export default <any> {
+
   entry: {
     polyfills: ['polyfills'],
     vendor   : ['vendor'],
@@ -33,7 +37,7 @@ export default <any> {
       config.rootAnd(config.sourceDir),
     ],
     modulesDirectories: [],
-    extensions        : ['', '.js', '.ts', '.vue'],
+    extensions        : ['webpack.ts', 'webpack.js', '.vue', '.ts', '.js', ''],
   },
 
   resolveLoader: {
@@ -50,13 +54,13 @@ export default <any> {
       {
         test   : /\.(?:js|vue)$/,
         loader : 'eslint-loader',
-        exclude: /(node_modules|vendor)/,
+        include: sourceTest,
       },
-      // {
-      //   test   : /\.ts$/,
-      //   loader : 'tslint-loader',
-      //   exclude: /(node_modules|vendor)/,
-      // },
+      {
+        test   : /\.ts$/,
+        loader : 'tslint-loader',
+        include: sourceTest,
+      },
     ],
     loaders   : [
       {
@@ -70,12 +74,10 @@ export default <any> {
       {
         test   : /\.js$/,
         loader : 'babel-loader?cacheDirectory=.building',
-        exclude: /(node_modules)/,
       },
       {
         test   : /\.ts$/,
         loader : 'awesome-typescript-loader?tsconfig=tsconfig.json',
-        exclude: /(node_modules)/,
       },
       {
         test  : /\.(pug|jade)$/,
@@ -98,7 +100,6 @@ export default <any> {
     loaders     : {
       ts: 'awesome-typescript-loader?tsconfig=tsconfig.json',
     },
-    // esModule: true,
   },
 
   sassLoader: {
@@ -129,6 +130,19 @@ export default <any> {
 
   plugins: [
     new webpack.NoErrorsPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+      name  : 'children',
+      chunks: [
+        'children-sharing',
+        'children-detail',
+        'children-list',
+        'children-home',
+        'children',
+      ],
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ['index', 'vendor', 'polyfills'],
+    }),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV       : JSON.stringify(process.env.NODE_ENV),

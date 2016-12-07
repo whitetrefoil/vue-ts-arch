@@ -1,12 +1,9 @@
-import Karma    = require('karma')
-import { config } from '../config'
-import testConfig from '../webpack/test'
+'use strict'
 
-interface IWebpackKarmaConfig extends Karma.ConfigOptions {
-  webpack: any,
-}
+const { config }   = require('../config')
+const webpackConfig = require('../webpack/coverage')
 
-export const karmaConfig: IWebpackKarmaConfig = <IWebpackKarmaConfig> {
+module.exports.karmaConfig = {
 
   basePath: config.appRoot,
 
@@ -15,15 +12,13 @@ export const karmaConfig: IWebpackKarmaConfig = <IWebpackKarmaConfig> {
   colors: true,
 
   files: [
-    { pattern: 'src/**/*.(js|ts|map)', included
-      : false, watched: false },
     { pattern: 'tests/webpack-entry.js', watched: false },
   ],
 
   frameworks: ['jasmine'],
 
   preprocessors: {
-    'tests/webpack-entry.js': ['webpack'],
+    'tests/webpack-entry.js': ['webpack', 'sourcemap'],
   },
 
   reporters: ['junit'],
@@ -34,7 +29,11 @@ export const karmaConfig: IWebpackKarmaConfig = <IWebpackKarmaConfig> {
     suite     : '', // suite will become the package name attribute in xml testsuite element
   },
 
-  webpack: testConfig,
+  webpack: webpackConfig,
+
+  plugins: [
+    'karma-*',
+  ],
 
   singleRun: true,
 

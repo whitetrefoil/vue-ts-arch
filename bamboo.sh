@@ -11,6 +11,7 @@ error () {
 }
 
 install_deps() {
+  export NODE_ENV=development
   env yarn --no-lockfile --no-emoji --no-progress --prefer-offline || env yarn --no-lockfile --no-emoji --no-progress
 }
 

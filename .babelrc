@@ -2,7 +2,6 @@
   "presets"      : ["es2015"],
   "compact"      : false,
   "plugins"      : [
-    ["transform-async-to-module-method", {"module": "bluebird", "method": "coroutine"}],
     "transform-class-properties",
     "transform-object-rest-spread",
     "syntax-trailing-function-commas",

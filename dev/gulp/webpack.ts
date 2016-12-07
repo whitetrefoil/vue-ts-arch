@@ -7,7 +7,7 @@ import { config }      from '../config'
 
 gulp.task('webpack', (): Promise<NodeJS.ReadableStream> => {
 
-  return del(config.outputDir)
+  return del([config.outputDir, '.building', '.awcache'])
     .then(() => {
       const webpackConfig = process.env.NODE_ENV === 'development'
         ? devConfig

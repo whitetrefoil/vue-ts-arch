@@ -1,12 +1,9 @@
-import Karma    = require('karma')
-import { config } from '../config'
-import testConfig from '../webpack/test'
+'use strict'
 
-interface IWebpackKarmaConfig extends Karma.ConfigOptions {
-  webpack: any,
-}
+const { config }   = require('../config')
+const webpackConfig = require('../webpack/coverage')
 
-export const karmaConfig: IWebpackKarmaConfig = <IWebpackKarmaConfig> {
+module.exports.karmaConfig = {
 
   basePath: config.appRoot,
 
@@ -15,14 +12,14 @@ export const karmaConfig: IWebpackKarmaConfig = <IWebpackKarmaConfig> {
   colors: true,
 
   files: [
-    { pattern: 'src/**/*.(js|ts|map)', included: false, watched: false },
+    // { pattern: 'src/**/*.(js|ts|map)', included: false, watched: false },
     { pattern: 'tests/webpack-entry.js', watched: false },
   ],
 
   frameworks: ['jasmine'],
 
   preprocessors: {
-    'tests/webpack-entry.js': ['webpack', 'sourcemap'],
+    'tests/webpack-entry.js': ['coverage', 'webpack', 'sourcemap'],
   },
 
   reporters: ['junit', 'coverage', 'remap-coverage'],
@@ -43,11 +40,11 @@ export const karmaConfig: IWebpackKarmaConfig = <IWebpackKarmaConfig> {
     'clover'      : './test_results/coverage/clover.xml',
   },
 
-  webpack: testConfig,
+  webpack: webpackConfig,
 
   plugins: [
     'karma-*',
-    require('istanbul-instrumenter-loader'),
+    'istanbul-instrumenter-loader',
   ],
 
   singleRun: true,
