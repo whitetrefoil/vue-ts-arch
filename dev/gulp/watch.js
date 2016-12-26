@@ -1,36 +1,36 @@
 const WATCHER_STABILITY_THRESHOLD = 200
 const WATCHER_RESTART_DELAY       = 500
 
-import chokidar      = require('chokidar')
-import del           = require('del')
-import gulp          = require('gulp')
-import path          = require('path')
-import plumber       = require('gulp-plumber')
-import run           = require('run-sequence')
-import webpackStream = require('webpack-stream')
-import { config }      from '../config'
-import watchConfig     from '../webpack/watch'
+const chokidar      = require('chokidar')
+const del           = require('del')
+const gulp          = require('gulp')
+const path          = require('path')
+const plumber       = require('gulp-plumber')
+const run           = require('run-sequence')
+const webpackStream = require('webpack-stream')
+const { config }    = require('../config')
+const devConfig     = require('../webpack/development')
 
-function startWatching() {
+const startWatching = function startWatching() {
 
   const watchingFiles = config.rootAnd(config.outputAnd('**/*.*'))
 
-  let restartTimer: NodeJS.Timer
+  let restartTimer
 
   chokidar.watch(watchingFiles, {
-    ignored         : /[\/\\]\./,
+    ignored         : /[/\\]\./,
     awaitWriteFinish: {
       stabilityThreshold: WATCHER_STABILITY_THRESHOLD,
     },
   })
     .on('ready', () => {
-      // tslint:disable-next-line:no-console
+      // eslint-disable-next-line no-console
       console.log(`Electron is watching in ${watchingFiles}`)
     })
-    .on('all', (type: string, absPath: string) => {
+    .on('all', (type, absPath) => {
       const sourcePath = path.relative(config.outputDir, absPath)
 
-      // tslint:disable-next-line:no-console
+      // eslint-disable-next-line no-console
       console.log(`${type}: "${sourcePath}"`)
 
       clearTimeout(restartTimer)
@@ -38,13 +38,16 @@ function startWatching() {
     })
 }
 
-gulp.task('watch', (): Promise<NodeJS.ReadableStream> => {
+gulp.task('watch', () => {
 
   return del('lib').then(() => {
 
     return gulp.src(config.sourceAnd('main.js'))
       .pipe(plumber())
-      .pipe(webpackStream(watchConfig))
+      .pipe(webpackStream({
+        ...devConfig,
+        watch: true,
+      }))
       .pipe(gulp.dest(config.outputDir))
       .on('finish', () => {
         startWatching()

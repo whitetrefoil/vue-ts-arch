@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/retryWhen'
 import 'rxjs/add/operator/scan'
 
-import 'zone.js/dist/zone'
+// import 'zone.js/dist/zone'
 
 if (process.env.ENV === 'production') {
   // Production
@@ -13,5 +13,5 @@ if (process.env.ENV === 'production') {
   // Development
   Error['stackTraceLimit'] = Infinity
 
-  require('zone.js/dist/long-stack-trace-zone')
+  // require('zone.js/dist/long-stack-trace-zone')
 }

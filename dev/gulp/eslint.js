@@ -1,22 +1,20 @@
-import fs            = require('fs-extra')
-import eslint        = require('gulp-eslint')
-import gulp          = require('gulp')
-import gutil         = require('gulp-util')
-import {
-  defaults,
-  extend,
-  forEach,
-  groupBy,
-  isFunction,
-  isString,
-  map,
-}                      from 'lodash'
-import path          = require('path')
-import xmlbuilder    = require('xmlbuilder')
-import { config }      from '../config'
+const fs         = require('fs-extra')
+const eslint     = require('gulp-eslint')
+const gulp       = require('gulp')
+const gutil      = require('gulp-util')
+const defaults   = require('lodash/defaults')
+const extend     = require('lodash/extend')
+const forEach    = require('lodash/forEach')
+const groupBy    = require('lodash/groupBy')
+const isFunction = require('lodash/isFunction')
+const isString   = require('lodash/isString')
+const map        = require('lodash/map')
+const path       = require('path')
+const xmlbuilder = require('xmlbuilder')
+const { config } = require('../config')
 
-function messageHandlerFactory(level: string, testcase: xmlbuilder.XMLElementOrXMLNode) {
-  return (message: eslint.ESLintMessage) => {
+const messageHandlerFactory = function messageHandlerFactory(level, testcase) {
+  return (message) => {
     const attributes = { type: message.ruleId }
     const detailText = `L${message.line}:${message.column} - ${message.message}\n`
       + `Source: \`${message.source}\`\n`
@@ -25,8 +23,8 @@ function messageHandlerFactory(level: string, testcase: xmlbuilder.XMLElementOrX
   }
 }
 
-function caseHandlerFactory(suite: xmlbuilder.XMLElementOrXMLNode) {
-  return (file: eslint.ESLintResult) => {
+const caseHandlerFactory = function caseHandlerFactory(suite) {
+  return (file) => {
     const testcase = suite.ele('testcase', {
       name    : file.filePath,
       failures: file.errorCount,
@@ -40,8 +38,8 @@ function caseHandlerFactory(suite: xmlbuilder.XMLElementOrXMLNode) {
   }
 }
 
-function createSuite(results: eslint.ESLintResults) {
-  const testsuite: xmlbuilder.XMLElementOrXMLNode = xmlbuilder.create('testsuite')
+const createSuite = function createSuite(results) {
+  const testsuite = xmlbuilder.create('testsuite')
   testsuite.att('name', 'ESLint')
   testsuite.att('package', 'org.eslint')
   testsuite.att('tests', results.length)
@@ -53,7 +51,7 @@ function createSuite(results: eslint.ESLintResults) {
   return testsuite
 }
 
-function junitFormatter(results: eslint.ESLintResults) {
+const junitFormatter = function junitFormatter(results) {
 
   fs.ensureDirSync('test_results/junit')
 
@@ -62,8 +60,8 @@ function junitFormatter(results: eslint.ESLintResults) {
   fs.writeFileSync('test_results/junit/eslint.xml', testsuite.end({ pretty: true }))
 }
 
-function wrapFormatterWithRelativePath(formatter: string | Function = 'stylish') {
-  let format: Function
+const wrapFormatterWithRelativePath = function wrapFormatterWithRelativePath(formatter = 'stylish') {
+  let format
 
   if (isFunction(formatter)) {
     format = formatter
@@ -72,27 +70,25 @@ function wrapFormatterWithRelativePath(formatter: string | Function = 'stylish')
       // eslint-disable-next-line global-require
       format = require(`eslint/lib/formatters/${formatter}`)
     } catch (e) {
-      throw new gutil.PluginError(
-        'Task "eslint"',
-        'No such formatter found!',
-        { showStack: false },
+      throw new gutil.PluginError('Task "eslint"'
+        , 'No such formatter found!'
+        , { showStack: false }
       )
     }
   } else {
-    throw new gutil.PluginError(
-      'Task "eslint"',
-      'ESLint formatter must be a string, '
-      + 'function or `undefined` (default value is "stylish").',
-      { showStack: false },
+    throw new gutil.PluginError('Task "eslint"'
+      , 'ESLint formatter must be a string, '
+      + 'function or `undefined` (default value is "stylish").'
+      , { showStack: false }
     )
   }
 
-  return (results: eslint.ESLintResults) => {
+  return (results) => {
     // The original `results` is wired, it is an array,
     // but has some extra properties like an object.
     // `map`, `clone` cannot handle it.
     // Use `defaults` to workaround it.
-    const resultsWithRelativePaths: eslint.ESLintResult[] = map(results, (result: eslint.ESLintResult) => {
+    const resultsWithRelativePaths = map(results, (result) => {
       return extend({}, result, {
         filePath: path.relative(config.appRoot, result.filePath),
       })
@@ -112,7 +108,7 @@ gulp.task('eslint', () => {
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.format(wrapFormatterWithRelativePath(junitFormatter)))
-    .pipe(eslint.format(wrapFormatterWithRelativePath('html'), (html: string) => {
+    .pipe(eslint.format(wrapFormatterWithRelativePath('html'), (html) => {
       fs.ensureDirSync('test_results/html')
       fs.writeFileSync('test_results/html/eslint.html', html)
     }))

@@ -9,63 +9,12 @@ const DEFAULT_PROXY_DESTINATION_IS_HTTPS    = false
 const DEFAULT_OUTPUT_DIR      = 'dist'
 const DEFAULT_SOURCE_BASE_DIR = 'src'
 
-const meow = require('meow')
-import { colors } from 'gulp-util'
-import isNil = require('lodash/isNil')
-import path = require('path')
+const meow       = require('meow')
+const { colors } = require('gulp-util')
+const isNil      = require('lodash/isNil')
+const path       = require('path')
 
-interface IFlags {
-  d: boolean
-  development: boolean
-  o: string
-  output: string
-  p: number | string
-  port: number | string
-  x: string
-  prefix: string
-  i: string
-  index: string
-  ping: number | string
-  e: string
-  backend: string
-  backendHttps: boolean
-}
-
-interface IArgv {
-  flags: IFlags
-  pkg: any
-}
-
-interface IConfig {
-  isInitialized: boolean
-
-  argv?: any
-  pkg?: any
-
-  appRoot?: string
-  rootAnd: (pathInRoot: string) => string
-
-  sourceDir?: string
-  sourceAnd: (pathInSource: string) => string
-
-  outputDir?: string
-  /** @returns Path related to base dir */
-  outputAnd: (pathInSource: string) => string
-
-  previewServerPort?: number
-
-  backendPrefix?: string[]
-
-  previewServerIndex?: string
-
-  ping?: number
-
-  proxyDestination?: string
-  proxyDestinationIsHttps?: boolean
-  proxyDestAnd: (pathInProxyDest: string) => string
-}
-
-const argv: IArgv = meow(`
+const argv = meow(`
     Usage:
       $ npm run gulp ${colors.yellow('<task>')} -- ${colors.yellow('<options>')}
     or:
@@ -100,27 +49,27 @@ const argv: IArgv = meow(`
       x: 'prefix',
       e: 'backend',
     },
-  },
+  }
 )
 
-export class ConfigNotInitializedError extends Error {}
+class ConfigNotInitializedError extends Error {}
 
-export const config: IConfig = {
+const config = {
   isInitialized: false,
 
-  rootAnd: (pathInRoot: string) => {
+  rootAnd     : (pathInRoot) => {
     if (!config.isInitialized) { throw new ConfigNotInitializedError() }
     return path.join(config.appRoot, pathInRoot)
   },
-  sourceAnd: (pathInSource: string) => {
+  sourceAnd   : (pathInSource) => {
     if (!config.isInitialized) { throw new ConfigNotInitializedError() }
     return path.join(config.sourceDir, pathInSource)
   },
-  outputAnd: (pathInOutput: string) => {
+  outputAnd   : (pathInOutput) => {
     if (!config.isInitialized) { throw new ConfigNotInitializedError() }
     return path.join(config.outputDir, pathInOutput)
   },
-  proxyDestAnd: (pathInProxyDest: string) => {
+  proxyDestAnd: (pathInProxyDest) => {
     if (!config.isInitialized) { throw new ConfigNotInitializedError() }
     return config.proxyDestinationIsHttps ? 'https://' : 'http://'
       + config.proxyDestination
@@ -128,17 +77,19 @@ export const config: IConfig = {
   },
 }
 
-export function initialize(appRoot: string) {
+const initialize = function initialize(appRoot) {
 
   if (config.isInitialized) {
     if (config.appRoot !== appRoot) {
+      // eslint-disable-next-line no-console
       console.warn(`Project has already been initialized in ${config.appRoot}.`)
+      // eslint-disable-next-line no-console
       console.warn(`The new location ${appRoot} will not been applied.`)
     }
     return
   }
 
-  // tslint:disable-next-line:no-console
+  // eslint-disable-next-line no-console
   console.log(`Initializing project in "${appRoot}"`)
 
   if (isNil(process.env.NODE_ENV)) {
@@ -147,7 +98,7 @@ export function initialize(appRoot: string) {
   }
   process.env.BABEL_ENV = process.env.NODE_ENV
 
-  // tslint:disable-next-line:no-console
+  // eslint-disable-next-line no-console
   console.log(`Running gulp & babel for ${process.env.NODE_ENV} environment.`)
 
   config.argv = argv
@@ -171,8 +122,14 @@ export function initialize(appRoot: string) {
 
   config.ping = Number(argv.flags.ping) || DEFAULT_PREVIEW_SERVER_PING
 
-  config.proxyDestination = argv.flags.backend || DEFAULT_PROXY_DESTINATION
+  config.proxyDestination        = argv.flags.backend || DEFAULT_PROXY_DESTINATION
   config.proxyDestinationIsHttps = argv.flags.backendHttps || DEFAULT_PROXY_DESTINATION_IS_HTTPS
 
   config.isInitialized = true
+}
+
+module.exports = {
+  ConfigNotInitializedError,
+  config,
+  initialize,
 }

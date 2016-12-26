@@ -1,5 +1,3 @@
-'use strict'
-
 // See [https://github.com/webpack/karma-webpack]()
 // See [https://www.npmjs.com/package/istanbul-instrumenter-loader]()
 

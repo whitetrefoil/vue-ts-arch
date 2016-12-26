@@ -1,11 +1,4 @@
-'use strict'
-
-const path = require('path')
-require('ts-node').register({
-  project: path.join(__dirname, '../../tsconfig.gulp.json'),
-  cache  : false,
-  fast   : true,
-})
+const path           = require('path')
 const { initialize } = require('../config')
 initialize(path.join(__dirname, '../..'))
 
