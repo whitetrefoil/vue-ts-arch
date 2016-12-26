@@ -6,6 +6,7 @@ const { config }        = require('../config')
 const BOOTSTRAP_REQUIRED_MINIMAL_PRECISION = 8
 
 module.exports = {
+
   devtool: 'inline-source-map',
 
   context: config.rootAnd(config.sourceDir),
@@ -32,6 +33,18 @@ module.exports = {
 
   module: {
     rules: [
+      {
+        enforce: 'pre',
+        test   : /\.(?:js|vue)$/,
+        loader : 'eslint-loader',
+        exclude: /node_modules/,
+      },
+      {
+        enforce: 'pre',
+        test   : /\.ts$/,
+        loader : 'tslint-loader',
+        exclude: /node_modules/,
+      },
       {
         test: /\.html$/,
         use : [
@@ -172,6 +185,16 @@ module.exports = {
     //   filename: null,  // if no value is provided the sourcemap is inlined
     //   test    : /\.(ts|js)($|\?)/i,  // process .js and .ts files only
     // }),
+    new webpack.NoErrorsPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV       : JSON.stringify(process.env.NODE_ENV),
+        VUE_ROUTER_BASE: JSON.stringify(process.env.VUE_ROUTER_BASE),
+      },
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ['index', 'vendor', 'polyfills'],
+    }),
     new HtmlWebpackPlugin({
       filename      : 'index.html',
       template      : './index.pug',
@@ -199,16 +222,6 @@ module.exports = {
         indentedSyntax: false,
         outputStyle   : 'expanded',
         precision     : BOOTSTRAP_REQUIRED_MINIMAL_PRECISION,
-      },
-    }),
-    new webpack.NoErrorsPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({
-      names: ['index', 'vendor', 'polyfills'],
-    }),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV       : JSON.stringify(process.env.NODE_ENV),
-        VUE_ROUTER_BASE: JSON.stringify(process.env.VUE_ROUTER_BASE),
       },
     }),
   ],

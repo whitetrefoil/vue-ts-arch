@@ -1,18 +1,12 @@
 // Karma config file for IDEA use.
 
-'use strict'
+const path                   = require('path')
+const { config, initialize } = require('../config')
 
-const path = require('path')
+if (config.isInitialized !== true) {
+  initialize(path.join(__dirname, '../..'))
+}
 
-// require('ts-node').register({
-//   project: path.join(__dirname, '../../tsconfig.gulp.json'),
-//   cache: false,
-//   fast: true,
-// })
-//
-const c = require('../config')
-c.initialize(path.join(__dirname, '../..'))
-const config = c.config
 process.chdir(config.appRoot)
 
 const karmaConfig = require('./coverage-config').karmaConfig

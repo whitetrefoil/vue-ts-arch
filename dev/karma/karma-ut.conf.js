@@ -5,19 +5,13 @@
 // * [https://github.com/AngularClass/angular2-webpack-starter/blob/master/config/webpack.test.js]()
 // * [https://github.com/deepsweet/istanbul-instrumenter-loader/issues/35]()
 
-'use strict'
+const path                   = require('path')
+const { config, initialize } = require('../config')
 
-const path = require('path')
+if (config.isInitialized !== true) {
+  initialize(path.join(__dirname, '../..'))
+}
 
-require('ts-node').register({
-  project: path.join(__dirname, '../../tsconfig.gulp.json'),
-  cache: false,
-  fast: true,
-})
-
-const c = require('../config')
-c.initialize(path.join(__dirname, '../..'))
-const config = c.config
 process.chdir(config.appRoot)
 
 const karmaConfig = require('./ut-config').karmaConfig

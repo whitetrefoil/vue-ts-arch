@@ -78,7 +78,7 @@ const wrapFormatterWithRelativePath = function wrapFormatterWithRelativePath(for
   } else {
     throw new gutil.PluginError('Task "eslint"'
       , 'ESLint formatter must be a string, '
-      + 'function or `undefined` (default value is "stylish").'
+        + 'function or `undefined` (default value is "stylish").'
       , { showStack: false }
     )
   }

@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */
+
 const { fork } = require('child_process')
 const gulp     = require('gulp')
 const Promise  = require('bluebird')
