@@ -4,11 +4,17 @@ import { AsyncComponent } from 'vue'
 import { RouteConfig }    from 'vue-router'
 import VueRouter        = require('vue-router')
 
-const Hello: AsyncComponent = (r) => require.ensure(
-  [],
-  () => r(require('../components/hello/hello.component.vue')),
-  'hello',
-)
+const Hello: AsyncComponent = (resolve) => {
+  require.ensure([], () => {
+    resolve(require('../components/hello/hello.component.vue'))
+  }, 'hello')
+}
+
+const Another: AsyncComponent = (resolve) => {
+  require.ensure([], () => {
+    resolve(require('../components/another.component.vue'))
+  }, 'another')
+}
 
 Vue.use(VueRouter)
 
@@ -23,11 +29,17 @@ const routes: RouteConfig[] = [
     redirect: { name: 'hello' },
   },
   {
-    name      : 'hello',
-    path      : '/hello',
-    components: {
-      default: Hello,
-    },
+    path     : '/hello',
+    component: Hello,
+    children : [
+      {
+        name      : 'hello',
+        path      : '',
+        components: {
+          another: Another,
+        },
+      },
+    ],
   },
   {
     path    : '*',
