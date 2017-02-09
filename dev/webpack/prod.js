@@ -1,71 +1,51 @@
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const isEmpty           = require('lodash/isEmpty')
-const webpack           = require('webpack')
-const { config }        = require('../config')
+const ExtractTextPlugin      = require('extract-text-webpack-plugin')
+const HtmlWebpackPlugin      = require('html-webpack-plugin')
+const LodashPlugin           = require('lodash-webpack-plugin')
+const isEmpty                = require('lodash/isEmpty')
+const webpack                = require('webpack')
+const { config, initialize } = require('../config')
+
+if (config.isInitialized !== true) {
+  initialize()
+}
 
 const BOOTSTRAP_REQUIRED_MINIMAL_PRECISION = 8
 const SIZE_14KB                            = 14336
 
 module.exports = {
 
-  context: config.rootAnd(config.sourceDir),
+  context: config.absSource(''),
 
   entry: {
     polyfills: ['./polyfills'],
     vendor   : ['./vendor'],
+    theme    : ['./theme'],
     index    : ['./index'],
   },
 
   resolve: {
-    modules   : [
-      config.rootAnd(config.sourceDir),
-      'node_modules',
-    ],
     extensions: ['.vue', '.ts', '.js', '.json'],
+    mainFields: ['webpack', 'jsnext:main', 'browser', 'web', 'browserify', ['jam', 'main'], 'main'],
   },
 
   output: {
-    filename     : 'js/[name]-[hash].js',
+    filename     : 'js/[name]-[chunkHash].js',
     chunkFilename: 'js/chunks/[id]-[chunkHash].chunk.js',
   },
 
   module: {
     rules: [
       {
-        test: /\.html$/,
-        use : [
-          { loader: 'html-loader' },
-        ],
+        test  : /\.ts$/,
+        loader: 'babel-loader!ts-loader?configFileName=tsconfig.json',
       },
       {
-        test: /\.js$/,
-        use : [
-          {
-            loader : 'babel-loader',
-            options: {
-              cacheDirectory: '.building',
-            },
-          },
-        ],
+        test  : /\.js$/,
+        loader: 'babel-loader',
       },
       {
-        test: /\.ts$/,
-        use : [
-          {
-            loader : 'babel-loader',
-            options: {
-              cacheDirectory: '.building',
-            },
-          },
-          { loader: 'ts-loader' },
-        ],
-      },
-      {
-        test: /\.(pug|jade)$/,
-        use : [
-          { loader: 'pug-loader' },
-        ],
+        test  : /\.(pug|jade)$/,
+        loader: 'pug-loader',
       },
       {
         test: /\.vue/,
@@ -77,8 +57,8 @@ module.exports = {
                 browsers: ['last 2 versions'],
               },
               loaders     : {
-                js  : 'babel-loader?cacheDirectory=.building',
-                ts  : 'babel-loader?cacheDirectory=.building!ts-loader',
+                js  : 'babel-loader',
+                ts  : 'babel-loader!ts-loader?configFileName=tsconfig.json',
                 css : ExtractTextPlugin.extract('css-loader?minimize&safe'),
                 sass: ExtractTextPlugin.extract('css-loader?minimize&safe!resolve-url-loader?keepQuery!sass-loader?config=sassLoader'),
                 scss: ExtractTextPlugin.extract('css-loader?minimize&safe!resolve-url-loader?keepQuery!sass-loader?config=scssLoader'),
@@ -89,24 +69,18 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use : [
-          { loader: ExtractTextPlugin.extract('css-loader?minimize&safe') },
-        ],
+        loader: ExtractTextPlugin.extract('css-loader?minimize&safe'),
       },
       {
-        test: /\.sass$/,
+        test  : /\.sass$/,
         loader: ExtractTextPlugin.extract('css-loader?minimize&safe!resolve-url-loader?keepQuery!sass-loader?config=sassLoader'),
       },
       {
-        test: /\.scss$/,
-        use : [
-          {
-            loader: ExtractTextPlugin.extract('css-loader?minimize&safe!resolve-url-loader?keepQuery!sass-loader?config=scssLoader'),
-          },
-        ],
+        test  : /\.scss$/,
+        loader: ExtractTextPlugin.extract('css-loader?minimize&safe!resolve-url-loader?keepQuery!sass-loader?config=scssLoader'),
       },
       {
-        test   : /\.(?:png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(?:\?\w*)?$/,
+        test: /\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
         exclude: /weixin/,
         use    : [
           {
@@ -122,7 +96,7 @@ module.exports = {
         ],
       },
       {
-        test: /weixin.*\.(?:png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(?:\?\w*)?$/,
+        test: /weixin.*\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
         use : [{
           loader: 'file-loader',
           query : {
@@ -134,7 +108,8 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.NoErrorsPlugin(),
+    new LodashPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV       : JSON.stringify(process.env.NODE_ENV),
@@ -142,7 +117,7 @@ module.exports = {
       },
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      names: ['index', 'vendor', 'polyfills'],
+      names: ['index', 'theme', 'vendor', 'polyfills'],
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
@@ -156,7 +131,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename      : 'index.html',
       template      : './index.pug',
-      chunks        : ['polyfills', 'vendor', 'index'],
+      chunks        : ['polyfills', 'vendor', 'theme', 'index'],
       hash          : false,
       minify        : false,
       inject        : 'body',
@@ -166,17 +141,17 @@ module.exports = {
         : process.env.VUE_ROUTER_BASE,
     }),
     new webpack.LoaderOptionsPlugin({
-      context: config.rootAnd(config.sourceDir),
+      context: config.absSource(''),
 
       sassLoader: {
-        includePaths  : [config.sourceAnd('css')],
+        includePaths  : [config.source('css')],
         indentedSyntax: true,
         outputStyle   : 'compressed',
         precision     : BOOTSTRAP_REQUIRED_MINIMAL_PRECISION,
       },
 
       scssLoader: {
-        includePaths  : [config.sourceAnd('css')],
+        includePaths  : [config.source('css')],
         indentedSyntax: false,
         outputStyle   : 'compressed',
         precision     : BOOTSTRAP_REQUIRED_MINIMAL_PRECISION,

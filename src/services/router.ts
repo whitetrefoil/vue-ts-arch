@@ -1,8 +1,7 @@
 import { Vue }            from 'av-ts'
-import isEmpty          = require('lodash/isEmpty')
+import { isEmpty }        from 'lodash'
 import { AsyncComponent } from 'vue'
-import { RouteConfig }    from 'vue-router'
-import VueRouter        = require('vue-router')
+import * as VueRouter     from 'vue-router'
 
 const Hello: AsyncComponent = (resolve) => {
   require.ensure([], () => {
@@ -22,7 +21,7 @@ const routerBase = isEmpty(process.env.VUE_ROUTER_BASE)
   ? '/'
   : process.env.VUE_ROUTER_BASE
 
-const routes: RouteConfig[] = [
+const routes: VueRouter.RouteConfig[] = [
   {
     name    : 'index',
     path    : '/',

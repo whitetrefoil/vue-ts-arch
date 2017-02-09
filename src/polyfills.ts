@@ -1,3 +1,5 @@
+require('babel-polyfill')
+
 import 'rxjs/Observable'
 import 'rxjs/add/observable/defer'
 import 'rxjs/add/operator/catch'

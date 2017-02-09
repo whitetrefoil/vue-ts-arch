@@ -1,9 +1,32 @@
 /* tslint:disable max-classes-per-file */
 
-import * as axios from 'axios'
-import isNil    = require('lodash/isNil')
-import AxiosXHR = Axios.AxiosXHR
-import { Observable } from 'rxjs/Observable'
+import axios, {
+  AxiosRequestConfig,
+}                          from 'axios'
+import { isNil }           from 'lodash'
+import { Observable }      from 'rxjs/Observable'
+
+export interface AxiosResponse<T> {
+  data: T
+  status: number
+  statusText: string
+  headers: any
+  config: AxiosRequestConfig
+}
+
+export interface AxiosError<T> extends Error {
+  config: AxiosRequestConfig
+  code?: string
+  response?: AxiosResponse<T>
+}
+
+export interface IServerResponseData<T> {
+  _code: string
+  _message: string
+  _data?: T
+}
+
+export type IServerResponse<T> = AxiosResponse<IServerResponseData<T>>
 
 const DURATION_10_SECONDS = 10000
 const MAX_RETRY_LIMIT     = 2
@@ -13,21 +36,23 @@ export const Axios = axios.create({
   timeout: DURATION_10_SECONDS,
 })
 
-class NetworkError extends Error {}
-// TypeScript's issue...
-// w/o assign prototype manually,
-// `new NetworkError() instanceof NetworkError` will be `false`
-NetworkError.prototype = <any> Error.prototype
+// Because of limitation of Typescript,
+// `networkError instanceof Error` won't work.
+// Use `networkError.isNetworkError` instead...
+class NetworkError extends Error {
+  isNetworkError = true
+}
 
 class ServerError extends Error {
+  isServerError = true
+
   public response: any
 
-  constructor(message?: string, response?: AxiosXHR<any> | any) {
+  constructor(message?: string, response?: AxiosResponse<any> | any) {
     super(message)
     this.response = response
   }
 }
-ServerError.prototype = <any> Error.prototype
 
 function parseError(response: any): Observable<any> {
   if (isNil(response.response) || isNil(response.response.data)) {
@@ -39,30 +64,22 @@ function parseError(response: any): Observable<any> {
   return Observable.throw(new ServerError(response.response.data._message, response.response))
 }
 
-export interface IServerResponse<T> {
-  _code: string
-  _message: string
-  _data?: T
-}
-
-export function extractResponse<T>(res: IServerResponseXHR<T>): T | any {
+export function extractResponse<T>(res: IServerResponse<T>): T | any {
   if (res.data._data) {
     return res.data._data
   }
   return res.data
 }
 
-export function request<T>(requestFunction: () => Promise<IServerResponseXHR<T>>): Observable<T> {
+export function request<T>(requestFunction: () => Promise<IServerResponse<T>>): Observable<T> {
   return Observable.defer(requestFunction)
     .map(extractResponse)
     .catch(parseError)
     .retryWhen((errors) => {
       return errors.scan((retried, error) => {
-        if (!(error instanceof NetworkError)) { throw error }
+        if (!(error.isNetworkError)) { throw error }
         if (retried >= MAX_RETRY_LIMIT) { throw error }
         return retried + 1
       }, 0)
     })
 }
-
-export type IServerResponseXHR<T> = AxiosXHR<IServerResponse<T>>

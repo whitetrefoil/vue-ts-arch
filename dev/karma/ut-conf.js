@@ -1,13 +1,11 @@
-'use strict'
-
-const { config }   = require('../config')
-const webpackConfig = require('../webpack/coverage')
+import { config }     from '../config'
+const webpackConfig = require('../webpack/ut')
 
 module.exports.karmaConfig = {
 
-  basePath: config.appRoot,
+  basePath: config.absRoot(''),
 
-  browsers: ['Chrome'],
+  browsers: ['PhantomJS'],
 
   colors: true,
 
@@ -21,7 +19,7 @@ module.exports.karmaConfig = {
     'tests/webpack-entry.js': ['webpack', 'sourcemap'],
   },
 
-  reporters: ['junit'],
+  reporters: ['progress', 'junit'],
 
   junitReporter: {
     outputDir : 'test_results/junit', // results will be saved as $outputDir/$browserName.xml

@@ -61,7 +61,7 @@ rules:
   curly: 2
   default-case: 1
   dot-location: [2, property]
-  dot-notation: [2, {allowPattern: '^[a-z]+(_[a-z]+)+$'}]
+  dot-notation: [1, {allowPattern: '^[a-z]+(_[a-z]+)+$'}]
   eqeqeq: [2, allow-null]
   guard-for-in: 2
   no-alert: 2

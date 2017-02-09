@@ -1,23 +1,22 @@
 const { config }    = require('../config')
-const webpackConfig = require('../webpack/coverage')
+const webpackConfig = require('../webpack/cover')
 
 module.exports.karmaConfig = {
 
-  basePath: config.appRoot,
+  basePath: config.absRoot(''),
 
-  browsers: ['Chrome'],
+  browsers: ['PhantomJS'],
 
   colors: true,
 
   files: [
-    // { pattern: 'src/**/*.(js|ts|map)', included: false, watched: false },
-    { pattern: 'tests/webpack-entry.js', watched: false },
+    { pattern: 'tests/coverage-entry.js', watched: false },
   ],
 
   frameworks: ['jasmine'],
 
   preprocessors: {
-    'tests/webpack-entry.js': ['coverage', 'webpack', 'sourcemap'],
+    'tests/coverage-entry.js': ['webpack', 'sourcemap'],
   },
 
   reporters: ['junit', 'coverage', 'remap-coverage'],

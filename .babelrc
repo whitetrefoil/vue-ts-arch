@@ -1,9 +1,8 @@
 {
-  "presets"      : [
-    ["es2015", {"modules": false}]
-  ],
+  "presets"      : [ [ "latest", { "es2015": { "modules": false } } ] ],
   "compact"      : false,
   "plugins"      : [
+    "lodash",
     "transform-class-properties",
     "transform-object-rest-spread",
     "syntax-trailing-function-commas",

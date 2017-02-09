@@ -20,7 +20,7 @@ module.exports = {
   context: config.absSource(''),
 
   // entry: {
-  //   'webpack-entry': '../tests/webpack-entry.js',
+  //   'coverage-entry': '../tests/coverage-entry.js',
   // },
 
   output: {
@@ -34,7 +34,7 @@ module.exports = {
   },
 
   module: {
-    rules: [
+    rules    : [
       {
         enforce: 'pre',
         test   : /\.js/,
@@ -73,8 +73,25 @@ module.exports = {
         loader: 'null-loader',
       },
       {
+        test  : /\.scss$/,
+        loader: 'null-loader',
+      },
+      {
         test  : /\.(?:png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(?:\?\w*)?$/,
         loader: 'null-loader',
+      },
+      {
+        enforce: 'post',
+        test   : /\.[jt]s$/,
+        exclude: /(node_modules|\/tests\/.*\.js)/,
+        loader : 'istanbul-instrumenter-loader',
+        query  : {
+          esModules       : true,
+          // debug           : false,
+          // compact         : false,
+          preserveComments: true,
+          produceSourceMap: true,
+        },
       },
     ],
   },

@@ -5,18 +5,24 @@
 // * [https://github.com/AngularClass/angular2-webpack-starter/blob/master/config/webpack.test.js]()
 // * [https://github.com/deepsweet/istanbul-instrumenter-loader/issues/35]()
 
-const path                   = require('path')
+const path = require('path')
+
+require('ts-node').register({
+  project: path.join(__dirname, '../tsconfig.json'),
+  fast   : true,
+  cache  : false,
+})
+
 const { config, initialize } = require('../config')
 
-if (config.isInitialized !== true) {
-  initialize(path.join(__dirname, '../..'))
-}
+if (config.isInitialized !== true) { initialize() }
 
-process.chdir(config.appRoot)
+process.chdir(config.absRoot(''))
 
-const karmaConfig = require('./ut-config').karmaConfig
+const karmaConfig = require('./cover-conf').karmaConfig
 
 module.exports = function setupKarma(karma) {
+  // karmaConfig.logLevel = karma.LOG_DEBUG
   karmaConfig.autoWatch = true
   karmaConfig.singleRun = false
   karma.set(karmaConfig)

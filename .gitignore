@@ -215,7 +215,7 @@ jspm_packages
 .building/
 .awcache/
 .sass-cache/
-~playground/
+~*/
 dist/
 docs/
 lib/

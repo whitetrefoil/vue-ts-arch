@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="backend -d" type="js.build_tools.gulp" factoryName="Gulp.js">
+    <node-interpreter>project</node-interpreter>
+    <node-options />
+    <gulpfile>$PROJECT_DIR$/Gulpfile.js</gulpfile>
+    <tasks>
+      <task>backend</task>
+    </tasks>
+    <arguments>-d</arguments>
+    <envs />
+    <method />
+  </configuration>
+</component>

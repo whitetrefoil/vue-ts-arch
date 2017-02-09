@@ -1,9 +1,9 @@
 const gulp = require('gulp')
 const run  = require('run-sequence')
 
-require('./dev-server')
-require('./backend')
+import './backend'
+import './dev-server'
 
-gulp.task('serve', (cb) => {
+gulp.task('serve', (cb: Noop) => {
   return run(['devServer', 'backend'], cb)
 })

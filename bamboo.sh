@@ -16,7 +16,7 @@ install_deps() {
 }
 
 build() {
-  VUE_ROUTER_BASE=/charity/ npm run gulp -- build
+  VUE_ROUTER_BASE="/" npm run gulp -- build
 }
 
 doc() {
@@ -24,7 +24,7 @@ doc() {
 }
 
 lint() {
-  npm run gulp -- eslint --ci
+  echo "No separated lint! Build directly!"
 }
 
 ut() {

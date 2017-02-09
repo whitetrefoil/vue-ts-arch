@@ -1,7 +1,5 @@
-import 'styles/app.sass'
-
-import Vue  = require('vue')
-import router from './services/router'
+import * as Vue from 'vue'
+import router   from './services/router'
 
 const App = require('./components/app.component.vue')
 

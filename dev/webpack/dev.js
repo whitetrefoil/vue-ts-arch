@@ -1,7 +1,12 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const isEmpty           = require('lodash/isEmpty')
-const webpack           = require('webpack')
-const { config }        = require('../config')
+const HtmlWebpackPlugin      = require('html-webpack-plugin')
+const LodashPlugin           = require('lodash-webpack-plugin')
+const isEmpty                = require('lodash/isEmpty')
+const webpack                = require('webpack')
+const { config, initialize } = require('../config')
+
+if (config.isInitialized !== true) {
+  initialize()
+}
 
 const BOOTSTRAP_REQUIRED_MINIMAL_PRECISION = 8
 
@@ -9,24 +14,21 @@ module.exports = {
 
   devtool: 'inline-source-map',
 
-  context: config.rootAnd(config.sourceDir),
+  context: config.absSource(''),
 
   entry: {
     polyfills: ['./polyfills'],
     vendor   : ['./vendor'],
+    theme    : ['./theme'],
     index    : ['./index'],
   },
 
   resolve: {
-    modules   : [
-      config.rootAnd(config.sourceDir),
-      'node_modules',
-    ],
     extensions: ['.vue', '.ts', '.js', '.json'],
+    mainFields: ['webpack', 'jsnext:main', 'browser', 'web', 'browserify', ['jam', 'main'], 'main'],
   },
 
   output: {
-    // publicPath   : 'assets',
     filename     : '[name].js',
     chunkFilename: '[id]-[name].chunk.js',
   },
@@ -35,50 +37,27 @@ module.exports = {
     rules: [
       {
         enforce: 'pre',
-        test   : /\.(?:js|vue)$/,
-        loader : 'eslint-loader',
-        exclude: /node_modules/,
-      },
-      {
-        enforce: 'pre',
         test   : /\.ts$/,
         loader : 'tslint-loader',
         exclude: /node_modules/,
       },
       {
-        test: /\.html$/,
-        use : [
-          { loader: 'html-loader' },
-        ],
+        enforce: 'pre',
+        test   : /\.js$/,
+        loader : 'eslint-loader',
+        exclude: /node_modules/,
       },
       {
-        test: /\.js$/,
-        use : [
-          {
-            loader : 'babel-loader',
-            options: {
-              cacheDirectory: '.building',
-            },
-          },
-        ],
+        test  : /\.ts$/,
+        loader: 'babel-loader!ts-loader?configFileName=tsconfig.json',
       },
       {
-        test: /\.ts$/,
-        use : [
-          {
-            loader : 'babel-loader',
-            options: {
-              cacheDirectory: '.building',
-            },
-          },
-          { loader: 'ts-loader' },
-        ],
+        test  : /\.js$/,
+        loader: 'babel-loader',
       },
       {
-        test: /\.(pug|jade)$/,
-        use : [
-          { loader: 'pug-loader' },
-        ],
+        test  : /\.(pug|jade)$/,
+        loader: 'pug-loader',
       },
       {
         test: /\.vue/,
@@ -90,7 +69,7 @@ module.exports = {
                 browsers: ['last 2 versions'],
               },
               loaders     : {
-                ts  : 'babel-loader?cacheDirectory=.building!ts-loader',
+                ts  : 'babel-loader!ts-loader?configFileName=tsconfig.json',
                 sass: ''
                 + 'vue-style-loader'
                 + '!css-loader?sourceMap'
@@ -158,7 +137,6 @@ module.exports = {
           {
             loader : 'resolve-url-loader',
             options: {
-              keepQuery: true,
               sourceMap: true,
             },
           },
@@ -172,7 +150,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(?:png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(?:\?\w*)?$/,
+        test: /\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
         use : [
           { loader: 'url-loader' },
         ],
@@ -181,11 +159,7 @@ module.exports = {
   },
 
   plugins: [
-    // new webpack.SourceMapDevToolPlugin({
-    //   filename: null,  // if no value is provided the sourcemap is inlined
-    //   test    : /\.(ts|js)($|\?)/i,  // process .js and .ts files only
-    // }),
-    new webpack.NoErrorsPlugin(),
+    new LodashPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV       : JSON.stringify(process.env.NODE_ENV),
@@ -193,12 +167,12 @@ module.exports = {
       },
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      names: ['index', 'vendor', 'polyfills'],
+      names: ['index', 'theme', 'vendor', 'polyfills'],
     }),
     new HtmlWebpackPlugin({
       filename      : 'index.html',
       template      : './index.pug',
-      chunks        : ['polyfills', 'vendor', 'index'],
+      chunks        : ['polyfills', 'vendor', 'theme', 'index'],
       hash          : false,
       minify        : false,
       inject        : 'body',
@@ -208,17 +182,17 @@ module.exports = {
         : process.env.VUE_ROUTER_BASE,
     }),
     new webpack.LoaderOptionsPlugin({
-      context: config.rootAnd(config.sourceDir),
+      context: config.absSource(''),
 
       sassLoader: {
-        includePaths  : [config.sourceAnd('css')],
+        includePaths  : [config.source('css')],
         indentedSyntax: true,
         outputStyle   : 'expanded',
         precision     : BOOTSTRAP_REQUIRED_MINIMAL_PRECISION,
       },
 
       scssLoader: {
-        includePaths  : [config.sourceAnd('css')],
+        includePaths  : [config.source('css')],
         indentedSyntax: false,
         outputStyle   : 'expanded',
         precision     : BOOTSTRAP_REQUIRED_MINIMAL_PRECISION,

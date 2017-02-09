@@ -1,6 +1,7 @@
 {
   "extends": "tslint:latest",
   "rules"  : {
+    "import-spacing"            : false,
     "interface-name"            : false,
     "member-access"             : false,
     "member-ordering"           : false,

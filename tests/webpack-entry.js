@@ -12,10 +12,6 @@
 //   }
 // })
 
-// require('../src/polyfills.ts')
-// require('../src/vendor.ts')
-// require('../src/index.ts')
-
 // require all tests
 const testsContext = require.context('.', true, /-spec$/)
 testsContext.keys().forEach(testsContext)
