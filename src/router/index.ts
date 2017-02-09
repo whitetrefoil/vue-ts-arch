@@ -5,13 +5,13 @@ import * as VueRouter     from 'vue-router'
 
 const Hello: AsyncComponent = (resolve) => {
   require.ensure([], () => {
-    resolve(require('../components/hello/hello.component.vue'))
+    resolve(require('../components/hello'))
   }, 'hello')
 }
 
 const Another: AsyncComponent = (resolve) => {
   require.ensure([], () => {
-    resolve(require('../components/another.component.vue'))
+    resolve(require('../components/another'))
   }, 'another')
 }
 

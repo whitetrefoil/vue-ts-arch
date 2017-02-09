@@ -1,1 +1,1 @@
-require('./styles/app.sass')
+require('./styles/bootstrap.sass')

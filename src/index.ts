@@ -1,12 +1,13 @@
-import * as Vue from 'vue'
-import router   from './services/router'
+require('./styles/app.sass')
 
-const App = require('./components/app.component.vue')
+import * as Vue from 'vue'
+import router   from './router'
+
+const App = require('./components/app')
 
 // tslint:disable-next-line no-unused-new
 new Vue({
   router,
-  el    : '#app',
   name  : 'Root',
   render: (h) => h(App),
-})
+}).$mount('#app')
