@@ -2,9 +2,13 @@ import { Vue, Component, Lifecycle } from 'av-ts'
 import store                         from '../../store/index'
 import * as t                        from '../../store/types'
 import Receptionist                  from '../../models/receptionist'
+import ComponentInModule             from './component-in-module'
 
 @Component({
   name: 'hello',
+  components: {
+    ComponentInModule,
+  },
 })
 export default class HelloComponent extends Vue {
 

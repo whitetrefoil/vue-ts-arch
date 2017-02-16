@@ -5,13 +5,13 @@ import * as VueRouter     from 'vue-router'
 
 const Hello: AsyncComponent = (resolve) => {
   require.ensure([], () => {
-    resolve(require('../components/hello'))
+    resolve(require('../modules/hello'))
   }, 'hello')
 }
 
-const Another: AsyncComponent = (resolve) => {
+const MyGlobalComp: AsyncComponent = (resolve) => {
   require.ensure([], () => {
-    resolve(require('../components/another'))
+    resolve(require('../components/my-global-comp'))
   }, 'another')
 }
 
@@ -35,7 +35,7 @@ const routes: VueRouter.RouteConfig[] = [
         name      : 'hello',
         path      : '',
         components: {
-          another: Another,
+          'my-global-comp': MyGlobalComp,
         },
       },
     ],

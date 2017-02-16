@@ -1,5 +1,3 @@
 <style lang="sass" src="./index.sass" scoped></style>
 <script lang="ts" src="./index.ts"></script>
-<template lang="pug">
-  p This is another template!!!
-</template>
+<template lang="pug" src="./index.pug"></template>
