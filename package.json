@@ -22,7 +22,6 @@
     "vue-router"    : "^2.2.0"
   },
   "devDependencies": {
-    "@types/axios"                                : "^0.14.0",
     "@types/connect"                              : "^3.4.30",
     "@types/del"                                  : "^2.2.32",
     "@types/gulp"                                 : "^3.8.32",
