@@ -1,9 +1,3 @@
-const ExtractTextPlugin      = require('extract-text-webpack-plugin')
-const HtmlWebpackPlugin      = require('html-webpack-plugin')
-const LodashPlugin           = require('lodash-webpack-plugin')
-const isEmpty                = require('lodash/isEmpty')
-// const path                   = require('path')
-// const PrerenderSpaPlugin     = require('prerender-spa-plugin')
 const webpack                = require('webpack')
 const { config, initialize } = require('../config')
 
@@ -16,13 +10,15 @@ const SIZE_14KB                            = 14336
 
 module.exports = {
 
+  target: 'node',
+
   context: config.absSource(''),
 
   entry: {
     polyfills: ['./polyfills'],
     vendor   : ['./vendor'],
     theme    : ['./theme'],
-    index    : ['./index'],
+    index    : ['./index-server'],
   },
 
   resolve: {
@@ -31,8 +27,9 @@ module.exports = {
   },
 
   output: {
-    filename     : 'js/[name]-[chunkHash].js',
-    chunkFilename: 'js/chunks/[id]-[chunkHash].chunk.js',
+    filename     : 'ssr/js/[name].js',
+    chunkFilename: 'ssr/js/chunks/[name].chunk.js',
+    libraryTarget: 'commonjs2',
   },
 
   module: {
@@ -61,25 +58,72 @@ module.exports = {
               loaders     : {
                 js  : 'babel-loader',
                 ts  : 'babel-loader!ts-loader?configFileName=tsconfig.json',
-                css : ExtractTextPlugin.extract('css-loader?minimize&safe'),
-                sass: ExtractTextPlugin.extract('css-loader?minimize&safe!resolve-url-loader?keepQuery!sass-loader?config=sassLoader'),
-                scss: ExtractTextPlugin.extract('css-loader?minimize&safe!resolve-url-loader?keepQuery!sass-loader?config=scssLoader'),
+                sass: ''
+                + 'vue-style-loader'
+                + '!css-loader?sourceMap'
+                + '!resolve-url-loader?sourceMap'
+                + '!sass-loader?config=sassLoader&sourceMap'
+                ,
+                scss: ''
+                + 'vue-style-loader'
+                + '!css-loader?sourceMap'
+                + '!resolve-url-loader?sourceMap'
+                + '!sass-loader?config=scssLoader&sourceMap'
+                ,
               },
             },
           },
         ],
       },
       {
-        test: /\.css$/,
-        loader: ExtractTextPlugin.extract('css-loader?minimize&safe'),
+        test: /\.sass$/,
+        use : [
+          { loader: 'vue-style-loader' },
+          {
+            loader : 'css-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+          {
+            loader : 'resolve-url-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+          {
+            loader : 'sass-loader',
+            options: {
+              config   : 'sassLoader',
+              sourceMap: true,
+            },
+          },
+        ],
       },
       {
-        test  : /\.sass$/,
-        loader: ExtractTextPlugin.extract('css-loader?minimize&safe!resolve-url-loader?keepQuery!sass-loader?config=sassLoader'),
-      },
-      {
-        test  : /\.scss$/,
-        loader: ExtractTextPlugin.extract('css-loader?minimize&safe!resolve-url-loader?keepQuery!sass-loader?config=scssLoader'),
+        test: /\.scss$/,
+        use : [
+          { loader: 'vue-style-loader' },
+          {
+            loader : 'css-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+          {
+            loader : 'resolve-url-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+          {
+            loader : 'sass-loader',
+            options: {
+              config   : 'scssLoader',
+              sourceMap: true,
+            },
+          },
+        ],
       },
       {
         test: /\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
@@ -109,42 +153,16 @@ module.exports = {
     ],
   },
 
+  // eslint-disable-next-line global-require
+  externals: Object.keys(require('../../package.json').dependencies),
+
   plugins: [
-    new LodashPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
+        VUE_ENV        : '"server"',
         NODE_ENV       : JSON.stringify(process.env.NODE_ENV),
         VUE_ROUTER_BASE: JSON.stringify(process.env.VUE_ROUTER_BASE),
       },
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      names: ['index', 'theme', 'vendor', 'polyfills'],
-    }),
-    // new PrerenderSpaPlugin(
-    //   path.resolve('../../dist'),
-    //   ['/', '/hello'],
-    // ),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-      },
-    }),
-    new ExtractTextPlugin({
-      filename : 'css/[name]-[contenthash].css',
-      allChunks: true,
-    }),
-    new HtmlWebpackPlugin({
-      filename      : 'index.html',
-      template      : './index.pug',
-      chunks        : ['polyfills', 'vendor', 'theme', 'index'],
-      hash          : false,
-      minify        : false,
-      inject        : 'head',
-      chunksSortMode: 'dependency',
-      base          : isEmpty(process.env.VUE_ROUTER_BASE)
-        ? '/'
-        : process.env.VUE_ROUTER_BASE,
     }),
     new webpack.LoaderOptionsPlugin({
       context: config.absSource(''),
