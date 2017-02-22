@@ -11,15 +11,18 @@
     "test": "gulp cover"
   },
   "dependencies"   : {
-    "av-ts"         : "^0.6.3",
-    "axios"         : "^0.15.2",
-    "babel-polyfill": "^6.22.0",
-    "bootstrap"     : "4.0.0-alpha.6",
-    "kilimanjaro"   : "^0.6.0",
-    "lodash"        : "^4.17.4",
-    "rxjs"          : "^5.1.0",
-    "vue"           : "^2.1.10",
-    "vue-router"    : "^2.2.0"
+    "av-ts"              : "^0.6.3",
+    "axios"              : "^0.15.2",
+    "babel-polyfill"     : "^6.22.0",
+    "bootstrap"          : "4.0.0-alpha.6",
+    "express"            : "^4.14.1",
+    "kilimanjaro"        : "^0.6.0",
+    "lodash"             : "^4.17.4",
+    "lru-cache"          : "^4.0.2",
+    "rxjs"               : "^5.1.0",
+    "vue"                : "^2.1.10",
+    "vue-router"         : "^2.2.0",
+    "vue-server-renderer": "^2.1.10"
   },
   "devDependencies": {
     "@types/connect"                              : "^3.4.30",
@@ -80,6 +83,7 @@
     "mockjs"                                      : "^1.0.1-beta3",
     "node-sass"                                   : "^4.5.0",
     "null-loader"                                 : "^0.1.1",
+    "prerender-spa-plugin"                        : "^2.0.1",
     "pug"                                         : "^2.0.0-beta3",
     "pug-loader"                                  : "^2.3.0",
     "raw-loader"                                  : "^0.5.1",
@@ -88,6 +92,7 @@
     "run-sequence"                                : "^1.2.2",
     "sass-loader"                                 : "^6.0.0",
     "selenium-standalone"                         : "^6.0.1",
+    "serve-static"                                : "^1.11.2",
     "source-map-loader"                           : "^0.1.6",
     "style-loader"                                : "^0.13.1",
     "ts-loader"                                   : "^2.0.0",
