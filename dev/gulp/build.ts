@@ -30,7 +30,7 @@ gulp.task('build', (): Promise<any> => {
     })
 })
 
-gulp.task('build:ssr', (): NodeJS.ReadWriteStream => {
+gulp.task('build:ssr', ['build'], (): NodeJS.ReadWriteStream => {
   return gulp.src(config.source('*.[jt]s'))
     .pipe(webpackStream(ssrConfig, webpack))
     .pipe(gulp.dest(config.outputByEnv('')))

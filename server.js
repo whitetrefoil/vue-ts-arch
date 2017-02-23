@@ -1,10 +1,10 @@
-/* eslint global-require:0 */
+/* eslint global-require:0, no-console:0 */
 
 // Refer to: https://github.com/vuejs/vue-hackernews-2.0/blob/master/server.js
 
 const express = require('express')
 const fs      = require('fs')
-const path    = require('path')
+const lru     = require('lru-cache')
 
 const serverInfo = `express/${require('express/package.json').version} `
   + `vue-server-renderer/${require('vue-server-renderer/package.json').version}`
@@ -20,20 +20,28 @@ function parseIndex(template) {
 
 let indexHtml = parseIndex(fs.readFileSync('./dist/index.html', 'utf8'))
 let renderer = require('vue-server-renderer')
-  .createBundleRenderer(fs.readFileSync('./dist/ssr/js/index.js', 'utf8'))
+  .createBundleRenderer(fs.readFileSync('./dist/ssr/js/index.js', 'utf8'), {
+    cache: lru({
+      max: 1000,
+      maxAge: 1000 * 60 * 15,
+    }),
+  })
 
-renderer.renderToString({ url: '/hello' }, (err, html) => {
-  if (err != null) {
-    console.error(err)
-    return
-  }
-  // console.log(indexHtml.head + html + indexHtml.tail)
-  console.log(html)
-})
+// Use below debug code to print an example during starting...
+//
+// renderer.renderToString({ url: '/hello' }, (err, html) => {
+//   if (err != null) {
+//     console.error(err)
+//     return
+//   }
+//   console.log(html)
+// })
 
 const app = express()
 
-app.use(require('serve-static')(path.resolve('./dist'), { index: [] }))
+// Static files should be served by nginx.
+// app.use(require('serve-static')(path.resolve('./dist'), { index: [] }))
+
 app.get('*', (req, res) => {
   res.setHeader('Content-Type', 'text/html')
   res.setHeader('Server', serverInfo)
@@ -46,18 +54,6 @@ app.get('*', (req, res) => {
     res.send(indexHtml.head + html + indexHtml.tail)
   })
 })
-
-// app.get('*', (req, res) => {
-//   res.setHeader('Content-Type', 'text/html')
-//   res.setHeader('Server', serverInfo)
-//   fs.readFile('./dist/index.html', 'utf8', (err, indexHtml) => {
-//     if (err != null) {
-//       res.status(500).send('server error')
-//       return
-//     }
-//     res.send(indexHtml)
-//   })
-// })
 
 app.listen(8888, () => {
   console.log('server started at localhost:8888')
