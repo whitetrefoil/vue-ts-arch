@@ -4,7 +4,7 @@ import { Vue }            from 'av-ts'
 import { isEmpty }        from 'lodash'
 import * as VueRouter     from 'vue-router'
 
-const Hello = require('../modules/hello')
+const Hello        = require('../modules/hello')
 const MyGlobalComp = require('../components/my-global-comp')
 
 Vue.use(VueRouter)
