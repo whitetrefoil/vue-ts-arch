@@ -2,7 +2,7 @@ require('./styles/app.sass')
 
 import * as _   from 'lodash'
 import * as Vue from 'vue'
-import router   from './router/index-server'
+import router   from './router/index-ssr'
 import store    from './store'
 
 const isDev = process.env.NODE_ENV === 'development'
@@ -14,6 +14,8 @@ export const root = new Vue({
   name  : 'Root',
   render: (h) => h(MyApp),
 })
+
+// Refer to: https://github.com/vuejs/vue-hackernews-2.0
 
 export default (context: any): Promise<any> => {
 

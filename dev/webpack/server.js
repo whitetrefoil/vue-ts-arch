@@ -1,12 +1,17 @@
-const webpack                = require('webpack')
-const { config, initialize } = require('../config')
+const ExtractTextPlugin          = require('extract-text-webpack-plugin')
+const HtmlWebpackPlugin          = require('html-webpack-plugin')
+const LodashPlugin               = require('lodash-webpack-plugin')
+const isEmpty                    = require('lodash/isEmpty')
+const webpack                    = require('webpack')
+const { config, initialize }     = require('../config')
+const { sassLoader, scssLoader } = require('./configs/sass')
+const { vueLoaderProd }          = require('./configs/vue')
 
 if (config.isInitialized !== true) {
   initialize()
 }
 
-const BOOTSTRAP_REQUIRED_MINIMAL_PRECISION = 8
-const SIZE_14KB                            = 14336
+const SIZE_14KB = 14336
 
 module.exports = {
 
@@ -18,7 +23,7 @@ module.exports = {
     polyfills: ['./polyfills'],
     vendor   : ['./vendor'],
     theme    : ['./theme'],
-    index    : ['./index-server'],
+    index    : ['./index-ssr'],
   },
 
   resolve: {
@@ -49,84 +54,35 @@ module.exports = {
       {
         test: /\.vue/,
         use : [
-          {
-            loader : 'vue-loader',
-            options: {
-              autoprefixer: {
-                browsers: ['last 2 versions'],
-              },
-              loaders     : {
-                js  : 'babel-loader',
-                ts  : 'babel-loader!ts-loader?configFileName=tsconfig.json',
-                sass: ''
-                + 'vue-style-loader'
-                + '!css-loader?sourceMap'
-                + '!resolve-url-loader?sourceMap'
-                + '!sass-loader?config=sassLoader&sourceMap'
-                ,
-                scss: ''
-                + 'vue-style-loader'
-                + '!css-loader?sourceMap'
-                + '!resolve-url-loader?sourceMap'
-                + '!sass-loader?config=scssLoader&sourceMap'
-                ,
-              },
-            },
-          },
+          vueLoaderProd,
         ],
       },
       {
-        test: /\.sass$/,
-        use : [
-          { loader: 'vue-style-loader' },
-          {
-            loader : 'css-loader',
-            options: {
-              sourceMap: true,
-            },
-          },
-          {
-            loader : 'resolve-url-loader',
-            options: {
-              sourceMap: true,
-            },
-          },
-          {
-            loader : 'sass-loader',
-            options: {
-              config   : 'sassLoader',
-              sourceMap: true,
-            },
-          },
-        ],
+        test  : /\.css$/,
+        loader: ExtractTextPlugin.extract({ use: ['css-loader?minimize&safe'] }),
       },
       {
-        test: /\.scss$/,
-        use : [
-          { loader: 'vue-style-loader' },
-          {
-            loader : 'css-loader',
-            options: {
-              sourceMap: true,
-            },
-          },
-          {
-            loader : 'resolve-url-loader',
-            options: {
-              sourceMap: true,
-            },
-          },
-          {
-            loader : 'sass-loader',
-            options: {
-              config   : 'scssLoader',
-              sourceMap: true,
-            },
-          },
-        ],
+        test  : /\.sass$/,
+        loader: ExtractTextPlugin.extract({
+          use: [
+            'css-loader?minimize&safe',
+            'resolve-url-loader?keepQuery',
+            sassLoader,
+          ],
+        }),
       },
       {
-        test: /\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
+        test  : /\.scss$/,
+        loader: ExtractTextPlugin.extract({
+          use: [
+            'css-loader?minimize&safe',
+            'resolve-url-loader?keepQuery',
+            scssLoader,
+          ],
+        }),
+      },
+      {
+        test   : /\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
         exclude: /weixin/,
         use    : [
           {
@@ -157,6 +113,12 @@ module.exports = {
   externals: Object.keys(require('../../package.json').dependencies),
 
   plugins: [
+    new LodashPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new ExtractTextPlugin({
+      filename : 'ssr/css/[name]-[contenthash].css',
+      allChunks: true,
+    }),
     new webpack.DefinePlugin({
       'process.env': {
         VUE_ENV        : '"server"',
@@ -164,22 +126,17 @@ module.exports = {
         VUE_ROUTER_BASE: JSON.stringify(process.env.VUE_ROUTER_BASE),
       },
     }),
-    new webpack.LoaderOptionsPlugin({
-      context: config.absSource(''),
-
-      sassLoader: {
-        includePaths  : [config.source('css')],
-        indentedSyntax: true,
-        outputStyle   : 'compressed',
-        precision     : BOOTSTRAP_REQUIRED_MINIMAL_PRECISION,
-      },
-
-      scssLoader: {
-        includePaths  : [config.source('css')],
-        indentedSyntax: false,
-        outputStyle   : 'compressed',
-        precision     : BOOTSTRAP_REQUIRED_MINIMAL_PRECISION,
-      },
-    }),
+    // new HtmlWebpackPlugin({
+    //   filename      : 'ssr/index.html',
+    //   template      : './index-ssr.pug',
+    //   chunks        : ['polyfills', 'vendor', 'theme', 'index'],
+    //   hash          : false,
+    //   minify        : false,
+    //   inject        : 'head',
+    //   chunksSortMode: 'auto',
+    //   base          : isEmpty(process.env.VUE_ROUTER_BASE)
+    //     ? '/'
+    //     : process.env.VUE_ROUTER_BASE,
+    // }),
   ],
 }

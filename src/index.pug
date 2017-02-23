@@ -1,5 +1,5 @@
 doctype html
-html
+html(lang="zh-CN")
   head
     base(href="/")
     meta(charset="UTF-8")
@@ -14,6 +14,8 @@ html
       img(src=require("./images/weixin.c.jpg"), width="300", height="300")
 
     #app
+
+    #loading-error(style="display:none")
       #error-site-header
 
       #browser-warning
@@ -42,9 +44,10 @@ html
 
     script(type="text/javascript").
       function showWarning() {
-        var warningElem = document.getElementById('browser-warning')
-        if (warningElem == null) { return }
-        warningElem.className = 'show'
+        var appElem = document.getElementById('app')
+        var warningElem = document.getElementById('loading-error')
+        if (appElem.innerHTML.length > 0) { return }
+        warningElem.removeAttribute('style')
       }
       setTimeout('showWarning()', 3000)
 

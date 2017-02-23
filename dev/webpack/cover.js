@@ -37,7 +37,7 @@ module.exports = {
     rules    : [
       {
         enforce: 'pre',
-        test   : /\.js/,
+        test   : /\.[jt]s/,
         loader : 'source-map-loader',
         exclude: /node_modules/,
       },
@@ -56,9 +56,9 @@ module.exports = {
             loader : 'vue-loader',
             options: {
               loaders: {
-                ts  : 'babel-loader!ts-loader?configFileName=tsconfig.json',
-                css : 'null-loader',
-                sass: 'null-loader',
+                ts         : 'babel-loader!ts-loader?configFileName=tsconfig.json',
+                css        : 'null-loader',
+                sassOptions: 'null-loader',
               },
             },
           },

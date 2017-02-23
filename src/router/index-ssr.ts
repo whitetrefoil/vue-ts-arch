@@ -1,6 +1,7 @@
+// This is a SSR version of router which disabled webpack code splitting.
+
 import { Vue }            from 'av-ts'
 import { isEmpty }        from 'lodash'
-import { AsyncComponent } from 'vue'
 import * as VueRouter     from 'vue-router'
 
 const Hello = require('../modules/hello')

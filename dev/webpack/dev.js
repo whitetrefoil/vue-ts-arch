@@ -1,14 +1,14 @@
-const HtmlWebpackPlugin      = require('html-webpack-plugin')
-const LodashPlugin           = require('lodash-webpack-plugin')
-const isEmpty                = require('lodash/isEmpty')
-const webpack                = require('webpack')
-const { config, initialize } = require('../config')
+const HtmlWebpackPlugin          = require('html-webpack-plugin')
+const LodashPlugin               = require('lodash-webpack-plugin')
+const isEmpty                    = require('lodash/isEmpty')
+const webpack                    = require('webpack')
+const { config, initialize }     = require('../config')
+const { sassLoader, scssLoader } = require('./configs/sass')
+const { vueLoaderDev }           = require('./configs/vue')
 
 if (config.isInitialized !== true) {
   initialize()
 }
-
-const BOOTSTRAP_REQUIRED_MINIMAL_PRECISION = 8
 
 module.exports = {
 
@@ -37,122 +37,82 @@ module.exports = {
     rules: [
       {
         enforce: 'pre',
+        test   : /\.[jt]s$/,
+        use    : [
+          'source-map-loader',
+        ],
+        exclude: /node_modules/,
+      },
+      {
+        enforce: 'pre',
         test   : /\.ts$/,
-        loader : 'tslint-loader',
+        use    : [
+          'tslint-loader',
+        ],
         exclude: /node_modules/,
       },
       {
         enforce: 'pre',
         test   : /\.js$/,
-        loader : 'eslint-loader',
+        use    : [
+          'eslint-loader',
+        ],
         exclude: /node_modules/,
       },
       {
-        test  : /\.ts$/,
-        loader: 'babel-loader!ts-loader?configFileName=tsconfig.json',
+        test: /\.ts$/,
+        use : [
+          'babel-loader',
+          'ts-loader?configFileName=tsconfig.json',
+        ],
       },
       {
-        test  : /\.js$/,
-        loader: 'babel-loader',
+        test: /\.js$/,
+        use : [
+          'babel-loader',
+        ],
       },
       {
-        test  : /\.(pug|jade)$/,
-        loader: 'pug-loader',
+        test: /\.(pug|jade)$/,
+        use : [
+          'pug-loader',
+        ],
       },
       {
         test: /\.vue/,
         use : [
-          {
-            loader : 'vue-loader',
-            options: {
-              autoprefixer: {
-                browsers: ['last 2 versions'],
-              },
-              loaders     : {
-                ts  : 'babel-loader!ts-loader?configFileName=tsconfig.json',
-                sass: ''
-                + 'vue-style-loader'
-                + '!css-loader?sourceMap'
-                + '!resolve-url-loader?sourceMap'
-                + '!sass-loader?config=sassLoader&sourceMap'
-                ,
-                scss: ''
-                + 'vue-style-loader'
-                + '!css-loader?sourceMap'
-                + '!resolve-url-loader?sourceMap'
-                + '!sass-loader?config=scssLoader&sourceMap'
-                ,
-              },
-            },
-          },
+          vueLoaderDev,
         ],
       },
       {
         test: /\.css$/,
         use : [
-          { loader: 'style-loader' },
-          {
-            loader : 'css-loader',
-            options: {
-              sourceMap: true,
-            },
-          },
+          'vue-style-loader',
+          'css-loader?sourceMap',
         ],
       },
       {
         test: /\.sass$/,
         use : [
-          { loader: 'style-loader' },
-          {
-            loader : 'css-loader',
-            options: {
-              sourceMap: true,
-            },
-          },
-          {
-            loader : 'resolve-url-loader',
-            options: {
-              sourceMap: true,
-            },
-          },
-          {
-            loader : 'sass-loader',
-            options: {
-              config   : 'sassLoader',
-              sourceMap: true,
-            },
-          },
+          'vue-style-loader',
+          'css-loader?sourceMap',
+          'resolve-url-loader?sourceMap',
+          sassLoader,
         ],
       },
       {
         test: /\.scss$/,
         use : [
-          { loader: 'style-loader' },
-          {
-            loader : 'css-loader',
-            options: {
-              sourceMap: true,
-            },
-          },
-          {
-            loader : 'resolve-url-loader',
-            options: {
-              sourceMap: true,
-            },
-          },
-          {
-            loader : 'sass-loader',
-            options: {
-              config   : 'scssLoader',
-              sourceMap: true,
-            },
-          },
+          'vue-style-loader',
+          'css-loader?sourceMap',
+          'resolve-url-loader?sourceMap',
+          scssLoader,
         ],
       },
       {
         test: /\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
         use : [
-          { loader: 'url-loader' },
+          'url-loader',
         ],
       },
     ],
@@ -180,23 +140,6 @@ module.exports = {
       base          : isEmpty(process.env.VUE_ROUTER_BASE)
         ? '/'
         : process.env.VUE_ROUTER_BASE,
-    }),
-    new webpack.LoaderOptionsPlugin({
-      context: config.absSource(''),
-
-      sassLoader: {
-        includePaths  : [config.source('css')],
-        indentedSyntax: true,
-        outputStyle   : 'expanded',
-        precision     : BOOTSTRAP_REQUIRED_MINIMAL_PRECISION,
-      },
-
-      scssLoader: {
-        includePaths  : [config.source('css')],
-        indentedSyntax: false,
-        outputStyle   : 'expanded',
-        precision     : BOOTSTRAP_REQUIRED_MINIMAL_PRECISION,
-      },
     }),
   ],
 }
