@@ -1,11 +1,8 @@
-const ExtractTextPlugin          = require('extract-text-webpack-plugin')
-const HtmlWebpackPlugin          = require('html-webpack-plugin')
-const LodashPlugin               = require('lodash-webpack-plugin')
-const isEmpty                    = require('lodash/isEmpty')
-const webpack                    = require('webpack')
-const { config, initialize }     = require('../config')
-const { sassLoader, scssLoader } = require('./configs/sass')
-const { vueLoaderProd }          = require('./configs/vue')
+const ExtractTextPlugin      = require('extract-text-webpack-plugin')
+const LodashPlugin           = require('lodash-webpack-plugin')
+const webpack                = require('webpack')
+const { config, initialize } = require('../config')
+const { vueLoaderTest }      = require('./configs/vue')
 
 if (config.isInitialized !== true) {
   initialize()
@@ -32,6 +29,7 @@ module.exports = {
   },
 
   output: {
+    path         : config.absOutput('ssr'),
     filename     : 'ssr/js/[name].js',
     chunkFilename: 'ssr/js/chunks/[name].chunk.js',
     libraryTarget: 'commonjs2',
@@ -40,54 +38,43 @@ module.exports = {
   module: {
     rules: [
       {
-        test  : /\.ts$/,
-        loader: 'babel-loader!ts-loader?configFileName=tsconfig.json',
-      },
-      {
-        test  : /\.js$/,
-        loader: 'babel-loader',
-      },
-      {
-        test  : /\.(pug|jade)$/,
-        loader: 'pug-loader',
-      },
-      {
-        test: /\.vue/,
+        test: /\.ts$/,
         use : [
-          vueLoaderProd,
+          'babel-loader',
+          'ts-loader?configFileName=tsconfig.json',
         ],
       },
       {
-        test  : /\.css$/,
-        loader: ExtractTextPlugin.extract({ use: ['css-loader?minimize&safe'] }),
+        test: /\.js$/,
+        use : ['babel-loader'],
       },
       {
-        test  : /\.sass$/,
-        loader: ExtractTextPlugin.extract({
-          use: [
-            'css-loader?minimize&safe',
-            'resolve-url-loader?keepQuery',
-            sassLoader,
-          ],
-        }),
+        test: /\.(pug|jade)$/,
+        use : ['null-loader'],
       },
       {
-        test  : /\.scss$/,
-        loader: ExtractTextPlugin.extract({
-          use: [
-            'css-loader?minimize&safe',
-            'resolve-url-loader?keepQuery',
-            scssLoader,
-          ],
-        }),
+        test: /\.vue/,
+        use : [vueLoaderTest],
+      },
+      {
+        test: /\.css$/,
+        use : ['null-loader'],
+      },
+      {
+        test: /\.sass$/,
+        use : ['null-loader'],
+      },
+      {
+        test: /\.scss$/,
+        use : ['null-loader'],
       },
       {
         test   : /\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
         exclude: /weixin/,
         use    : [
           {
-            loader: 'url-loader',
-            query : {
+            loader : 'url-loader',
+            options: {
               // limit for base64 inlining in bytes
               limit: SIZE_14KB,
               // custom naming format if file is larger than
@@ -100,8 +87,8 @@ module.exports = {
       {
         test: /weixin.*\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
         use : [{
-          loader: 'file-loader',
-          query : {
+          loader : 'file-loader',
+          options: {
             name: 'assets/[hash].[ext]',
           },
         }],
@@ -126,17 +113,5 @@ module.exports = {
         VUE_ROUTER_BASE: JSON.stringify(process.env.VUE_ROUTER_BASE),
       },
     }),
-    // new HtmlWebpackPlugin({
-    //   filename      : 'ssr/index.html',
-    //   template      : './index-ssr.pug',
-    //   chunks        : ['polyfills', 'vendor', 'theme', 'index'],
-    //   hash          : false,
-    //   minify        : false,
-    //   inject        : 'head',
-    //   chunksSortMode: 'auto',
-    //   base          : isEmpty(process.env.VUE_ROUTER_BASE)
-    //     ? '/'
-    //     : process.env.VUE_ROUTER_BASE,
-    // }),
   ],
 }

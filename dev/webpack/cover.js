@@ -34,7 +34,7 @@ module.exports = {
   },
 
   module: {
-    rules    : [
+    rules: [
       {
         enforce: 'pre',
         test   : /\.[jt]s/,
@@ -42,8 +42,11 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test  : /\.ts$/,
-        loader: 'babel-loader!ts-loader?configFileName=tsconfig.json',
+        test: /\.ts$/,
+        use : [
+          'babel-loader',
+          'ts-loader?configFileName=tsconfig.json',
+        ],
       },
       {
         test  : /\.js$/,
@@ -65,33 +68,37 @@ module.exports = {
         ],
       },
       {
-        test  : /\.css$/,
-        loader: 'null-loader',
+        test: /\.css$/,
+        use : ['null-loader'],
       },
       {
-        test  : /\.sass$/,
-        loader: 'null-loader',
+        test: /\.sass$/,
+        use : ['null-loader'],
       },
       {
-        test  : /\.scss$/,
-        loader: 'null-loader',
+        test: /\.scss$/,
+        use : ['null-loader'],
       },
       {
-        test  : /\.(?:png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(?:\?\w*)?$/,
-        loader: 'null-loader',
+        test: /\.(?:png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(?:\?\w*)?$/,
+        use : ['null-loader'],
       },
       {
         enforce: 'post',
         test   : /\.[jt]s$/,
         exclude: /(node_modules|\/tests\/.*\.js)/,
-        loader : 'istanbul-instrumenter-loader',
-        query  : {
-          esModules       : true,
-          // debug           : false,
-          // compact         : false,
-          preserveComments: true,
-          produceSourceMap: true,
-        },
+        use    : [
+          {
+            loader : 'istanbul-instrumenter-loader',
+            options: {
+              esModules       : true,
+              // debug           : false,
+              // compact         : false,
+              preserveComments: true,
+              produceSourceMap: true,
+            },
+          },
+        ],
       },
     ],
   },

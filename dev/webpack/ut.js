@@ -8,6 +8,7 @@ require('ts-node').register({
 
 const webpack                = require('webpack')
 const { config, initialize } = require('../config')
+const { vueLoaderTest }      = require('./configs/vue')
 
 if (config.isInitialized !== true) {
   initialize()
@@ -38,43 +39,41 @@ module.exports = {
       {
         enforce: 'pre',
         test   : /\.[jt]s/,
-        loader : 'source-map-loader',
+        use    : ['source-map-loader'],
         exclude: /node_modules/,
       },
       {
-        test  : /\.ts$/,
-        loader: 'babel-loader!ts-loader?configFileName=tsconfig.json',
+        test: /\.ts$/,
+        use : [
+          'babel-loader',
+          'ts-loader?configFileName=tsconfig.json',
+        ],
       },
       {
-        test  : /\.js$/,
-        loader: 'babel-loader',
+        test: /\.js$/,
+        use : ['babel-loader'],
       },
       {
         test: /\.vue/,
         use : [
-          {
-            loader : 'vue-loader',
-            options: {
-              loaders: {
-                ts         : 'babel-loader!ts-loader?configFileName=tsconfig.json',
-                css        : 'null-loader',
-                sassOptions: 'null-loader',
-              },
-            },
-          },
+          vueLoaderTest,
         ],
       },
       {
-        test  : /\.css$/,
-        loader: 'null-loader',
+        test: /\.css$/,
+        use : ['null-loader'],
       },
       {
-        test  : /\.sass$/,
-        loader: 'null-loader',
+        test: /\.sass$/,
+        use : ['null-loader'],
       },
       {
-        test  : /\.(?:png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(?:\?\w*)?$/,
-        loader: 'null-loader',
+        test: /\.scss$/,
+        use : ['null-loader'],
+      },
+      {
+        test: /\.(?:png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(?:\?\w*)?$/,
+        use : ['null-loader'],
       },
     ],
   },

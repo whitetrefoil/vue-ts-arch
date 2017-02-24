@@ -57,6 +57,18 @@ const vueOptionsProd = {
   },
 }
 
+const vueOptionsTest = {
+  loaders: {
+    ts         : [
+      'babel-loader',
+      'ts-loader?configFileName=tsconfig.json',
+    ],
+    css        : 'null-loader',
+    sassOptions: 'null-loader',
+    scssOptions: 'null-loader',
+  },
+}
+
 const vueLoaderDev = {
   loader : 'vue-loader',
   options: vueOptionsDev,
@@ -67,9 +79,16 @@ const vueLoaderProd = {
   options: vueOptionsProd,
 }
 
+const vueLoaderTest = {
+  loader : 'vue-loader',
+  options: vueOptionsTest,
+}
+
 module.exports = {
   vueOptionsDev,
   vueOptionsProd,
+  vueOptionsTest,
   vueLoaderDev,
   vueLoaderProd,
+  vueLoaderTest,
 }

@@ -2,6 +2,7 @@ const ExtractTextPlugin          = require('extract-text-webpack-plugin')
 const HtmlWebpackPlugin          = require('html-webpack-plugin')
 const LodashPlugin               = require('lodash-webpack-plugin')
 const isEmpty                    = require('lodash/isEmpty')
+const PrerenderSpaPlugin         = require('prerender-spa-plugin')
 const webpack                    = require('webpack')
 const { config, initialize }     = require('../config')
 const { sassLoader, scssLoader } = require('./configs/sass')
@@ -30,6 +31,7 @@ module.exports = {
   },
 
   output: {
+    path         : config.absOutput(''),
     filename     : 'js/[name]-[chunkHash].js',
     chunkFilename: 'js/chunks/[id]-[chunkHash].chunk.js',
   },
@@ -37,30 +39,33 @@ module.exports = {
   module: {
     rules: [
       {
-        test  : /\.ts$/,
-        loader: 'babel-loader!ts-loader?configFileName=tsconfig.json',
-      },
-      {
-        test  : /\.js$/,
-        loader: 'babel-loader',
-      },
-      {
-        test  : /\.(pug|jade)$/,
-        loader: 'pug-loader',
-      },
-      {
-        test: /\.vue/,
+        test: /\.ts$/,
         use : [
-          vueLoaderProd,
+          'babel-loader',
+          'ts-loader?configFileName=tsconfig.json',
         ],
       },
       {
-        test  : /\.css$/,
-        loader: ExtractTextPlugin.extract({ use: ['css-loader?minimize&safe'] }),
+        test: /\.js$/,
+        use : ['babel-loader'],
       },
       {
-        test  : /\.sass$/,
-        loader: ExtractTextPlugin.extract({
+        test: /\.(pug|jade)$/,
+        use : ['pug-loader'],
+      },
+      {
+        test: /\.vue/,
+        use : [vueLoaderProd],
+      },
+      {
+        test: /\.css$/,
+        use : ExtractTextPlugin.extract({
+          use: ['css-loader?minimize&safe'],
+        }),
+      },
+      {
+        test: /\.sass$/,
+        use : ExtractTextPlugin.extract({
           use: [
             'css-loader?minimize&safe',
             'resolve-url-loader?keepQuery',
@@ -69,8 +74,8 @@ module.exports = {
         }),
       },
       {
-        test  : /\.scss$/,
-        loader: ExtractTextPlugin.extract({
+        test: /\.scss$/,
+        use : ExtractTextPlugin.extract({
           use: [
             'css-loader?minimize&safe',
             'resolve-url-loader?keepQuery',
@@ -83,8 +88,8 @@ module.exports = {
         exclude: /weixin/,
         use    : [
           {
-            loader: 'url-loader',
-            query : {
+            loader : 'url-loader',
+            options: {
               // limit for base64 inlining in bytes
               limit: SIZE_14KB,
               // custom naming format if file is larger than
@@ -97,8 +102,8 @@ module.exports = {
       {
         test: /weixin.*\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
         use : [{
-          loader: 'file-loader',
-          query : {
+          loader : 'file-loader',
+          options: {
             name: 'assets/[hash].[ext]',
           },
         }],
@@ -135,5 +140,9 @@ module.exports = {
         ? '/'
         : process.env.VUE_ROUTER_BASE,
     }),
+    new PrerenderSpaPlugin(
+      config.absOutput(''),
+      ['/', '/hello']
+    ),
   ],
 }

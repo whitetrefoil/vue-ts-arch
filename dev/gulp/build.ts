@@ -1,37 +1,28 @@
 import { config }     from '../config'
 const del           = require('del')
 const gulp          = require('gulp')
+const gutil         = require('gulp-util')
 const merge         = require('merge-stream')
 const webpack       = require('webpack')
-const webpackStream = require('webpack-stream')
 const devConfig     = require('../webpack/dev')
 const prodConfig    = require('../webpack/prod')
 const ssrConfig     = require('../webpack/server')
 
-gulp.task('build', (): Promise<any> => {
+gulp.task('build', (done: Function) => {
 
   const webpackConfig = process.env.NODE_ENV === 'development'
     ? devConfig
     // : ssrConfig
-    : prodConfig
+    : [prodConfig, ssrConfig]
 
-  return del([config.outputByEnv('')])
-    .then((): NodeJS.ReadWriteStream => {
-      // return merge(
-      //   gulp.src(config.source('*.[jt]s'))
-      //     .pipe(webpackStream(webpackConfig, webpack))
-      //     .pipe(gulp.dest(config.outputByEnv(''))),
-      //   gulp.src(config.source('*.html'))
-      //     .pipe(gulp.dest(config.outputByEnv(''))),
-      // )
-      return gulp.src(config.source('*.[jt]s'))
-        .pipe(webpackStream(webpackConfig, webpack))
-        .pipe(gulp.dest(config.outputByEnv('')))
+  del([config.outputByEnv('')])
+    .then((): void => {
+      webpack(webpackConfig, (err: Error, stats: any) => {
+        if (err != null) {
+          throw new gutil.PluginError('webpack', err)
+        }
+        gutil.log('[webpack]:\n', stats.toString('minimal'))
+        done()
+      })
     })
-})
-
-gulp.task('build:ssr', ['build'], (): NodeJS.ReadWriteStream => {
-  return gulp.src(config.source('*.[jt]s'))
-    .pipe(webpackStream(ssrConfig, webpack))
-    .pipe(gulp.dest(config.outputByEnv('')))
 })

@@ -29,6 +29,7 @@ module.exports = {
   },
 
   output: {
+    path         : config.absBuilding(''),
     filename     : '[name].js',
     chunkFilename: '[id]-[name].chunk.js',
   },
@@ -38,25 +39,19 @@ module.exports = {
       {
         enforce: 'pre',
         test   : /\.[jt]s$/,
-        use    : [
-          'source-map-loader',
-        ],
+        use    : ['source-map-loader'],
         exclude: /node_modules/,
       },
       {
         enforce: 'pre',
         test   : /\.ts$/,
-        use    : [
-          'tslint-loader',
-        ],
+        use    : ['tslint-loader'],
         exclude: /node_modules/,
       },
       {
         enforce: 'pre',
         test   : /\.js$/,
-        use    : [
-          'eslint-loader',
-        ],
+        use    : ['eslint-loader'],
         exclude: /node_modules/,
       },
       {
