@@ -8,6 +8,7 @@ require('ts-node').register({
 
 const webpack                = require('webpack')
 const { config, initialize } = require('../config')
+const { vueLoaderTest }      = require('./configs/vue')
 
 if (config.isInitialized !== true) {
   initialize()
@@ -54,18 +55,7 @@ module.exports = {
       },
       {
         test: /\.vue/,
-        use : [
-          {
-            loader : 'vue-loader',
-            options: {
-              loaders: {
-                ts         : 'babel-loader!ts-loader?configFileName=tsconfig.json',
-                css        : 'null-loader',
-                sassOptions: 'null-loader',
-              },
-            },
-          },
-        ],
+        use : [vueLoaderTest],
       },
       {
         test: /\.css$/,

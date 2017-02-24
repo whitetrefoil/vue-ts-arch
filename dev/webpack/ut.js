@@ -55,9 +55,7 @@ module.exports = {
       },
       {
         test: /\.vue/,
-        use : [
-          vueLoaderTest,
-        ],
+        use : [vueLoaderTest],
       },
       {
         test: /\.css$/,
