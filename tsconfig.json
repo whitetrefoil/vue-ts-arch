@@ -7,6 +7,7 @@
     "moduleResolution"              : "node",
     "inlineSources"                 : false,
     "inlineSourceMap"               : true,
+    "skipLibCheck"                  : true,
     "sourceMap"                     : false,
     "emitDecoratorMetadata"         : true,
     "experimentalDecorators"        : true,
