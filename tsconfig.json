@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowJs"                       : false,
+    "allowSyntheticDefaultImports"  : true,
     "target"                        : "es2017",
     "lib"                           : ["es2017", "es7", "dom"],
     "module"                        : "es6",
