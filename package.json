@@ -11,7 +11,7 @@
     "test": "gulp cover"
   },
   "dependencies"   : {
-    "av-ts"              : "0.7.1",
+    "av-ts"              : "^0.7.1",
     "axios"              : "^0.15.2",
     "babel-polyfill"     : "^6.22.0",
     "bootstrap"          : "4.0.0-alpha.6",
