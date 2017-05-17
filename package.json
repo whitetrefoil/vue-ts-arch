@@ -5,7 +5,7 @@
   "description"    : "A basic project structure built with Vue & TS.",
   "author"         : "WhiteTrefoil <whitetrefoil@gmail.com>",
   "private"        : true,
-  "license"        : "ISC",
+  "license"        : "MIT",
   "scripts"        : {
     "gulp": "gulp",
     "test": "gulp cover"
