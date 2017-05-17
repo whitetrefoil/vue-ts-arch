@@ -1,3 +1,4 @@
+const DEFAULT_BASE           = '/'
 const DEFAULT_IS_DEVELOPMENT = false
 const DEFAULT_PORT           = 8888
 const DEFAULT_PREFIX         = '/api/'
@@ -24,6 +25,8 @@ const argv = meow(`
       $ gulp ${colors.yellow('<task>')} ${colors.yellow('<options>')}
 
     Options:                                                     [${colors.gray('default value')}]
+      building:
+        -b, --base         Base directory of site.               [${colors.green('"/"')}]
       common:
         -d, --development  Set NODE_ENV to "development"         [${colors.yellow('false')}]
       developing:
@@ -39,16 +42,18 @@ const argv = meow(`
   `,
   {
     boolean: ['development'],
-    string : ['index', 'prefix', 'livereload', 'backend'],
+    string : ['base', 'index', 'prefix', 'livereload', 'backend'],
     alias  : {
+      b: 'base',
       d: 'development',
       p: 'port',
       x: 'prefix',
       i: 'index',
       l: 'livereload',
-      n: 'ping',
+      e: 'backend',
     },
     default: {
+      base        : DEFAULT_BASE,
       development : DEFAULT_IS_DEVELOPMENT,
       port        : DEFAULT_PORT,
       prefix      : DEFAULT_PREFIX,
@@ -73,16 +78,17 @@ interface IConfig {
   isInitialized: boolean
   argv?: any
   pkg?: any
-  root?: (...pathInRoot: string[]) => string
-  absRoot?: (...pathInRoot: string[]) => string
-  source?: (...pathInSource: string[]) => string
-  absSource?: (...pathInSource: string[]) => string
-  building?: (...pathInBuilding: string[]) => string
-  absBuilding?: (...pathInBuilding: string[]) => string
-  output?: (...pathInOutput: string[]) => string
-  absOutput?: (...pathInOutput: string[]) => string
-  outputByEnv?: (...pathInOutput: string[]) => string
-  absOutputByEnv?: (...pathInOutput: string[]) => string
+  root?(...pathInRoot: string[]): string
+  absRoot?(...pathInRoot: string[]): string
+  source?(...pathInSource: string[]): string
+  absSource?(...pathInSource: string[]): string
+  building?(...pathInBuilding: string[]): string
+  absBuilding?(...pathInBuilding: string[]): string
+  output?(...pathInOutput: string[]): string
+  absOutput?(...pathInOutput: string[]): string
+  outputByEnv?(...pathInOutput: string[]): string
+  absOutputByEnv?(...pathInOutput: string[]): string
+  base?: string
   serverPort?: number
   apiPrefixes?: string[]
   serverIndex?: string
@@ -95,35 +101,28 @@ export const config: IConfig = {
   isInitialized: false,
 }
 
-config.root = (...pathInRoot) => {
-  return path.join(root, ...pathInRoot)
-}
+config.root = (...pathInRoot) =>
+  path.join(root, ...pathInRoot)
 
 config.absRoot = config.root
 
-config.source = (...pathInSource) => {
-  return path.join(source, ...pathInSource)
-}
+config.source = (...pathInSource) =>
+  path.join(source, ...pathInSource)
 
-config.absSource = (...pathInSource) => {
-  return config.root(source, ...pathInSource)
-}
+config.absSource = (...pathInSource) =>
+  config.root(source, ...pathInSource)
 
-config.building = (...pathInBuilding) => {
-  return path.join(building, ...pathInBuilding)
-}
+config.building = (...pathInBuilding) =>
+  path.join(building, ...pathInBuilding)
 
-config.absBuilding = (...pathInBuilding) => {
-  return config.root(building, ...pathInBuilding)
-}
+config.absBuilding = (...pathInBuilding) =>
+  config.root(building, ...pathInBuilding)
 
-config.output = (...pathInOutput) => {
-  return path.join(output, ...pathInOutput)
-}
+config.output = (...pathInOutput) =>
+  path.join(output, ...pathInOutput)
 
-config.absOutput = (...pathInOutput) => {
-  return config.root(output, ...pathInOutput)
-}
+config.absOutput = (...pathInOutput) =>
+  config.root(output, ...pathInOutput)
 
 config.outputByEnv = (...pathInOutput) => {
   const dir = process.env.NODE_ENV === 'production' ? output : building
@@ -139,6 +138,7 @@ config.absOutputByEnv = (...pathInOutput) => {
 export function initialize() {
 
   if (config.isInitialized) {
+    // tslint:disable-next-line:no-console
     console.warn(`Project has already been initialized.  Newer settings will be ignored.`)
     return
   }
@@ -158,6 +158,10 @@ export function initialize() {
 
   // tslint:disable-next-line no-console
   console.log(`Running gulp & babel for ${process.env.NODE_ENV} environment.`)
+
+  process.env.VUE_ROUTER_BASE = argv.flags.base
+
+  config.base = argv.flags.base
 
   config.serverPort = parseInt(argv.flags.port, 10)
 

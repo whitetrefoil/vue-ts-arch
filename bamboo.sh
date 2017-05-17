@@ -16,7 +16,7 @@ install_deps() {
 }
 
 build() {
-  VUE_ROUTER_BASE="/" npm run gulp -- build
+  npm run gulp -- build -b /
 }
 
 doc() {

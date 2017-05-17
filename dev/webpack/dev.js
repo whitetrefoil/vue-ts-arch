@@ -1,8 +1,8 @@
-const HtmlWebpackPlugin          = require('html-webpack-plugin')
-const LodashPlugin               = require('lodash-webpack-plugin')
-const isEmpty                    = require('lodash/isEmpty')
 const webpack                    = require('webpack')
 const { config, initialize }     = require('../config')
+const { entries }                = require('./configs/entries')
+const { htmlPages }              = require('./configs/html-webpack-plugin')
+const { lodashPlugin }           = require('./configs/lodash')
 const { sassLoader, scssLoader } = require('./configs/sass')
 const { vueLoaderDev }           = require('./configs/vue')
 
@@ -12,16 +12,11 @@ if (config.isInitialized !== true) {
 
 module.exports = {
 
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
 
   context: config.absSource(''),
 
-  entry: {
-    polyfills: ['./polyfills'],
-    vendor   : ['./vendor'],
-    theme    : ['./theme'],
-    index    : ['./index'],
-  },
+  entry: entries,
 
   resolve: {
     extensions: ['.vue', '.ts', '.js', '.json'],
@@ -30,6 +25,7 @@ module.exports = {
 
   output: {
     path         : config.absBuilding(''),
+    publicPath   : '/',
     filename     : '[name].js',
     chunkFilename: '[id]-[name].chunk.js',
   },
@@ -55,29 +51,25 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.ts$/,
-        use : [
+        test: /\.(pug|jade)$/,
+        use : ['pug-loader'],
+      },
+      {
+        test   : /\.ts$/,
+        exclude: /node_modules/,
+        use    : [
           'babel-loader',
           'ts-loader?configFileName=tsconfig.json',
         ],
       },
       {
-        test: /\.js$/,
-        use : [
-          'babel-loader',
-        ],
-      },
-      {
-        test: /\.(pug|jade)$/,
-        use : [
-          'pug-loader',
-        ],
+        test   : /\.js$/,
+        exclude: /node_modules/,
+        use    : ['babel-loader'],
       },
       {
         test: /\.vue/,
-        use : [
-          vueLoaderDev,
-        ],
+        use : [vueLoaderDev],
       },
       {
         test: /\.css$/,
@@ -105,16 +97,21 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
-        use : [
-          'url-loader',
-        ],
+        test   : /\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
+        exclude: /weixin/,
+        use    : ['url-loader'],
+      },
+      {
+        test: /weixin.*\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
+        use : ['file-loader'],
       },
     ],
   },
 
   plugins: [
-    new LodashPlugin(),
+    // Refer to: https://github.com/lodash/lodash-webpack-plugin
+    lodashPlugin,
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV       : JSON.stringify(process.env.NODE_ENV),
@@ -124,17 +121,10 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({
       names: ['index', 'theme', 'vendor', 'polyfills'],
     }),
-    new HtmlWebpackPlugin({
-      filename      : 'index.html',
-      template      : './index.pug',
-      chunks        : ['polyfills', 'vendor', 'theme', 'index'],
-      hash          : false,
-      minify        : false,
-      inject        : 'body',
-      chunksSortMode: 'auto',
-      base          : isEmpty(process.env.VUE_ROUTER_BASE)
-        ? '/'
-        : process.env.VUE_ROUTER_BASE,
-    }),
-  ],
+  ]
+    .concat(htmlPages),
+
+  performance: {
+    hints: false,
+  },
 }

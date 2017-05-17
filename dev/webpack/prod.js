@@ -1,10 +1,11 @@
 const ExtractTextPlugin          = require('extract-text-webpack-plugin')
-const HtmlWebpackPlugin          = require('html-webpack-plugin')
-const LodashPlugin               = require('lodash-webpack-plugin')
-const isEmpty                    = require('lodash/isEmpty')
 const PrerenderSpaPlugin         = require('prerender-spa-plugin')
 const webpack                    = require('webpack')
+const SizeAnalyzerPlugin         = require('webpack-bundle-size-analyzer').WebpackBundleSizeAnalyzerPlugin
 const { config, initialize }     = require('../config')
+const { entries }                = require('./configs/entries')
+const { htmlPages }              = require('./configs/html-webpack-plugin')
+const { lodashPlugin }           = require('./configs/lodash')
 const { sassLoader, scssLoader } = require('./configs/sass')
 const { vueLoaderProd }          = require('./configs/vue')
 
@@ -18,12 +19,7 @@ module.exports = {
 
   context: config.absSource(''),
 
-  entry: {
-    polyfills: ['./polyfills'],
-    vendor   : ['./vendor'],
-    theme    : ['./theme'],
-    index    : ['./index'],
-  },
+  entry: entries,
 
   resolve: {
     extensions: ['.vue', '.ts', '.js', '.json'],
@@ -32,6 +28,7 @@ module.exports = {
 
   output: {
     path         : config.absOutput(''),
+    publicPath   : config.base,
     filename     : 'js/[name]-[chunkHash].js',
     chunkFilename: 'js/chunks/[id]-[chunkHash].chunk.js',
   },
@@ -39,19 +36,21 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.ts$/,
-        use : [
+        test: /\.(pug|jade)$/,
+        use : ['pug-loader'],
+      },
+      {
+        test   : /\.ts$/,
+        exclude: /node_modules/,
+        use    : [
           'babel-loader',
-          'ts-loader?configFileName=tsconfig.json',
+          'ts-loader?configFileName=tsconfig.json&failOnHint',
         ],
       },
       {
-        test: /\.js$/,
-        use : ['babel-loader'],
-      },
-      {
-        test: /\.(pug|jade)$/,
-        use : ['pug-loader'],
+        test   : /\.js$/,
+        exclude: /node_modules/,
+        use    : ['babel-loader'],
       },
       {
         test: /\.vue/,
@@ -85,7 +84,7 @@ module.exports = {
       },
       {
         test   : /\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
-        exclude: /weixin/,
+        exclude: /(weixin)/,
         use    : [
           {
             loader : 'url-loader',
@@ -112,8 +111,7 @@ module.exports = {
   },
 
   plugins: [
-    new LodashPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
+    lodashPlugin,
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV       : JSON.stringify(process.env.NODE_ENV),
@@ -123,26 +121,16 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({
       names: ['index', 'theme', 'vendor', 'polyfills'],
     }),
+    new SizeAnalyzerPlugin('../test_results/size-report.txt'),
     new webpack.optimize.UglifyJsPlugin(),
     new ExtractTextPlugin({
       filename : 'css/[name]-[contenthash].css',
       allChunks: true,
     }),
-    new HtmlWebpackPlugin({
-      filename      : 'index.html',
-      template      : './index.pug',
-      chunks        : ['polyfills', 'vendor', 'theme', 'index'],
-      hash          : false,
-      minify        : false,
-      inject        : 'body',
-      chunksSortMode: 'auto',
-      base          : isEmpty(process.env.VUE_ROUTER_BASE)
-        ? '/'
-        : process.env.VUE_ROUTER_BASE,
-    }),
     new PrerenderSpaPlugin(
       config.absOutput(''),
       ['/', '/hello']
     ),
-  ],
+  ]
+    .concat(htmlPages),
 }

@@ -19,9 +19,11 @@ gulp.task('proxy', () => {
   proxy.startProxy({
     target : config.backendDest,
     secure : false,
+    xfwd   : true,
     headers: {
-      host  : config.backendDest.replace(/^https?:\/\//, ''),
-      origin: config.backendDest,
+      host   : config.backendDest.replace(/^https?:\/\//, ''),
+      origin : config.backendDest,
+      referer: `${config.backendDest}/`,
     },
   })
 })

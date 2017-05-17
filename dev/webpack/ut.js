@@ -6,9 +6,11 @@ require('ts-node').register({
   cache  : false,
 })
 
+const fs                     = require('fs-extra')
 const webpack                = require('webpack')
 const { config, initialize } = require('../config')
 const { vueLoaderTest }      = require('./configs/vue')
+const babelrc                = fs.readJsonSync(path.join(__dirname, '../../tests/.babelrc'))
 
 if (config.isInitialized !== true) {
   initialize()
@@ -43,15 +45,29 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.ts$/,
-        use : [
-          'babel-loader',
+        test: /\.(pug|jade)$/,
+        use : ['null-loader'],
+      },
+      {
+        test   : /\.ts$/,
+        exclude: /node_modules/,
+        use    : [
+          {
+            loader : 'babel-loader',
+            options: babelrc,
+          },
           'ts-loader?configFileName=tsconfig.json',
         ],
       },
       {
-        test: /\.js$/,
-        use : ['babel-loader'],
+        test   : /\.js$/,
+        exclude: /node_modules/,
+        use    : [
+          {
+            loader : 'babel-loader',
+            options: babelrc,
+          },
+        ],
       },
       {
         test: /\.vue/,

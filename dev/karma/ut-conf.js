@@ -29,6 +29,10 @@ module.exports.karmaConfig = {
 
   webpack: webpackConfig,
 
+  webpackMiddleware: {
+    stats: 'errors-only',
+  },
+
   plugins: [
     'karma-*',
   ],

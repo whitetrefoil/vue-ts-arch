@@ -21,14 +21,14 @@ gulp.task('devServer', (done: () => void) => {
   devConfig.plugins.push(new webpack.HotModuleReplacementPlugin())
   devConfig.output.path = config.absOutput('')
 
-  devConfig.entry.index
+  devConfig.entry.polyfills
     .unshift(`webpack-dev-server/client?http://${config.livereloadHost}:${config.serverPort}`
       , 'webpack/hot/dev-server')
 
   const webpackCompiler       = webpack(devConfig)
   const webpackCompilerConfig = {
     publicPath        : '',
-    contentBase       : config.absOutput(''),
+    contentBase       : config.absBuilding(''),
     hot               : true,
     noInfo            : false,
     historyApiFallback: true,
@@ -40,23 +40,24 @@ gulp.task('devServer', (done: () => void) => {
     // },
     // publicPath: '/assets/',
     // headers: { 'X-Custom-Header': 'yes' },
-    stats             : 'minimal',
+    stats             : 'errors-only',
     proxy             : [
       {
-        context: map(config.apiPrefixes, (p: string): string => p + '**'),
+        context: map(config.apiPrefixes, (p: string): string => `${p}**`),
         target : `http://${config.livereloadHost}:${config.serverPort + 1}`,
         secure : false,
       },
     ],
+    disableHostCheck  : true,
   }
 
   const server = new WebpackDevServer(webpackCompiler, webpackCompilerConfig)
 
   server.listen(config.serverPort, (error?: Error) => {
     if (error) {
-      // eslint-disable-next-line no-console
+      // tslint:disable-next-line:no-console
       console.error('Webpack Dev Server startup failed!  Detail:')
-      // eslint-disable-next-line no-console
+      // tslint:disable-next-line:no-console
       console.error(error)
       return
     }
@@ -71,9 +72,9 @@ gulp.task('devServer', (done: () => void) => {
       res.on('end', done)
     })
       .on('error', (err?: Error) => {
-        // eslint-disable-next-line no-console
+        // tslint:disable-next-line:no-console
         console.warn('There must be something wrong with webpack dev server:')
-        // eslint-disable-next-line no-console
+        // tslint:disable-next-line:no-console
         console.warn(err)
         done()
       })

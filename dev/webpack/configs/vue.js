@@ -2,13 +2,11 @@ const ExtractTextPlugin          = require('extract-text-webpack-plugin')
 const { sassLoader, scssLoader } = require('./sass')
 
 const vueOptionsDev = {
-  autoprefixer: {
-    browsers: ['last 2 versions'],
-  },
-  loaders     : {
+  loaders: {
     ts  : [
       'babel-loader',
       'ts-loader?configFileName=tsconfig.json',
+      'tslint-loader',
     ],
     sass: [
       'vue-style-loader',
@@ -26,10 +24,7 @@ const vueOptionsDev = {
 }
 
 const vueOptionsProd = {
-  autoprefixer: {
-    browsers: ['last 2 versions'],
-  },
-  loaders     : {
+  loaders: {
     ts: [
       'babel-loader',
       'ts-loader?configFileName=tsconfig.json',
@@ -39,7 +34,7 @@ const vueOptionsProd = {
       use: 'css-loader?minimize&safe',
     }),
 
-    sassOptions: ExtractTextPlugin.extract({
+    sass: ExtractTextPlugin.extract({
       use: [
         'css-loader?minimize&safe',
         'resolve-url-loader?keepQuery',
@@ -47,7 +42,7 @@ const vueOptionsProd = {
       ],
     }),
 
-    scssOptions: ExtractTextPlugin.extract({
+    scss: ExtractTextPlugin.extract({
       use: [
         'css-loader?minimize&safe',
         'resolve-url-loader?keepQuery',
@@ -59,13 +54,13 @@ const vueOptionsProd = {
 
 const vueOptionsTest = {
   loaders: {
-    ts         : [
+    ts  : [
       'babel-loader',
       'ts-loader?configFileName=tsconfig.json',
     ],
-    css        : 'null-loader',
-    sassOptions: 'null-loader',
-    scssOptions: 'null-loader',
+    css : 'null-loader',
+    sass: 'null-loader',
+    scss: 'null-loader',
   },
 }
 

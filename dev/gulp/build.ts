@@ -6,14 +6,12 @@ const merge         = require('merge-stream')
 const webpack       = require('webpack')
 const devConfig     = require('../webpack/dev')
 const prodConfig    = require('../webpack/prod')
-const ssrConfig     = require('../webpack/server')
 
-gulp.task('build', (done: Function) => {
+gulp.task('build', (done: () => void) => {
 
   const webpackConfig = process.env.NODE_ENV === 'development'
     ? devConfig
-    // : ssrConfig
-    : [prodConfig, ssrConfig]
+    : prodConfig
 
   del([config.outputByEnv('')])
     .then((): void => {
@@ -22,7 +20,11 @@ gulp.task('build', (done: Function) => {
           throw new gutil.PluginError('webpack', err)
         }
         gutil.log('[webpack]:\n', stats.toString('minimal'))
-        done()
+        gulp.src(config.source('data/**'))
+          .pipe(gulp.dest(config.output('data/')))
+          .on('end', () => {
+            done()
+          })
       })
     })
 })

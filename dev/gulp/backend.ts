@@ -2,19 +2,19 @@ import { IncomingMessage, ServerResponse } from 'http'
 import { config }                          from '../config'
 import { proxy }                           from './proxy'
 import _                                 = require('lodash')
+const bodyparser                         = require('body-parser')
 const gulp                               = require('gulp')
 const connect                            = require('gulp-connect')
 const msm                                = require('mock-server-middleware')
 
-const proxyMiddlewareFactory = (proxy: any) => {
-  return (req: IncomingMessage, res: ServerResponse, next: Function) => {
+const proxyMiddlewareFactory = (proxy: any) =>
+  (req: IncomingMessage, res: ServerResponse, next: Function) => {
     if (_.every(config.apiPrefixes, (p) => req.url.indexOf(p) !== 0)) {
       next()
       return
     }
     proxy.web(req, res)
   }
-}
 
 gulp.task('backend', (done: Noop) => {
 
@@ -22,7 +22,7 @@ gulp.task('backend', (done: Noop) => {
     root      : [config.source('')],
     port      : config.serverPort + 1,
     middleware: () => {
-      const middleware = []
+      const middleware = [bodyparser.json()]
 
       if (proxy.server == null) {
         // tslint:disable-next-line:no-console

@@ -10,53 +10,47 @@ const coverConfig        = require('../karma/cover-conf').karmaConfig
 const webpackUtConfig    = require('../webpack/ut')
 const webpackCoverConfig = require('../webpack/cover')
 
-gulp.task('ut', (done: Noop) => {
+gulp.task('ut', () => {
   new Server(utConfig, (exitCode: number) => {
     if (exitCode === 0) {
       // tslint:disable-next-line:no-console
       console.log('Karma tests all passed.')
     } else {
+      // tslint:disable-next-line:no-console
       console.error(`Karma has exited with code: ${exitCode}`)
     }
-    done()
   }).start()
 })
 
-gulp.task('cover', (done: Noop) => {
+gulp.task('cover', () => {
   new Server(coverConfig, (exitCode: number) => {
     if (exitCode === 0) {
       // tslint:disable-next-line:no-console
       console.log('Karma tests all passed.')
     } else {
+      // tslint:disable-next-line:no-console
       console.error(`Karma has exited with code: ${exitCode}`)
     }
-    done()
   }).start()
 })
 
 // Below are for debug purpose, to build test codes using webpack.
-gulp.task('ut:build', (): PromiseLike<any> => {
+gulp.task('ut:build', (): PromiseLike<any> =>
 
-  return del([config.building('')])
-    .then((): NodeJS.ReadWriteStream => {
-      return merge(
-        gulp.src(config.source('*.[jt]s'))
+  del([config.building('')])
+    .then((): NodeJS.ReadWriteStream =>
+      merge(
+        gulp.src([config.source('*.[jt]s'), `!${config.source('*.d.ts')}`])
           .pipe(webpackStream(webpackUtConfig, webpack)),
         gulp.src(config.source('*.html')),
-      ).pipe(gulp.dest(config.building('')))
-    })
+      ).pipe(gulp.dest(config.building('')))))
 
-})
+gulp.task('cover:build', (): PromiseLike<any> =>
 
-gulp.task('cover:build', (): PromiseLike<any> => {
-
-  return del([config.building('')])
-    .then((): NodeJS.ReadWriteStream => {
-      return merge(
-        gulp.src(config.source('*.[jt]s'))
+  del([config.building('')])
+    .then((): NodeJS.ReadWriteStream =>
+      merge(
+        gulp.src([config.source('*.[jt]s'), `!${config.source('*.d.ts')}`])
           .pipe(webpackStream(webpackCoverConfig, webpack)),
         gulp.src(config.source('*.html')),
-      ).pipe(gulp.dest(config.building('')))
-    })
-
-})
+      ).pipe(gulp.dest(config.building('')))))
