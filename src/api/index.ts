@@ -36,16 +36,10 @@ export const Axios = axios.create({
   timeout: DURATION_10_SECONDS,
 })
 
-// Because of limitation of Typescript,
-// `networkError instanceof Error` won't work.
-// Use `networkError.isNetworkError` instead...
-class NetworkError extends Error {
-  isNetworkError = true
-}
+
+class NetworkError extends Error {}
 
 class ServerError extends Error {
-  isServerError = true
-
   public response: any
 
   constructor(message?: string, response?: AxiosResponse<any> | any) {
@@ -77,7 +71,7 @@ export function request<T>(requestFunction: () => Promise<IServerResponse<T>>): 
     .catch(parseError)
     .retryWhen((errors) =>
       errors.scan((retried, error) => {
-        if (!(error.isNetworkError)) { throw error }
+        if (!(error instanceof NetworkError)) { throw error }
         if (retried >= MAX_RETRY_LIMIT) { throw error }
         return retried + 1
       }, 0),
