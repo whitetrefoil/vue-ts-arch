@@ -1,5 +1,3 @@
-'use strict'
-
 const Random = require('mockjs').Random
 
 module.exports = (req, res) => {

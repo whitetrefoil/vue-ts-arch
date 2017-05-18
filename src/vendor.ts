@@ -1,3 +1,5 @@
+// tslint:disable:no-import-side-effect
+
 // Bootstrap
 // ----------
 //
@@ -13,7 +15,9 @@
 // Vue
 // ----------
 import 'av-ts'
-import 'axios'
 import 'vue'
 import 'vue-router'
-import 'kilimanjaro'
+
+// Ajax helper
+// ----------
+import 'axios'

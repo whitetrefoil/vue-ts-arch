@@ -75,11 +75,11 @@ export function request<T>(requestFunction: () => Promise<IServerResponse<T>>): 
   return Observable.defer(requestFunction)
     .map(extractResponse)
     .catch(parseError)
-    .retryWhen((errors) => {
-      return errors.scan((retried, error) => {
+    .retryWhen((errors) =>
+      errors.scan((retried, error) => {
         if (!(error.isNetworkError)) { throw error }
         if (retried >= MAX_RETRY_LIMIT) { throw error }
         return retried + 1
-      }, 0)
-    })
+      }, 0),
+    )
 }

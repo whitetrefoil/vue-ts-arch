@@ -1,5 +1,5 @@
 {
-  "x-version": "v5.1.0+v5.2.0",
+  // Started from v5.1.0,
   "extends"  : [
     "tslint:latest"
   ],
@@ -160,7 +160,7 @@
       "check-typecast",
       "check-preblock"
     ],
-    "x-v5.2.0-updates"                : true,
+    // v5.2.0 Updates
     "no-object-literal-type-assertion": true,
     "no-irregular-whitespace"         : true,
     "prefer-switch"                   : [true, {"min-cases": 3}],

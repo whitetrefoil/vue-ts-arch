@@ -1,23 +1,15 @@
-import { create } from 'kilimanjaro'
-import * as t     from './types'
-import hello      from './modules/hello'
+import * as Vue  from 'vue'
+import * as Vuex from 'vuex'
+import { hello } from './hello'
+import * as t    from './types'
 
-export interface IAppState {
-  errorMessages: string[]
-}
+Vue.use(Vuex)
 
-const initialState: IAppState = {
-  errorMessages: [],
-}
+export const store = new Vuex.Store({
+  strict: process.env.NODE_ENV === 'development',
+  modules: {
+    hello,
+  },
+})
 
-const store = create(initialState)
-
-  .module('hello', hello)
-
-  .mutation(t.QUEUE_ERROR_MESSAGE, (state) => (errorMessage: string) => {
-    state.errorMessages.push(errorMessage)
-  })
-
-  .done()
-
-export default store
+export const types = t

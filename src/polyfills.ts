@@ -1,5 +1,9 @@
-require('babel-polyfill')
+// tslint:disable:no-import-side-effect
 
+// Babel Polyfill
+import 'babel-polyfill'
+
+// RxJS
 import 'rxjs/Observable'
 import 'rxjs/add/observable/defer'
 import 'rxjs/add/observable/throw'

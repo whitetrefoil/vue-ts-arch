@@ -12,7 +12,5 @@ function _getReceptionist(): Promise<IServerResponse<IReceptionist>> {
 
 export function getReceptionist(): Observable<IReceptionist> {
   return request(_getReceptionist)
-    .map((receptionist: IReceptionist) => {
-      return new Receptionist(receptionist.name)
-    })
+    .map((receptionist: IReceptionist) => new Receptionist(receptionist.name))
 }

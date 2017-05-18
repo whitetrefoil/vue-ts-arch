@@ -1,6 +1,5 @@
 import { Vue, Component, Lifecycle } from 'av-ts'
-import store                         from '../../store/index'
-import * as t                        from '../../store/types'
+import { store, types as t }         from '../../store'
 import Receptionist                  from '../../models/receptionist'
 import ComponentInModule             from './component-in-module'
 
@@ -13,7 +12,7 @@ import ComponentInModule             from './component-in-module'
 export default class HelloComponent extends Vue {
 
   get receptionist(): Receptionist {
-    return store.state.$('hello').receptionist
+    return store.state.hello.receptionist
   }
 
   get greeting(): string {

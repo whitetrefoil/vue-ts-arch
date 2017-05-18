@@ -1,4 +1,6 @@
-require('./styles/app.sass')
+// tslint:disable-next-line:no-import-side-effect
+
+import './styles/app.sass'
 
 import * as Vue from 'vue'
 import router   from './router'
@@ -6,12 +8,8 @@ import router   from './router'
 const MyApp = require('./components/my-app')
 
 // tslint:disable-next-line no-unused-new
-const root = new Vue({
+new Vue({
   router,
   name  : 'Root',
   render: (h) => h(MyApp),
-})
-
-document.addEventListener('DOMContentLoaded', () => {
-  root.$mount('#app')
-})
+}).$mount('#app')
