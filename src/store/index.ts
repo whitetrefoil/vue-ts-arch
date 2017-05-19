@@ -1,5 +1,5 @@
-import * as Vue  from 'vue'
-import * as Vuex from 'vuex'
+import Vue       from 'vue'
+import Vuex      from 'vuex'
 import { hello } from './hello'
 import * as t    from './types'
 

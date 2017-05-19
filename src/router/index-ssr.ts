@@ -1,8 +1,8 @@
 // This is a SSR version of router which disabled webpack code splitting.
 
-import { Vue }            from 'av-ts'
-import { isEmpty }        from 'lodash'
-import * as VueRouter     from 'vue-router'
+import { Vue }     from 'av-ts'
+import { isEmpty } from 'lodash'
+import VueRouter   from 'vue-router'
 
 const Hello        = require('../modules/hello')
 const MyGlobalComp = require('../components/my-global-comp')

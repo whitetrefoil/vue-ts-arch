@@ -23,7 +23,7 @@ module.exports = {
 
   resolve: {
     extensions: ['.vue', '.ts', '.js', '.json'],
-    mainFields: ['webpack', 'jsnext:main', 'browser', 'web', 'browserify', ['jam', 'main'], 'main'],
+    mainFields: ['webpack', 'jsnext:main', 'module', 'browser', 'web', 'browserify', ['jam', 'main'], 'main'],
   },
 
   output: {

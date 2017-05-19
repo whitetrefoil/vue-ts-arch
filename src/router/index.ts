@@ -1,7 +1,7 @@
 import { Vue }            from 'av-ts'
 import { isEmpty }        from 'lodash'
 import { AsyncComponent } from 'vue'
-import * as VueRouter     from 'vue-router'
+import VueRouter          from 'vue-router'
 
 const Hello: AsyncComponent = (resolve) => {
   require.ensure([], () => {
