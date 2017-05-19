@@ -3,6 +3,7 @@
 // Babel Polyfill
 // Refer to: https://babeljs.io/docs/plugins/transform-runtime/
 // import 'babel-polyfill'
+import 'core-js/fn/promise'
 
 // RxJS
 import 'rxjs/Observable'

@@ -4,8 +4,7 @@ const { sassLoader, scssLoader } = require('./sass')
 const vueOptionsDev = {
   loaders: {
     ts  : [
-      'babel-loader',
-      'ts-loader?configFileName=tsconfig.json',
+      'awesome-typescript-loader?useBabel&configFileName=tsconfig.json',
       'tslint-loader',
     ],
     sass: [
@@ -26,8 +25,7 @@ const vueOptionsDev = {
 const vueOptionsProd = {
   loaders: {
     ts: [
-      'babel-loader',
-      'ts-loader?configFileName=tsconfig.json',
+      'awesome-typescript-loader?useBabel&configFileName=tsconfig.json',
     ],
 
     css: ExtractTextPlugin.extract({
@@ -55,8 +53,7 @@ const vueOptionsProd = {
 const vueOptionsTest = {
   loaders: {
     ts  : [
-      'babel-loader',
-      'ts-loader?configFileName=tsconfig.json',
+      'awesome-typescript-loader?useBabel&configFileName=tsconfig.json',
     ],
     css : 'null-loader',
     sass: 'null-loader',

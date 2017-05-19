@@ -43,8 +43,7 @@ module.exports = {
         test   : /\.ts$/,
         exclude: /node_modules/,
         use    : [
-          'babel-loader',
-          'ts-loader?configFileName=tsconfig.json&failOnHint',
+          'awesome-typescript-loader?useBabel&configFileName=tsconfig.json&failOnHint',
         ],
       },
       {

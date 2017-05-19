@@ -222,6 +222,7 @@ dist/
 docs/
 lib/
 test_results/
+.awcache/
 
 # Ignore yarn.lock until [https://github.com/yarnpkg/yarn/issues/1148]() get resolved
 yarn.lock

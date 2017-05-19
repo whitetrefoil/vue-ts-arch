@@ -52,11 +52,7 @@ module.exports = {
         test   : /\.ts$/,
         exclude: /node_modules/,
         use    : [
-          {
-            loader : 'babel-loader',
-            options: babelrc,
-          },
-          'ts-loader?configFileName=tsconfig.json',
+          'awesome-typescript-loader?useBabel&configFileName=tsconfig.json',
         ],
       },
       {
