@@ -11,6 +11,7 @@
   "compact"      : true,
   "plugins"      : [
     "lodash",
+    "transform-runtime",
     "transform-class-properties",
     "transform-object-rest-spread",
     "syntax-trailing-function-commas",

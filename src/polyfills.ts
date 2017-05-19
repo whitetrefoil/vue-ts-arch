@@ -1,7 +1,8 @@
 // tslint:disable:no-import-side-effect
 
 // Babel Polyfill
-import 'babel-polyfill'
+// Refer to: https://babeljs.io/docs/plugins/transform-runtime/
+// import 'babel-polyfill'
 
 // RxJS
 import 'rxjs/Observable'
