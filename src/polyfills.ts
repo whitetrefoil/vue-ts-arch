@@ -2,25 +2,12 @@
 
 // Babel Polyfill
 // Refer to: https://babeljs.io/docs/plugins/transform-runtime/
-// import 'babel-polyfill'
-import 'core-js/fn/promise'
-
-// RxJS
-import 'rxjs/Observable'
-import 'rxjs/add/observable/defer'
-import 'rxjs/add/observable/throw'
-import 'rxjs/add/operator/catch'
-import 'rxjs/add/operator/map'
-import 'rxjs/add/operator/retryWhen'
-import 'rxjs/add/operator/scan'
-
-// import 'zone.js/dist/zone'
+// Refer to: https://github.com/babel/babel-preset-env#usebuiltins
+import 'babel-polyfill'
 
 if (process.env.ENV === 'production') {
   // Production
 } else {
   // Development
   Error['stackTraceLimit'] = Infinity
-
-  // require('zone.js/dist/long-stack-trace-zone')
 }

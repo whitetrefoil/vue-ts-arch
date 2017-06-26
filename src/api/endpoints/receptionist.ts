@@ -1,16 +1,12 @@
-import { Axios, IServerResponse, request }  from '..'
-import { Observable } from 'rxjs/Observable'
+import { get }      from 'superagent'
+import { request }  from '..'
 import Receptionist from '../../models/receptionist'
 
 export interface IReceptionist {
   name: string
 }
 
-function _getReceptionist(): Promise<IServerResponse<IReceptionist>> {
-  return Axios.get('receptionists/random') as Promise<IServerResponse<IReceptionist>>
-}
-
-export function getReceptionist(): Observable<IReceptionist> {
-  return request(_getReceptionist)
-    .map((receptionist: IReceptionist) => new Receptionist(receptionist.name))
+export async function getReceptionist(): Promise<IReceptionist> {
+  const receptionistData = await request<IReceptionist>(get('/api/receptionists/random'))
+  return new Receptionist(receptionistData.name)
 }

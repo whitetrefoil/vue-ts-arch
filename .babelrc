@@ -3,22 +3,18 @@
     [
       "env",
       {
-        "modules" : false,
-        "browsers": "Android >= 5.0, iOS >= 8.0, last 5 Chrome versions, last 5 Firefox versions, last 5 Opera versions, IE >= 10, last 5 Edge versions"
+        "modules"    : false,
+        "browsers"   : "Android >= 4.3, iOS >= 8.0, last 5 Chrome versions, last 5 Firefox versions, last 5 Opera versions, IE >= 10, last 5 Edge versions",
+        "useBuiltIns": true
       }
     ]
   ],
-  "compact"      : true,
+  "compact"      : false,
   "plugins"      : [
-    "lodash",
-    "transform-runtime",
-    "transform-class-properties",
-    "transform-object-rest-spread",
-    "syntax-trailing-function-commas",
-    "syntax-object-rest-spread"
+    "lodash"
   ],
   "highlightCode": false,
-  "sourceMaps"   : false,
+  "sourceMaps"   : true,
   "minified"     : false,
   "comments"     : true
 }

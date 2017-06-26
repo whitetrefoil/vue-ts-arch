@@ -6,7 +6,6 @@ const DEFAULT_INDEX          = 'index.html'
 const DEFAULT_PING           = 0
 const DEFAULT_LIVERELOAD     = 'localhost'
 const DEFAULT_BACKEND        = 'http://localhost:8091'
-const DEFAULT_BACKEND_HTTPS  = false
 
 const DEFAULT_BUILDING_DIR    = '.building'
 const DEFAULT_OUTPUT_DIR      = 'dist'

@@ -1,9 +1,9 @@
 {
-  "compilerOptions": {
+  "compilerOptions"               : {
     "allowJs"                       : false,
     "allowSyntheticDefaultImports"  : true,
     "target"                        : "es2017",
-    "lib"                           : ["es2017", "es7", "dom"],
+    "lib"                           : ["es2017", "es6", "dom.iterable"],
     "module"                        : "es6",
     "moduleResolution"              : "node",
     "inlineSources"                 : true,
@@ -12,14 +12,18 @@
     "sourceMap"                     : true,
     "emitDecoratorMetadata"         : true,
     "experimentalDecorators"        : true,
-    "removeComments"                : true,
+    "removeComments"                : false,
     "noImplicitAny"                 : true,
     "suppressImplicitAnyIndexErrors": true
   },
-  "include"        : [
+  "include"                       : [
     "src/**/*"
   ],
-  "exclude"        : [
+  "exclude"                       : [
     "node_modules"
-  ]
+  ],
+  "awesomeTypescriptLoaderOptions": {
+    "useBabel": true,
+    "useCache": true
+  }
 }

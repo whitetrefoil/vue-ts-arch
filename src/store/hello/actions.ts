@@ -10,11 +10,13 @@ export type IHelloActionContext = ActionContext<IHelloState, IRootStateFull>
 const { debug } = getLogger('/src/store/hello/actions.ts')
 
 export const actions = {
-  [t.FETCH_RANDOM_RECEPTIONIST]({ commit }: IHelloActionContext) {
-    getReceptionist()
-      .subscribe(
-        (receptionist) => commit(t.SET_RECEPTIONIST, receptionist),
-        debug, // TODO
-      )
+  async [t.FETCH_RANDOM_RECEPTIONIST]({ commit }: IHelloActionContext) {
+    let receptionist
+    try {
+      receptionist = await getReceptionist()
+    } catch (e) {
+      alert(e.message)
+    }
+    commit(t.SET_RECEPTIONIST, receptionist)
   },
 }
