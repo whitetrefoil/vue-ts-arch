@@ -11,7 +11,7 @@
     "test": "rimraf test_results && jest --no-cache"
   },
   "dependencies": {
-    "av-ts": "^0.7.2",
+    "av-ts": "^0.8.0",
     "babel-polyfill": "^6.23.0",
     "bootstrap": "^4.0.0-alpha.6",
     "debug": "^2.6.8",
@@ -42,7 +42,7 @@
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.1.1",
     "babel-plugin-lodash": "^3.2.11",
-    "babel-preset-env": "^1.5.2",
+    "babel-preset-env": "^1.6.0",
     "clear-require": "^2.0.0",
     "core-js": "^2.4.1",
     "cross-env": "^5.0.1",
