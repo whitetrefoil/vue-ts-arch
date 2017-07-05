@@ -23,10 +23,10 @@ export default class HelloComponent extends Vue {
   }
 
   changeReceptionist(): void {
-    store.dispatch(t.FETCH_RANDOM_RECEPTIONIST)
+    store.dispatch(t.HELLO__FETCH_RANDOM_RECEPTIONIST)
   }
 
   @Lifecycle mounted(): void {
-    store.dispatch(t.FETCH_RANDOM_RECEPTIONIST)
+    store.dispatch(t.HELLO__FETCH_RANDOM_RECEPTIONIST)
   }
 }

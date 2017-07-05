@@ -1,15 +1,24 @@
 // tslint:disable:no-console
-import * as debug from 'debug'
+interface ILog {
+  debug: Function
+}
 
-class Log {
-  debug: debug.IDebugger
+class DevLog implements ILog {
+  debug: any
 
-  constructor(private name: string) {
+  constructor(private name: string, debug: any) {
     this.debug = debug(name)
     this.debug.log = console.log.bind(console)
   }
 }
 
-export const getLogger = function getLogger(name: string): Log {
-  return new Log(name)
+const prodLog: ILog = {
+  debug() { return },
+}
+
+export const getLogger = function getLogger(name: string): ILog {
+  if (process.env.NODE_ENV === 'development') {
+    return new DevLog(name, require('debug'))
+  }
+  return prodLog
 }

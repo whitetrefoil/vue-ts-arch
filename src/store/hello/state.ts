@@ -1,4 +1,4 @@
-import Receptionist        from '../../models/receptionist'
+import Receptionist from '../../models/receptionist'
 
 export interface IHelloState {
   receptionist: Receptionist

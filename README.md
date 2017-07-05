@@ -6,6 +6,10 @@ A basic project structure built with Vue & TS.
 Changelog
 ---------
 
+### v0.6.0
+
+* Use jest to run tests.
+
 ### v0.5.1
 
 * Update `package-lock.json`.
