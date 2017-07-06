@@ -110,6 +110,7 @@ module.exports = {
   plugins: [
     // Refer to: https://github.com/lodash/lodash-webpack-plugin
     lodashPlugin,
+    new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env': {

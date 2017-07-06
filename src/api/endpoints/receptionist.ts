@@ -1,5 +1,5 @@
-import { get }      from 'superagent'
-import { request }  from '..'
+import { get } from 'superagent'
+import { request } from '..'
 import Receptionist from '../../models/receptionist'
 
 export interface IReceptionist {

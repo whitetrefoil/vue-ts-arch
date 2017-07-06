@@ -1,6 +1,6 @@
 /* tslint:disable max-classes-per-file */
 
-import * as _          from 'lodash'
+import * as _ from 'lodash'
 import * as SuperAgent from 'superagent'
 
 export interface IServerResponseData<T> {

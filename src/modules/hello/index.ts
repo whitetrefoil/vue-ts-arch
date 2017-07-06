@@ -1,10 +1,10 @@
 import { Vue, Component, Lifecycle } from 'av-ts'
-import { store, types as t }         from '../../store'
-import Receptionist                  from '../../models/receptionist'
-import ComponentInModule             from './component-in-module'
+import { store, types as t } from '../../store'
+import Receptionist from '../../models/receptionist'
+import ComponentInModule from './component-in-module'
 
 @Component({
-  name: 'hello',
+  name      : 'hello',
   components: {
     ComponentInModule,
   },
@@ -26,7 +26,8 @@ export default class HelloComponent extends Vue {
     store.dispatch(t.HELLO__FETCH_RANDOM_RECEPTIONIST)
   }
 
-  @Lifecycle mounted(): void {
+  @Lifecycle
+  mounted(): void {
     store.dispatch(t.HELLO__FETCH_RANDOM_RECEPTIONIST)
   }
 }

@@ -16,7 +16,7 @@ const prodLog: ILog = {
   debug() { return },
 }
 
-export const getLogger = function getLogger(name: string): ILog {
+export function getLogger(name: string): ILog {
   if (process.env.NODE_ENV === 'development') {
     return new DevLog(name, require('debug'))
   }

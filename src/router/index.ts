@@ -1,19 +1,9 @@
-import { Vue }            from 'av-ts'
-import { isEmpty }        from 'lodash'
-import { AsyncComponent } from 'vue'
-import VueRouter          from 'vue-router'
+import { Vue } from 'av-ts'
+import { isEmpty } from 'lodash'
+import VueRouter from 'vue-router'
 
-const Hello: AsyncComponent = (resolve) => {
-  require.ensure([], () => {
-    resolve(require('../modules/hello'))
-  }, 'hello')
-}
-
-const MyGlobalComp: AsyncComponent = (resolve) => {
-  require.ensure([], () => {
-    resolve(require('../components/my-global-comp'))
-  }, 'another')
-}
+const Hello        = import(/* webpackChunkName: "hello" */'../modules/hello')
+const MyGlobalComp = import(/* webpackChunkName: "another" */'../components/my-global-comp')
 
 Vue.use(VueRouter)
 
@@ -29,13 +19,13 @@ const routes: VueRouter.RouteConfig[] = [
   },
   {
     path     : '/hello',
-    component: Hello,
+    component: () => Hello,
     children : [
       {
         name      : 'hello',
         path      : '',
         components: {
-          'my-global-comp': MyGlobalComp,
+          'my-global-comp': () => MyGlobalComp,
         },
       },
     ],

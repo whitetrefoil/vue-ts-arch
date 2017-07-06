@@ -13,7 +13,8 @@
   ],
   "compact"      : false,
   "plugins"      : [
-    "lodash"
+    "lodash",
+    "syntax-dynamic-import"
   ],
   "highlightCode": false,
   "sourceMaps"   : true,

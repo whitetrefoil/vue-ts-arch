@@ -4,7 +4,7 @@
     "allowSyntheticDefaultImports"  : true,
     "target"                        : "es2017",
     "lib"                           : ["es2017", "es6", "dom.iterable"],
-    "module"                        : "es6",
+    "module"                        : "esnext",
     "moduleResolution"              : "node",
     "inlineSources"                 : true,
     "inlineSourceMap"               : false,
@@ -24,6 +24,6 @@
   ],
   "awesomeTypescriptLoaderOptions": {
     "useBabel": true,
-    "useCache": true
+    "useCache": false
   }
 }

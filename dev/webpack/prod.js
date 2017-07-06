@@ -111,6 +111,7 @@ module.exports = {
 
   plugins: [
     lodashPlugin,
+    new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV       : JSON.stringify(process.env.NODE_ENV),

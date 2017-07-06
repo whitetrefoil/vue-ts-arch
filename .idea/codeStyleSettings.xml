@@ -9,7 +9,7 @@
         </CssCodeStyleSettings>
         <JSCodeStyleSettings>
           <option name="ALIGN_OBJECT_PROPERTIES" value="2" />
-          <option name="ALIGN_MULTIPLE_ASSIGNMENTS" value="true" />
+          <option name="ALIGN_VAR_STATEMENTS" value="2" />
           <option name="USE_DOUBLE_QUOTES" value="false" />
           <option name="ENFORCE_TRAILING_COMMA" value="WhenMultiline" />
           <option name="VAR_DECLARATION_WRAP" value="5" />
@@ -19,13 +19,15 @@
         </JSCodeStyleSettings>
         <JSON>
           <option name="PROPERTY_ALIGNMENT" value="2" />
+          <option name="OBJECT_WRAPPING" value="5" />
+          <option name="ARRAY_WRAPPING" value="5" />
         </JSON>
         <MarkdownNavigatorCodeStyleSettings>
           <option name="RIGHT_MARGIN" value="-1" />
         </MarkdownNavigatorCodeStyleSettings>
         <TypeScriptCodeStyleSettings>
           <option name="ALIGN_OBJECT_PROPERTIES" value="2" />
-          <option name="ALIGN_MULTIPLE_ASSIGNMENTS" value="true" />
+          <option name="ALIGN_VAR_STATEMENTS" value="2" />
           <option name="USE_DOUBLE_QUOTES" value="false" />
           <option name="ENFORCE_TRAILING_COMMA" value="WhenMultiline" />
           <option name="VAR_DECLARATION_WRAP" value="5" />
@@ -80,16 +82,8 @@
             <option name="CONTINUATION_INDENT_SIZE" value="2" />
           </indentOptions>
         </codeStyleSettings>
-        <codeStyleSettings language="go">
-          <indentOptions>
-            <option name="INDENT_SIZE" value="4" />
-            <option name="CONTINUATION_INDENT_SIZE" value="4" />
-            <option name="TAB_SIZE" value="4" />
-          </indentOptions>
-        </codeStyleSettings>
       </value>
     </option>
-    <option name="USE_PER_PROJECT_SETTINGS" value="true" />
     <option name="PREFERRED_PROJECT_CODE_STYLE" value="Default" />
   </component>
 </project>
