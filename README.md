@@ -6,6 +6,10 @@ A basic project structure built with Vue & TS.
 Changelog
 ---------
 
+### v0.7.0
+
+* Use webpack v3 & av-ts v0.8 features.
+
 ### v0.6.1
 
 * Upgrade dependencies.

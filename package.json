@@ -1,6 +1,6 @@
 {
   "name": "vue-ts-arch",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "main": "src/entry.js",
   "description": "A basic project structure built with Vue & TS.",
   "author": "WhiteTrefoil <whitetrefoil@gmail.com>",
