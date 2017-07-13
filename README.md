@@ -6,6 +6,10 @@ A basic project structure built with Vue & TS.
 Changelog
 ---------
 
+### v0.7.2
+
+* Cleanup unnecessary files.
+
 ### v0.7.1
 
 * Fix ts-jest related UT issue.
