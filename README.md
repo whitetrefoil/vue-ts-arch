@@ -6,6 +6,11 @@ A basic project structure built with Vue & TS.
 Changelog
 ---------
 
+### v0.7.1
+
+* Fix ts-jest related UT issue.
+* Use "uglify-es" instead of "uglify-js" in webpack.
+
 ### v0.7.0
 
 * Use webpack v3 & av-ts v0.8 features.
