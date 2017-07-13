@@ -1,5 +1,6 @@
 const ExtractTextPlugin          = require('extract-text-webpack-plugin')
 const PrerenderSpaPlugin         = require('prerender-spa-plugin')
+const UglifyJsPlugin             = require('uglifyjs-webpack-plugin')
 const webpack                    = require('webpack')
 const SizeAnalyzerPlugin         = require('webpack-bundle-size-analyzer').WebpackBundleSizeAnalyzerPlugin
 const { config, initialize }     = require('../config')
@@ -122,7 +123,8 @@ module.exports = {
       names: ['index', 'theme', 'vendor', 'polyfills'],
     }),
     new SizeAnalyzerPlugin('../test_results/size-report.txt'),
-    new webpack.optimize.UglifyJsPlugin(),
+    // new webpack.optimize.UglifyJsPlugin(),
+    new UglifyJsPlugin(),
     new ExtractTextPlugin({
       filename : 'css/[name]-[contenthash].css',
       allChunks: true,
