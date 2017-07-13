@@ -116,7 +116,8 @@
     ],
     "globals": {
       "ts-jest": {
-        "skipBabel": false
+        "skipBabel": false,
+        "useBabelrc": true
       }
     },
     "mapCoverage": true,

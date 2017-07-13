@@ -19,5 +19,13 @@
   "highlightCode": false,
   "sourceMaps"   : true,
   "minified"     : false,
-  "comments"     : true
+  "comments"     : true,
+  "env"          : {
+    "test": {
+      "plugins": [
+        "lodash",
+        "dynamic-import-node"
+      ]
+    }
+  }
 }
