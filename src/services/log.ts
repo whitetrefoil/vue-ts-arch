@@ -1,4 +1,3 @@
-// tslint:disable:no-console
 interface ILog {
   debug: Function
 }
@@ -18,7 +17,9 @@ const prodLog: ILog = {
 
 export function getLogger(name: string): ILog {
   if (process.env.NODE_ENV === 'development') {
+    localStorage.setItem('debug', '/*')
     return new DevLog(name, require('debug'))
   }
+  localStorage.removeItem('debug')
   return prodLog
 }
