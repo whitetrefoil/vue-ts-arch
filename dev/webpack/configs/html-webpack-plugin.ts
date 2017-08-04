@@ -12,7 +12,7 @@ function sortChunks(chunk1, chunk2) {
 const htmlPages = [
   new HtmlWebpackPlugin({
     filename      : 'index.html',
-    template      : './index.pug',
+    template      : './index.html',
     chunks        : ['polyfills', 'vendor', 'theme', 'index'],
     hash          : false,
     minify        : false,
