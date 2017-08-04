@@ -1,7 +1,8 @@
 /* tslint:disable max-classes-per-file */
 
+import axios, { AxiosError, AxiosResponse } from 'axios'
+import axiosRetry from 'axios-retry'
 import * as _ from 'lodash'
-import * as SuperAgent from 'superagent'
 
 export interface IServerResponseData<T> {
   code: string
@@ -9,19 +10,52 @@ export interface IServerResponseData<T> {
   data?: T
 }
 
-export interface Response<T> extends SuperAgent.Response {
-  body: IServerResponseData<T>
+export interface IAxiosResponse<T> extends AxiosResponse {
+  data: T
 }
 
-export interface SuperAgentError extends Error {
-  status: number
-  response?: Response<any>
+export type IResponse<T> = IAxiosResponse<IServerResponseData<T>>
+
+export interface IAxiosError<T> extends AxiosError {
+  response?: IAxiosResponse<T>
 }
 
 const DURATION_10_SECONDS = 10000
 const MAX_RETRY_LIMIT     = 2
 
-export async function request<T>(sar: SuperAgent.SuperAgentRequest): Promise<T> {
-  const res = await sar.timeout(DURATION_10_SECONDS).retry(MAX_RETRY_LIMIT)
-  return _.get(res.body, 'data') as T
+// tslint:disable-next-line:variable-name
+export const Axios = axios.create({
+  baseURL: process.env.API_PREFIX || '/',
+  timeout: DURATION_10_SECONDS,
+})
+
+axiosRetry(Axios, { retries: MAX_RETRY_LIMIT })
+
+class NetworkError extends Error {}
+
+class ServerError extends Error {
+  public response: any
+
+  constructor(message?: string, response?: IAxiosResponse<any>|any) {
+    super(message)
+    this.response = response
+  }
+}
+
+function parseError(error: IAxiosError<any>): never {
+  if (_.isNil(error.response)) {
+    throw new NetworkError('Network error!')
+  }
+  throw new ServerError('Unknown server error!', error.response)
+}
+
+export function extractResponse<T>(res: IResponse<T>): T|any {
+  return res.data.data
+}
+
+export function request<T>(requestFunction: () => Promise<IResponse<T>>): Promise<T> {
+  const sendRequest = (): Promise<IResponse<T>> =>
+    requestFunction().catch(parseError)
+
+  return sendRequest().then(extractResponse)
 }

@@ -22,4 +22,5 @@ import 'vuex-router-sync'
 
 // Ajax helper
 // ----------
-import 'superagent'
+import 'axios'
+import 'axios-retry'
