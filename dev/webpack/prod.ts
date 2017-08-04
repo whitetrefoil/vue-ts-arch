@@ -1,22 +1,17 @@
-const ExtractTextPlugin          = require('extract-text-webpack-plugin')
-const PrerenderSpaPlugin         = require('prerender-spa-plugin')
-const UglifyJsPlugin             = require('uglifyjs-webpack-plugin')
-const webpack                    = require('webpack')
-const SizeAnalyzerPlugin         = require('webpack-bundle-size-analyzer').WebpackBundleSizeAnalyzerPlugin
-const { config, initialize }     = require('../config')
-const { entries }                = require('./configs/entries')
-const { htmlPages }              = require('./configs/html-webpack-plugin')
-const { lodashPlugin }           = require('./configs/lodash')
-const { sassLoader, scssLoader } = require('./configs/sass')
-const { vueLoaderProd }          = require('./configs/vue')
-
-if (config.isInitialized !== true) {
-  initialize()
-}
+import * as ExtractTextPlugin from 'extract-text-webpack-plugin'
+import * as UglifyJsPlugin from 'uglifyjs-webpack-plugin'
+import * as webpack from 'webpack'
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
+import config from '../config'
+import entries from './configs/entries'
+import htmlPages from './configs/html-webpack-plugin'
+import lodashPlugin from './configs/lodash'
+import { sassLoader, scssLoader } from './configs/sass'
+import { vueLoaderProd } from './configs/vue'
 
 const SIZE_14KB = 14336
 
-module.exports = {
+export default {
 
   context: config.absSource(''),
 
@@ -28,45 +23,39 @@ module.exports = {
   },
 
   output: {
-    path         : config.absOutput(''),
-    publicPath   : config.base,
-    filename     : 'js/[name]-[chunkHash].js',
+    path: config.absOutput(''),
+    publicPath: config.base,
+    filename: 'js/[name]-[chunkHash].js',
     chunkFilename: 'js/chunks/[id]-[chunkHash].chunk.js',
   },
 
   module: {
     rules: [
       {
-        test: /\.(pug|jade)$/,
-        use : ['pug-loader'],
+        test: /\.html$/,
+        exclude: /node_modules/,
+        use: ['html-loader?interpolate'],
       },
       {
-        test   : /\.ts$/,
+        test: /\.ts$/,
         exclude: /node_modules/,
-        use    : [
-          'awesome-typescript-loader?useBabel&configFileName=tsconfig.json&failOnHint',
-        ],
-      },
-      {
-        test   : /\.js$/,
-        exclude: /node_modules/,
-        use    : ['babel-loader'],
+        use: ['awesome-typescript-loader?failOnHint&useCache=false'],
       },
       {
         test: /\.vue/,
-        use : [vueLoaderProd],
+        use: [vueLoaderProd],
       },
       {
         test: /\.css$/,
-        use : ExtractTextPlugin.extract({
+        use: ExtractTextPlugin.extract({
           use: ['css-loader?minimize&safe'],
         }),
       },
       {
         test: /\.sass$/,
-        use : ExtractTextPlugin.extract({
+        use: ExtractTextPlugin.extract({
           use: [
-            'css-loader?minimize&safe',
+            'css-loader?minimize&safe&importLoaders=2',
             'resolve-url-loader?keepQuery',
             sassLoader,
           ],
@@ -74,34 +63,34 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use : ExtractTextPlugin.extract({
+        use: ExtractTextPlugin.extract({
           use: [
-            'css-loader?minimize&safe',
+            'css-loader?minimize&safe&importLoaders=2',
             'resolve-url-loader?keepQuery',
             scssLoader,
           ],
         }),
       },
       {
-        test   : /\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
+        test: /\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
         exclude: /(weixin)/,
-        use    : [
+        use: [
           {
-            loader : 'url-loader',
+            loader: 'url-loader',
             options: {
               // limit for base64 inlining in bytes
               limit: SIZE_14KB,
               // custom naming format if file is larger than
               // the threshold
-              name : 'assets/[hash].[ext]',
+              name: 'assets/[hash].[ext]',
             },
           },
         ],
       },
       {
         test: /weixin.*\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
-        use : [{
-          loader : 'file-loader',
+        use: [{
+          loader: 'file-loader',
           options: {
             name: 'assets/[hash].[ext]',
           },
@@ -115,24 +104,25 @@ module.exports = {
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV       : JSON.stringify(process.env.NODE_ENV),
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         VUE_ROUTER_BASE: JSON.stringify(process.env.VUE_ROUTER_BASE),
       },
     }),
     new webpack.optimize.CommonsChunkPlugin({
       names: ['index', 'theme', 'vendor', 'polyfills'],
     }),
-    new SizeAnalyzerPlugin('../test_results/size-report.txt'),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      defaultSizes: 'gzip',
+      openAnalyzer: false,
+      reportFilename: '../test_results/bundle-analysis-report.html',
+    }),
     // new webpack.optimize.UglifyJsPlugin(),
     new UglifyJsPlugin(),
     new ExtractTextPlugin({
-      filename : 'css/[name]-[contenthash].css',
+      filename: 'css/[name]-[contenthash].css',
       allChunks: true,
     }),
-    new PrerenderSpaPlugin(
-      config.absOutput(''),
-      ['/', '/hello']
-    ),
-  ]
-    .concat(htmlPages),
+    htmlPages,
+  ],
 }

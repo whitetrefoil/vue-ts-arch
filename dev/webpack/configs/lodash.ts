@@ -1,9 +1,7 @@
-const LodashPlugin = require('lodash-webpack-plugin')
+import * as LodashPlugin from 'lodash-webpack-plugin'
 
 // Refer to: https://github.com/lodash/lodash-webpack-plugin
-const lodashPlugin = new LodashPlugin({
+export default new LodashPlugin({
   collections: true,
-  guards     : true,
+  guards: true,
 })
-
-module.exports = { lodashPlugin }

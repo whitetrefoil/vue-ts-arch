@@ -1,11 +1,10 @@
-import { config }     from '../config'
-const del           = require('del')
-const gulp          = require('gulp')
-const gutil         = require('gulp-util')
-const merge         = require('merge-stream')
-const webpack       = require('webpack')
-const devConfig     = require('../webpack/dev')
-const prodConfig    = require('../webpack/prod')
+import * as del from 'del'
+import * as gulp from 'gulp'
+import * as gutil from 'gulp-util'
+import * as webpack from 'webpack'
+import config from '../config'
+import devConfig from '../webpack/dev'
+import prodConfig from '../webpack/prod'
 
 gulp.task('build', (done: () => void) => {
 

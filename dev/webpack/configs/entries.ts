@@ -1,10 +1,6 @@
-const entries = {
+export default {
   polyfills: ['./polyfills'],
-  vendor   : ['./vendor'],
-  theme    : ['./theme'],
-  index    : ['./index'],
-}
-
-module.exports = {
-  entries,
+  vendor: ['./vendor'],
+  theme: ['./theme'],
+  index: ['./index'],
 }

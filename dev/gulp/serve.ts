@@ -1,7 +1,7 @@
 // tslint:disable:no-import-side-effect
 
-const gulp = require('gulp')
-const run  = require('run-sequence')
+import * as gulp from 'gulp'
+import * as run from 'run-sequence'
 
 import './backend'
 import './dev-server'

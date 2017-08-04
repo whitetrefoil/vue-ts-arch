@@ -16,7 +16,9 @@
   },
   "include"        : [
     "../Gulpfile.js",
-    "**/*.ts"
+    "**/*.ts",
+    "*.ts",
+    "../declarations/*.d.ts"
   ],
   "exclude": [
     "../node_modules"

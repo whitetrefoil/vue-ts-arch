@@ -1,11 +1,11 @@
+import * as bodyparser from 'body-parser'
+import * as gulp from 'gulp'
+import * as connect from 'gulp-connect'
 import { IncomingMessage, ServerResponse } from 'http'
-import { config }                          from '../config'
-import { proxy }                           from './proxy'
-import _                                 = require('lodash')
-const bodyparser                         = require('body-parser')
-const gulp                               = require('gulp')
-const connect                            = require('gulp-connect')
-const msm                                = require('mock-server-middleware')
+import * as _ from 'lodash'
+import { MSM } from 'mock-server-middleware'
+import config from '../config'
+import { proxy } from './proxy'
 
 const proxyMiddlewareFactory = (proxy: any) =>
   (req: IncomingMessage, res: ServerResponse, next: Function) => {
@@ -19,8 +19,8 @@ const proxyMiddlewareFactory = (proxy: any) =>
 gulp.task('backend', (done: Noop) => {
 
   const server = connect.server({
-    root      : [config.source('')],
-    port      : config.serverPort + 1,
+    root: [config.source('')],
+    port: config.serverPort + 1,
     middleware: () => {
       const middleware = [bodyparser.json()]
 
@@ -28,14 +28,15 @@ gulp.task('backend', (done: Noop) => {
         // tslint:disable-next-line:no-console
         console.log('No proxy server exists, will use StubAPI mode.')
 
-        msm.initialize({
-          apiPrefixes  : config.apiPrefixes,
-          apiDir       : 'stubapi/',
-          lowerCase    : true,
-          ping         : config.ping,
+        const msm = new MSM({
+          apiPrefixes: config.apiPrefixes,
+          apiDir: 'stubapi/',
+          lowerCase: true,
+          ping: config.ping,
           preserveQuery: false,
+          logLevel: 'DEBUG',
         })
-        middleware.push(msm.middleware)
+        middleware.push(msm.middleware())
       } else {
         // tslint:disable-next-line:no-console
         console.log('Existing proxy server found, will use proxy mode.')

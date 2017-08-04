@@ -1,31 +1,31 @@
-const ExtractTextPlugin          = require('extract-text-webpack-plugin')
-const { sassLoader, scssLoader } = require('./sass')
+import * as ExtractTextPlugin from 'extract-text-webpack-plugin'
+import { sassLoader, scssLoader } from './sass'
 
-const vueOptionsDev = {
+export const vueOptionsDev = {
   loaders: {
-    ts  : [
-      'awesome-typescript-loader?useBabel&configFileName=tsconfig.json',
+    ts: [
+      'awesome-typescript-loader',
       'tslint-loader',
     ],
     sass: [
       'vue-style-loader',
-      'css-loader',
+      'css-loader?importLoaders=2',
       'resolve-url-loader',
       sassLoader,
     ],
     scss: [
       'vue-style-loader',
-      'css-loader',
+      'css-loader?importLoaders=2',
       'resolve-url-loader',
       scssLoader,
     ],
   },
 }
 
-const vueOptionsProd = {
+export const vueOptionsProd = {
   loaders: {
     ts: [
-      'awesome-typescript-loader?useBabel&configFileName=tsconfig.json',
+      'awesome-typescript-loader?useCache=false',
     ],
 
     css: ExtractTextPlugin.extract({
@@ -34,7 +34,7 @@ const vueOptionsProd = {
 
     sass: ExtractTextPlugin.extract({
       use: [
-        'css-loader?minimize&safe',
+        'css-loader?minimize&safe&importLoaders=2',
         'resolve-url-loader?keepQuery',
         sassLoader,
       ],
@@ -42,7 +42,7 @@ const vueOptionsProd = {
 
     scss: ExtractTextPlugin.extract({
       use: [
-        'css-loader?minimize&safe',
+        'css-loader?minimize&safe&importLoaders=2',
         'resolve-url-loader?keepQuery',
         scssLoader,
       ],
@@ -50,19 +50,12 @@ const vueOptionsProd = {
   },
 }
 
-const vueLoaderDev = {
-  loader : 'vue-loader',
+export const vueLoaderDev = {
+  loader: 'vue-loader',
   options: vueOptionsDev,
 }
 
-const vueLoaderProd = {
-  loader : 'vue-loader',
+export const vueLoaderProd = {
+  loader: 'vue-loader',
   options: vueOptionsProd,
-}
-
-module.exports = {
-  vueOptionsDev,
-  vueOptionsProd,
-  vueLoaderDev,
-  vueLoaderProd,
 }

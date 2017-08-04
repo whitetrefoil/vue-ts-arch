@@ -1,16 +1,12 @@
-const webpack                    = require('webpack')
-const { config, initialize }     = require('../config')
-const { entries }                = require('./configs/entries')
-const { htmlPages }              = require('./configs/html-webpack-plugin')
-const { lodashPlugin }           = require('./configs/lodash')
-const { sassLoader, scssLoader } = require('./configs/sass')
-const { vueLoaderDev }           = require('./configs/vue')
+import * as webpack from 'webpack'
+import config from '../config'
+import entries from './configs/entries'
+import htmlPages from './configs/html-webpack-plugin'
+import lodashPlugin from './configs/lodash'
+import { sassLoader, scssLoader } from './configs/sass'
+import { vueLoaderDev } from './configs/vue'
 
-if (config.isInitialized !== true) {
-  initialize()
-}
-
-module.exports = {
+export default {
 
   devtool: 'source-map',
 
@@ -24,9 +20,9 @@ module.exports = {
   },
 
   output: {
-    path         : config.absBuilding(''),
-    publicPath   : '/',
-    filename     : '[name].js',
+    path: config.absBuilding(''),
+    publicPath: '/',
+    filename: '[name].js',
     chunkFilename: '[id]-[name].chunk.js',
   },
 
@@ -34,75 +30,63 @@ module.exports = {
     rules: [
       {
         enforce: 'pre',
-        test   : /\.[jt]s$/,
-        use    : ['source-map-loader'],
+        test: /\.[jt]s$/,
+        use: ['source-map-loader'],
         exclude: /node_modules/,
       },
       {
         enforce: 'pre',
-        test   : /\.ts$/,
-        use    : ['tslint-loader'],
+        test: /\.ts$/,
+        use: ['tslint-loader'],
         exclude: /node_modules/,
       },
       {
-        enforce: 'pre',
-        test   : /\.js$/,
-        use    : ['eslint-loader'],
+        test: /\.html$/,
         exclude: /node_modules/,
+        use: ['html-loader?interpolate'],
       },
       {
-        test: /\.(pug|jade)$/,
-        use : ['pug-loader'],
-      },
-      {
-        test   : /\.ts$/,
+        test: /\.ts$/,
         exclude: /node_modules/,
-        use    : [
-          'awesome-typescript-loader?useBabel&configFileName=tsconfig.json',
-        ],
-      },
-      {
-        test   : /\.js$/,
-        exclude: /node_modules/,
-        use    : ['babel-loader'],
+        use: ['awesome-typescript-loader'],
       },
       {
         test: /\.vue/,
-        use : [vueLoaderDev],
+        use: [vueLoaderDev],
       },
       {
         test: /\.css$/,
-        use : [
+        use: [
           'vue-style-loader',
           'css-loader?sourceMap',
         ],
       },
       {
         test: /\.sass$/,
-        use : [
+        use: [
           'vue-style-loader',
-          'css-loader?sourceMap',
+          'css-loader?sourceMap&importLoaders=2',
           'resolve-url-loader?sourceMap',
           sassLoader,
         ],
       },
       {
         test: /\.scss$/,
-        use : [
+        use: [
           'vue-style-loader',
-          'css-loader?sourceMap',
+          'css-loader?sourceMap&importLoaders=2',
           'resolve-url-loader?sourceMap',
           scssLoader,
         ],
       },
       {
-        test   : /\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
+        test: /\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
         exclude: /weixin/,
-        use    : ['url-loader'],
+        use: ['url-loader'],
       },
       {
         test: /weixin.*\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
-        use : ['file-loader'],
+        use: ['file-loader'],
       },
     ],
   },
@@ -114,17 +98,17 @@ module.exports = {
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV       : JSON.stringify(process.env.NODE_ENV),
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         VUE_ROUTER_BASE: JSON.stringify(process.env.VUE_ROUTER_BASE),
       },
     }),
     new webpack.optimize.CommonsChunkPlugin({
       names: ['index', 'theme', 'vendor', 'polyfills'],
     }),
-  ]
-    .concat(htmlPages),
+    htmlPages,
+  ],
 
   performance: {
     hints: false,
   },
-}
+} as webpack.Configuration
