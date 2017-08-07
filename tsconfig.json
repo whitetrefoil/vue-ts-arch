@@ -18,6 +18,7 @@
   },
   "include"                       : [
     "src/**/*",
+    "tests/**/*",
     "declarations/*.d.ts"
   ],
   "awesomeTypescriptLoaderOptions": {

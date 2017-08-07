@@ -33,6 +33,7 @@
   "devDependencies": {
     "@types/body-parser": "^1.16.4",
     "@types/chalk": "^0.4.31",
+    "@types/clear-require": "^2.0.0",
     "@types/core-js": "^0.9.42",
     "@types/debug": "^0.0.29",
     "@types/del": "^2.2.32",
@@ -74,6 +75,7 @@
     "html-webpack-plugin": "^2.30.1",
     "http-proxy": "^1.16.2",
     "jest": "^20.0.4",
+    "jest-localstorage-mock": "^1.2.0",
     "lodash-webpack-plugin": "^0.11.4",
     "meow": "^3.7.0",
     "merge-stream": "^1.0.1",
@@ -133,7 +135,9 @@
       "\\.(css|less|sass|scss)$": "<rootDir>/tests/style-mock.ts"
     },
     "setupFiles": [
-      "babel-polyfill/lib/index.js"
+      "babel-polyfill/lib/index.js",
+      "jest-localstorage-mock",
+      "<rootDir>/tests/unhandled-promise-rejection.ts"
     ],
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.[jt]sx?$",
     "transform": {

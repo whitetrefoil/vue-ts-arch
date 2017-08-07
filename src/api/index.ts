@@ -31,9 +31,9 @@ export const Axios = axios.create({
 
 axiosRetry(Axios, { retries: MAX_RETRY_LIMIT })
 
-class NetworkError extends Error {}
+export class NetworkError extends Error {}
 
-class ServerError extends Error {
+export class ServerError extends Error {
   public response: any
 
   constructor(message?: string, response?: IAxiosResponse<any>|any) {
