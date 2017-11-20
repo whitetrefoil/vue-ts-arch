@@ -1,5 +1,5 @@
-// tslint:disable:no-console
-import { red, yellow, green } from 'chalk'
+// tslint:disable:no-console no-implicit-dependencies
+import Chalk          from 'chalk'
 import * as timestamp from 'time-stamp'
 
 type ILevel = 'debug'|'log'|'warn'|'error'
@@ -7,6 +7,8 @@ type ILevel = 'debug'|'log'|'warn'|'error'
 interface ILog {
   debug: Function
 }
+
+const { red, yellow, green } = Chalk
 
 function time(): string {
   return timestamp('HH:mm:ss.ms')

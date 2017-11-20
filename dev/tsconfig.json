@@ -20,7 +20,7 @@
     "*.ts",
     "../declarations/*.d.ts"
   ],
-  "exclude": [
+  "exclude"        : [
     "../node_modules"
   ]
 }

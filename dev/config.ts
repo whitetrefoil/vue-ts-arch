@@ -1,6 +1,7 @@
-import { blue, gray, green, yellow } from 'chalk'
-import * as meow from 'meow'
-import * as path from 'path'
+// tslint:disable:no-implicit-dependencies
+import Chalk         from 'chalk'
+import * as meow     from 'meow'
+import * as path     from 'path'
 import { getLogger } from './utils/log'
 
 // region - Interfaces
@@ -66,9 +67,12 @@ const DEFAULT_SOURCE_BASE_DIR = 'src'
 
 const logger = getLogger(__filename)
 
+const { blue, green, gray, yellow } = Chalk
+
 // region - Configure Meow
 
-const argv = meow(`
+const argv = meow(
+  `
     Usage:
       $ npm ${yellow('<task>')} -- ${yellow('<options>')}
 
@@ -98,8 +102,8 @@ const argv = meow(`
   `,
   {
     boolean: ['help', 'development'],
-    string: ['base', 'index', 'prefix', 'livereload', 'ping', 'backend'],
-    alias: {
+    string : ['base', 'index', 'prefix', 'livereload', 'ping', 'backend'],
+    alias  : {
       b: 'base',
       h: 'help',
       d: 'development',
@@ -110,14 +114,14 @@ const argv = meow(`
       e: 'backend',
     },
     default: {
-      base: DEFAULT_BASE,
+      base       : DEFAULT_BASE,
       development: DEFAULT_IS_DEVELOPMENT,
-      port: DEFAULT_PORT,
-      prefix: DEFAULT_PREFIX,
-      index: DEFAULT_INDEX,
-      livereload: DEFAULT_LIVERELOAD,
-      ping: DEFAULT_PING,
-      backend: DEFAULT_BACKEND,
+      port       : DEFAULT_PORT,
+      prefix     : DEFAULT_PREFIX,
+      index      : DEFAULT_INDEX,
+      livereload : DEFAULT_LIVERELOAD,
+      ping       : DEFAULT_PING,
+      backend    : DEFAULT_BACKEND,
     },
   },
 ) as IMeowResult
@@ -132,8 +136,7 @@ const buildingDir = DEFAULT_BUILDING_DIR
 const outputDir = DEFAULT_OUTPUT_DIR
 
 if (typeof process.env.NODE_ENV !== 'string') {
-  process.env.NODE_ENV = (argv.flags.development || DEFAULT_IS_DEVELOPMENT)
-    ? 'development' : 'production'
+  process.env.NODE_ENV = (argv.flags.development || DEFAULT_IS_DEVELOPMENT) ? 'development' : 'production'
 }
 process.env.BABEL_ENV = process.env.NODE_ENV
 process.env.VUE_ROUTER_BASE = argv.flags.base
@@ -165,14 +168,14 @@ const absOutputByEnv: IBuildPathFn = (...pathInOutput) => {
 
 const config: IConfig = {
   argv,
-  pkg: argv.pkg || {},
-  base: argv.flags.base,
-  serverPort : parseInt(argv.flags.port, 10),
-  apiPrefixes : argv.flags.prefix.split(','),
-  serverIndex : argv.flags.index,
-  livereloadHost : argv.flags.livereload,
-  ping : parseInt(argv.flags.ping, 10),
-  backendDest : argv.flags.backend === '' ? DEFAULT_BACKEND : argv.flags.backend,
+  pkg           : argv.pkg || {},
+  base          : argv.flags.base,
+  serverPort    : parseInt(argv.flags.port, 10),
+  apiPrefixes   : argv.flags.prefix.split(','),
+  serverIndex   : argv.flags.index,
+  livereloadHost: argv.flags.livereload,
+  ping          : parseInt(argv.flags.ping, 10),
+  backendDest   : argv.flags.backend === '' ? DEFAULT_BACKEND : argv.flags.backend,
   root,
   absRoot,
   source,

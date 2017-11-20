@@ -1,10 +1,11 @@
-import * as del from 'del'
-import * as gulp from 'gulp'
-import * as gutil from 'gulp-util'
+// tslint:disable:no-implicit-dependencies
+import * as del     from 'del'
+import * as gulp    from 'gulp'
+import * as gutil   from 'gulp-util'
 import * as webpack from 'webpack'
-import config from '../config'
-import devConfig from '../webpack/dev'
-import prodConfig from '../webpack/prod'
+import config       from '../config'
+import devConfig    from '../webpack/dev'
+import prodConfig   from '../webpack/prod'
 
 gulp.task('build', (done: () => void) => {
 

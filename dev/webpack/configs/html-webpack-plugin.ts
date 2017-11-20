@@ -1,7 +1,8 @@
+// tslint:disable:no-implicit-dependencies
 import * as HtmlWebpackPlugin from 'html-webpack-plugin'
-import * as _ from 'lodash'
-import config from '../../config'
-import entries from './entries'
+import * as _                 from 'lodash'
+import config                 from '../../config'
+import entries                from './entries'
 
 function sortChunks(chunk1: HtmlWebpackPlugin.Chunk, chunk2: HtmlWebpackPlugin.Chunk) {
   const index = _.keys(entries)
@@ -11,14 +12,14 @@ function sortChunks(chunk1: HtmlWebpackPlugin.Chunk, chunk2: HtmlWebpackPlugin.C
 }
 
 export default new HtmlWebpackPlugin({
-  filename: 'index.html',
-  template: './index.html',
-  chunks: ['polyfills', 'vendor', 'theme', 'index'],
-  hash: false,
-  minify: false,
-  inject: 'body',
+  filename      : 'index.html',
+  template      : './index.html',
+  chunks        : ['polyfills', 'vendor', 'theme', 'index'],
+  hash          : false,
+  minify        : false,
+  inject        : 'body',
   chunksSortMode: sortChunks,
-  base: _.isEmpty(config.base)
+  base          : _.isEmpty(config.base)
     ? '/'
     : config.base,
 })

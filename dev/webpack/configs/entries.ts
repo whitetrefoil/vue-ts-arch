@@ -1,6 +1,6 @@
 export default {
   polyfills: ['./polyfills'],
-  vendor: ['./vendor'],
-  theme: ['./theme'],
-  index: ['./index'],
+  vendor   : ['./vendor'],
+  theme    : ['./theme'],
+  index    : ['./index'],
 }

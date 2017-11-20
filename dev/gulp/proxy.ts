@@ -1,7 +1,8 @@
-import * as gulp from 'gulp'
+// tslint:disable:no-implicit-dependencies
+import * as gulp      from 'gulp'
 import * as httpProxy from 'http-proxy'
-import config from '../config'
-import { getLogger } from '../utils/log'
+import config         from '../config'
+import { getLogger }  from '../utils/log'
 
 const { debug } = getLogger(__filename)
 
@@ -19,12 +20,12 @@ export const proxy = new DevServerProxy()
 
 gulp.task('proxy', () => {
   proxy.startProxy({
-    target: config.backendDest,
-    secure: false,
-    xfwd: true,
+    target : config.backendDest,
+    secure : false,
+    xfwd   : true,
     headers: {
-      host: config.backendDest.replace(/^https?:\/\//, ''),
-      origin: config.backendDest,
+      host   : config.backendDest.replace(/^https?:\/\//, ''),
+      origin : config.backendDest,
       referer: `${config.backendDest}/`,
     },
   })

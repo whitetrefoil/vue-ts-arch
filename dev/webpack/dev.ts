@@ -1,11 +1,13 @@
-import * as webpack from 'webpack'
-import config from '../config'
-import entries from './configs/entries'
-import htmlPages from './configs/html-webpack-plugin'
-import lodashPlugin from './configs/lodash'
+// tslint:disable:no-implicit-dependencies
+import * as webpack               from 'webpack'
+import config                     from '../config'
+import entries                    from './configs/entries'
+import htmlPages                  from './configs/html-webpack-plugin'
+import lodashPlugin               from './configs/lodash'
 import { sassLoader, scssLoader } from './configs/sass'
-import { vueLoaderDev } from './configs/vue'
+import { vueLoaderDev }           from './configs/vue'
 
+// tslint:disable:no-object-literal-type-assertion
 export default {
 
   devtool: 'source-map',
@@ -20,9 +22,9 @@ export default {
   },
 
   output: {
-    path: config.absBuilding(''),
-    publicPath: '/',
-    filename: '[name].js',
+    path         : config.absBuilding(''),
+    publicPath   : '/',
+    filename     : '[name].js',
     chunkFilename: '[id]-[name].chunk.js',
   },
 
@@ -30,40 +32,40 @@ export default {
     rules: [
       {
         enforce: 'pre',
-        test: /\.[jt]s$/,
-        use: ['source-map-loader'],
+        test   : /\.[jt]s$/,
+        use    : ['source-map-loader'],
         exclude: /node_modules/,
       },
       {
         enforce: 'pre',
-        test: /\.ts$/,
-        use: ['tslint-loader'],
+        test   : /\.ts$/,
+        use    : ['tslint-loader'],
         exclude: /node_modules/,
       },
       {
-        test: /\.html$/,
+        test   : /\.html$/,
         exclude: /node_modules/,
-        use: ['html-loader?interpolate'],
+        use    : ['html-loader?interpolate'],
       },
       {
-        test: /\.ts$/,
+        test   : /\.ts$/,
         exclude: /node_modules/,
-        use: ['awesome-typescript-loader'],
+        use    : ['awesome-typescript-loader'],
       },
       {
         test: /\.vue/,
-        use: [vueLoaderDev],
+        use : [vueLoaderDev],
       },
       {
         test: /\.css$/,
-        use: [
+        use : [
           'vue-style-loader',
           'css-loader?sourceMap',
         ],
       },
       {
         test: /\.sass$/,
-        use: [
+        use : [
           'vue-style-loader',
           'css-loader?sourceMap&importLoaders=2',
           'resolve-url-loader?sourceMap',
@@ -72,7 +74,7 @@ export default {
       },
       {
         test: /\.scss$/,
-        use: [
+        use : [
           'vue-style-loader',
           'css-loader?sourceMap&importLoaders=2',
           'resolve-url-loader?sourceMap',
@@ -80,13 +82,13 @@ export default {
         ],
       },
       {
-        test: /\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
+        test   : /\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
         exclude: /weixin/,
-        use: ['url-loader'],
+        use    : ['url-loader'],
       },
       {
         test: /weixin.*\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
-        use: ['file-loader'],
+        use : ['file-loader'],
       },
     ],
   },
@@ -98,7 +100,7 @@ export default {
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+        NODE_ENV       : JSON.stringify(process.env.NODE_ENV),
         VUE_ROUTER_BASE: JSON.stringify(process.env.VUE_ROUTER_BASE),
       },
     }),

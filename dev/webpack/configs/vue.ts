@@ -1,9 +1,10 @@
-import * as ExtractTextPlugin from 'extract-text-webpack-plugin'
+// tslint:disable:no-implicit-dependencies
+import * as ExtractTextPlugin     from 'extract-text-webpack-plugin'
 import { sassLoader, scssLoader } from './sass'
 
 export const vueOptionsDev = {
   loaders: {
-    ts: [
+    ts  : [
       'awesome-typescript-loader',
       'tslint-loader',
     ],
@@ -51,11 +52,11 @@ export const vueOptionsProd = {
 }
 
 export const vueLoaderDev = {
-  loader: 'vue-loader',
+  loader : 'vue-loader',
   options: vueOptionsDev,
 }
 
 export const vueLoaderProd = {
-  loader: 'vue-loader',
+  loader : 'vue-loader',
   options: vueOptionsProd,
 }
