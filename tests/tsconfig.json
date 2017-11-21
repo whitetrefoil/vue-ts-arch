@@ -1,7 +1,6 @@
 {
   "compilerOptions"               : {
     "allowJs"                       : true,
-    "allowSyntheticDefaultImports"  : true,
     "target"                        : "es2017",
     "lib"                           : ["es2017", "es6", "dom.iterable"],
     "module"                        : "esnext",
@@ -17,11 +16,8 @@
     "suppressImplicitAnyIndexErrors": true
   },
   "include"                       : [
-    "src/**/*",
-    "declarations/*.d.ts"
-  ],
-  "awesomeTypescriptLoaderOptions": {
-    "useBabel": true,
-    "useCache": false
-  }
+    "**/*.ts",
+    "../src/**/*",
+    "../declarations/*.d.ts"
+  ]
 }

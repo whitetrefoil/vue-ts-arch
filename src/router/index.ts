@@ -1,6 +1,6 @@
-import { Vue } from 'av-ts'
-import { isEmpty } from 'lodash'
-import VueRouter from 'vue-router'
+import { Vue }                    from 'av-ts'
+import { isEmpty }                from 'lodash'
+import VueRouter, { RouteConfig } from 'vue-router'
 
 const Hello        = import(/* webpackChunkName: "hello" */'../modules/hello')
 const MyGlobalComp = import(/* webpackChunkName: "another" */'../components/my-global-comp')
@@ -11,7 +11,7 @@ const routerBase = isEmpty(process.env.VUE_ROUTER_BASE)
   ? '/'
   : process.env.VUE_ROUTER_BASE
 
-const routes: VueRouter.RouteConfig[] = [
+const routes: RouteConfig[] = [
   {
     name    : 'index',
     path    : '/',

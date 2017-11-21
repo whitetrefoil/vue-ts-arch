@@ -1,8 +1,8 @@
 // tslint:disable:no-import-side-effect
 
-import Vue from 'vue'
-import MyApp from './components/my-app'
-import router from './router'
+import Vue           from 'vue'
+import MyApp         from './components/my-app'
+import router        from './router'
 import { getLogger } from './services/log'
 import './styles/app.sass'
 
@@ -11,7 +11,7 @@ const { debug } = getLogger(__filename)
 // tslint:disable-next-line no-unused-new
 new Vue({
   router,
-  name: 'Root',
+  name  : 'Root',
   render: (h) => h(MyApp),
 }).$mount('#app')
 

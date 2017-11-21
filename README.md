@@ -6,6 +6,12 @@ A basic project structure built with Vue & TS.
 Changelog
 ---------
 
+### v0.8.0
+
+* Change license in "package.json" to "Unlicense" because the previous value "UNLICENSED" is a mistake.
+* Change AJAX library to [r2](https://github.com/mikeal/r2).
+* Upgrade many dependencies to their latest version.
+
 ### v0.7.2
 
 * Cleanup unnecessary files.
