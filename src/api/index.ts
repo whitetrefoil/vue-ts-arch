@@ -1,8 +1,8 @@
 /* tslint:disable max-classes-per-file */
 
 import axios, { AxiosError, AxiosResponse } from 'axios'
-import axiosRetry from 'axios-retry'
-import * as _ from 'lodash'
+import axiosRetry                           from 'axios-retry'
+import * as _                               from 'lodash'
 
 export interface IServerResponseData<T> {
   code: string
@@ -55,7 +55,9 @@ export function extractResponse<T>(res: IResponse<T>): T|any {
 
 export function request<T>(requestFunction: () => Promise<IResponse<T>>): Promise<T> {
   const sendRequest = (): Promise<IResponse<T>> =>
-    requestFunction().catch(parseError)
+    requestFunction()
+      .catch(parseError)
 
-  return sendRequest().then(extractResponse)
+  return sendRequest()
+    .then(extractResponse)
 }

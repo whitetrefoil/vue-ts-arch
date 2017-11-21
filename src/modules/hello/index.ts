@@ -1,7 +1,7 @@
-import { Vue, Component, Lifecycle } from 'av-ts'
-import { store, types as t } from '../../store'
-import Receptionist from '../../models/receptionist'
-import ComponentInModule from './component-in-module'
+import { Component, Lifecycle, Vue } from 'av-ts'
+import Receptionist                  from '../../models/receptionist'
+import { store, types as t }         from '../../store'
+import ComponentInModule             from './component-in-module'
 
 @Component({
   name      : 'hello',

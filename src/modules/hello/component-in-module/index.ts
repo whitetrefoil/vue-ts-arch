@@ -1,4 +1,4 @@
-import { Component, Vue, Prop, p } from 'av-ts'
+import { Component, p, Prop, Vue } from 'av-ts'
 
 @Component({
   name: 'component-in-module',

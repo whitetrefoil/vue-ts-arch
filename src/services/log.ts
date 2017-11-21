@@ -6,7 +6,7 @@ class DevLog implements ILog {
   debug: any
 
   constructor(private name: string, debug: any) {
-    this.debug = debug(name)
+    this.debug     = debug(name)
     this.debug.log = console.log.bind(console)
   }
 }

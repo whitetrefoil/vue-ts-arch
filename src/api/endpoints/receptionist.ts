@@ -1,5 +1,5 @@
 import { Axios, request } from '..'
-import Receptionist from '../../models/receptionist'
+import Receptionist       from '../../models/receptionist'
 
 export interface IReceptionist {
   name: string

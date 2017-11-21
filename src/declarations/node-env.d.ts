@@ -1,6 +1,6 @@
 declare namespace NodeJS {
   export interface Process {
-    env: any | {
+    env: any|{
       API_PREFIX: string,
       BABEL_ENV: string,
       NODE_ENV: string,

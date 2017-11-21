@@ -1,4 +1,4 @@
-import { Vue, Component } from 'av-ts'
+import { Component, Vue } from 'av-ts'
 
 @Component({
   name: 'my-app',

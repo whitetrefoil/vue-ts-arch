@@ -1,9 +1,9 @@
-import { ActionContext } from 'vuex'
+import { ActionContext }   from 'vuex'
 import { getReceptionist } from '../../api/endpoints/receptionist'
-import { getLogger } from '../../services/log'
-import { IRootStateFull } from '../state'
-import * as t from '../types'
-import { IHelloState } from './state'
+import { getLogger }       from '../../services/log'
+import { IRootStateFull }  from '../state'
+import * as t              from '../types'
+import { IHelloState }     from './state'
 
 export type IHelloActionContext = ActionContext<IHelloState, IRootStateFull>
 
