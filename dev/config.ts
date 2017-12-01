@@ -17,14 +17,10 @@ interface IFlags {
   backend: string
 }
 
-interface IMeowResult extends meow.Result {
-  flags: IFlags
-}
-
 type IBuildPathFn = (...path: string[]) => string
 
 interface IConfig {
-  argv: IMeowResult
+  argv: meow.Result<IFlags>
   pkg: any
   base: string
   serverPort: number
@@ -50,17 +46,17 @@ interface IConfig {
 
 // region - Default constants
 
-const DEFAULT_BASE = '/'
+const DEFAULT_BASE           = '/'
 const DEFAULT_IS_DEVELOPMENT = false
-const DEFAULT_PORT = 8888
-const DEFAULT_PREFIX = '/api/'
-const DEFAULT_INDEX = 'index.html'
-const DEFAULT_PING = 0
-const DEFAULT_LIVERELOAD = 'localhost'
-const DEFAULT_BACKEND = 'http://localhost:8091'
+const DEFAULT_PORT           = 8888
+const DEFAULT_PREFIX         = '/api/'
+const DEFAULT_INDEX          = 'index.html'
+const DEFAULT_PING           = 0
+const DEFAULT_LIVERELOAD     = 'localhost'
+const DEFAULT_BACKEND        = 'http://localhost:8091'
 
-const DEFAULT_BUILDING_DIR = '.building'
-const DEFAULT_OUTPUT_DIR = 'dist'
+const DEFAULT_BUILDING_DIR    = '.building'
+const DEFAULT_OUTPUT_DIR      = 'dist'
 const DEFAULT_SOURCE_BASE_DIR = 'src'
 
 // endregion
@@ -70,8 +66,12 @@ const logger = getLogger(__filename)
 const { blue, green, gray, yellow } = Chalk
 
 // region - Configure Meow
-
-const argv = meow(
+meow({
+  description: 'asdf',
+  help       : 'help',
+  autoHelp   : false,
+})
+const argv = meow<IFlags>(
   `
     Usage:
       $ npm ${yellow('<task>')} -- ${yellow('<options>')}
@@ -101,59 +101,79 @@ const argv = meow(
     For more detail of tasks / options, see code in "dev/gulp" directory.
   `,
   {
-    boolean: ['help', 'development'],
-    string : ['base', 'index', 'prefix', 'livereload', 'ping', 'backend'],
-    alias  : {
-      b: 'base',
-      h: 'help',
-      d: 'development',
-      p: 'port',
-      x: 'prefix',
-      i: 'index',
-      l: 'livereload',
-      e: 'backend',
-    },
-    default: {
-      base       : DEFAULT_BASE,
-      development: DEFAULT_IS_DEVELOPMENT,
-      port       : DEFAULT_PORT,
-      prefix     : DEFAULT_PREFIX,
-      index      : DEFAULT_INDEX,
-      livereload : DEFAULT_LIVERELOAD,
-      ping       : DEFAULT_PING,
-      backend    : DEFAULT_BACKEND,
+    flags:   {
+      base       : {
+        alias  : 'b',
+        default: DEFAULT_BASE,
+        type   : 'string',
+      },
+      help       : {
+        alias: 'h',
+      },
+      development: {
+        alias  : 'd',
+        default: DEFAULT_IS_DEVELOPMENT,
+        type   : 'boolean',
+      },
+      port       : {
+        alias  : 'p',
+        default: DEFAULT_PORT,
+      },
+      prefix     : {
+        alias  : 'x',
+        default: DEFAULT_PREFIX,
+        type   : 'string',
+      },
+      index      : {
+        alias  : 'i',
+        default: DEFAULT_INDEX,
+        type   : 'string',
+      },
+      livereload : {
+        alias  : 'l',
+        default: DEFAULT_LIVERELOAD,
+        type   : 'string',
+      },
+      ping       : {
+        default: DEFAULT_PING,
+      },
+      backend    : {
+        alias  : 'e',
+        default: DEFAULT_BACKEND,
+        type   : 'string',
+      },
     },
   },
-) as IMeowResult
+)
 
 // endregion
 
 // region - Main exports
 
-const rootDir = path.join(__dirname, '..')
-const sourceDir = DEFAULT_SOURCE_BASE_DIR
+const rootDir     = path.join(__dirname, '..')
+const sourceDir   = DEFAULT_SOURCE_BASE_DIR
 const buildingDir = DEFAULT_BUILDING_DIR
-const outputDir = DEFAULT_OUTPUT_DIR
+const outputDir   = DEFAULT_OUTPUT_DIR
 
 if (typeof process.env.NODE_ENV !== 'string') {
   process.env.NODE_ENV = (argv.flags.development || DEFAULT_IS_DEVELOPMENT) ? 'development' : 'production'
 }
-process.env.BABEL_ENV = process.env.NODE_ENV
+process.env.BABEL_ENV       = process.env.NODE_ENV
 process.env.VUE_ROUTER_BASE = argv.flags.base
 
 logger.log(`Initializing project in "${rootDir}" for ${process.env.NODE_ENV} environment.`)
 logger.log(`The base path is "${argv.flags.base}"`)
 
 const root: IBuildPathFn = (...pathInRoot) => path.join(rootDir, ...pathInRoot)
-const absRoot = root
+const absRoot            = root
 
-const source: IBuildPathFn = (...pathInSource) => path.join(sourceDir, ...pathInSource)
+const source: IBuildPathFn    = (...pathInSource) => path.join(sourceDir, ...pathInSource)
 const absSource: IBuildPathFn = (...pathInSource) => root(sourceDir, ...pathInSource)
 
-const building: IBuildPathFn = (...pathInBuilding) => path.join(buildingDir, ...pathInBuilding)
+const building: IBuildPathFn    = (...pathInBuilding) => path.join(buildingDir, ...pathInBuilding)
 const absBuilding: IBuildPathFn = (...pathInBuilding) => root(buildingDir, ...pathInBuilding)
 
-const output: IBuildPathFn = (...pathInOutput) => path.join(outputDir, ...pathInOutput)
+const output: IBuildPathFn    = (...pathInOutput) => path.join(outputDir, ...pathInOutput)
 const absOutput: IBuildPathFn = (...pathInOutput) => root(outputDir, ...pathInOutput)
 
 const outputByEnv: IBuildPathFn = (...pathInOutput) => {
