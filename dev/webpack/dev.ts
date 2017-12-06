@@ -48,6 +48,11 @@ export default {
         use    : ['html-loader?interpolate'],
       },
       {
+        test   : /\.pug/,
+        exclude: /node_modules/,
+        use    : ['pug-loader'],
+      },
+      {
         test   : /\.ts$/,
         exclude: /node_modules/,
         use    : ['awesome-typescript-loader'],
