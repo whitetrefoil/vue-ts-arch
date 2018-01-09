@@ -1,4 +1,4 @@
-declare module 'axios-retry' {
+declare module 'axios-retry/lib' {
   import { AxiosInstance } from 'axios'
 
   export interface IAxiosRetryOptions {

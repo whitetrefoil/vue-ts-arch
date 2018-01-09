@@ -1,6 +1,9 @@
+import { state } from '../../../src/store/hello/state'
+
+jest.resetModules()
+
 describe('store :: hello', () => {
   it('should export state', () => {
-    const state = require('../../../src/store/hello/state')
-    expect(state.state.receptionist).toBeDefined()
+    expect(state.receptionist).toBeDefined()
   })
 })

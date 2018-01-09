@@ -1,8 +1,8 @@
 import VueRouter from 'vue-router'
+import router    from '../../src/router'
 
 describe('router', () => {
   it('should export the router', () => {
-    const router = require('../../src/router/index').default
     expect(router).toBeInstanceOf(VueRouter)
   })
 })

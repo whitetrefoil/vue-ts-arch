@@ -1,8 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Test" type="JavaScriptTestRunnerJest" factoryName="Jest">
+  <configuration default="false" name="Test Watch" type="JavaScriptTestRunnerJest" factoryName="Jest">
     <node-interpreter value="project" />
+    <node-options value="" />
     <working-dir value="$PROJECT_DIR$" />
-    <jest-options value="--no-coverage" />
+    <jest-options value="--no-coverage --watch" />
     <envs />
     <scope-kind value="ALL" />
     <method />

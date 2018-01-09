@@ -1,6 +1,9 @@
+import { state } from '../../src/store/state'
+
+jest.resetModules()
+
 describe('store :: hello', () => {
   it('should export state', () => {
-    const { state } = require('../../src/store/state')
     expect(state.errorMessages.length).toBe(0)
   })
 })

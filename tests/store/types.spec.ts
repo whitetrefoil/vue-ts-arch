@@ -1,8 +1,10 @@
-import * as _ from 'lodash'
+import * as _     from 'lodash'
+import * as types from '../../src/store/types'
+
+jest.resetModules()
 
 describe('store :: types', () => {
   it('should contains only string objects', () => {
-    const types = require('../../src/store/types')
     _.forEach(types, (str, key) => {
       expect(typeof str).toBe('string')
       expect(str.toUpperCase().replace('/', '__').replace(/-/g, '_')).toBe(key)

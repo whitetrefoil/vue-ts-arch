@@ -1,10 +1,16 @@
-import * as t from '../../../src/store/types'
+import Receptionist  from '../../../src/models/receptionist'
+import { mutations } from '../../../src/store/hello/mutations'
+import * as t        from '../../../src/store/types'
+
+jest.resetModules()
 
 describe('store :: hello :: mutations', () => {
   it('should set receptionist', () => {
-    const mutations = require('../../../src/store/hello/mutations').mutations
-    const state: any = {}
-    mutations[t.HELLO__SET_RECEPTIONIST](state, 'asdf')
-    expect(state.receptionist).toBe('asdf')
+    const state: any   = {}
+    const receptionist = new Receptionist('TestName')
+
+    mutations[t.HELLO__SET_RECEPTIONIST](state, receptionist)
+
+    expect(state.receptionist.name).toBe('TestName')
   })
 })

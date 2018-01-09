@@ -1,7 +1,8 @@
 {
   "compilerOptions"               : {
+    "outDir"                        : ".building",
     "allowJs"                       : true,
-    "allowSyntheticDefaultImports"  : true,
+    "allowSyntheticDefaultImports"  : false,
     "target"                        : "es2017",
     "lib"                           : ["es2017", "es6", "dom.iterable"],
     "module"                        : "esnext",

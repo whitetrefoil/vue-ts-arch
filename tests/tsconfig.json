@@ -1,7 +1,9 @@
 {
-  "compilerOptions"               : {
-    "allowJs"                       : true,
-    "target"                        : "es2017",
+  "compilerOptions": {
+    "outDir"                        : "../.building",
+    "allowJs"                       : false,
+    "allowSyntheticDefaultImports"  : false,
+    "target"                        : "es2015",
     "lib"                           : ["es2017", "es6", "dom.iterable"],
     "module"                        : "commonjs",
     "moduleResolution"              : "node",
@@ -15,7 +17,7 @@
     "noImplicitAny"                 : true,
     "suppressImplicitAnyIndexErrors": true
   },
-  "include"                       : [
+  "include"        : [
     "**/*.ts",
     "../src/**/*",
     "../declarations/*.d.ts"

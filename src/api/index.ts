@@ -1,7 +1,7 @@
 /* tslint:disable max-classes-per-file */
 
 import axios, { AxiosError, AxiosResponse } from 'axios'
-import axiosRetry                           from 'axios-retry'
+import axiosRetry                           from 'axios-retry/lib'
 import * as _                               from 'lodash'
 
 export interface IServerResponseData<T> {

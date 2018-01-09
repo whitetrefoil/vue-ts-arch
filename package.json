@@ -53,6 +53,7 @@
     "ajv": "^6.0.0",
     "awesome-typescript-loader": "^3.4.1",
     "babel-core": "^6.26.0",
+    "babel-jest": "^22.0.4",
     "babel-loader": "^7.1.2",
     "babel-plugin-dynamic-import-node": "^1.2.0",
     "babel-plugin-lodash": "^3.3.2",
@@ -74,6 +75,8 @@
     "html-webpack-plugin": "^2.30.1",
     "http-proxy": "^1.16.2",
     "jest": "^22.0.4",
+    "jest-environment-jsdom-global": "^1.0.2",
+    "jest-junit": "^3.4.1",
     "jest-localstorage-mock": "^2.1.0",
     "lodash-webpack-plugin": "^0.11.4",
     "meow": "^4.0.0",
@@ -131,6 +134,9 @@
       "ts"
     ],
     "moduleNameMapper": {
+      "^vue$": "<rootDir>/node_modules/vue/dist/vue.runtime.esm.js",
+      "^vue-router$": "<rootDir>/node_modules/vue-router/dist/vue-router.esm.js",
+      "^vuex$": "<rootDir>/node_modules/vuex/dist/vuex.esm.js",
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/tests/file-mock.ts",
       "\\.(css|less|sass|scss)$": "<rootDir>/tests/style-mock.ts"
     },
@@ -139,9 +145,21 @@
       "jest-localstorage-mock",
       "<rootDir>/tests/unhandled-promise-rejection.ts"
     ],
+    "setupTestFrameworkScriptFile": "<rootDir>/tests/setup.ts",
+    "testEnvironment": "jest-environment-jsdom-global",
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.[jt]sx?$",
+    "testResultsProcessor": "jest-junit",
     "transform": {
-      ".ts": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    }
+      "^.+\\.tsx?$": "ts-jest",
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/(?!vue)"
+    ]
+  },
+  "jest-junit": {
+    "output": "./test_results/junit/junit.xml",
+    "ancestorSeparator": " > ",
+    "usePathForSuiteName": "false"
   }
 }

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "allowJs"                       : true,
+    "outDir"                        : "../.building",
+    "allowJs"                       : false,
     "target"                        : "es2015",
     "lib"                           : ["es2017", "es6"],
     "module"                        : "commonjs",
