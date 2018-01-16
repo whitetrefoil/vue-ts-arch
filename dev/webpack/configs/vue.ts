@@ -1,19 +1,29 @@
 // tslint:disable:no-implicit-dependencies
 import * as ExtractTextPlugin     from 'extract-text-webpack-plugin'
+import config                     from '../../config'
 import { sassLoader, scssLoader } from './sass'
 
 export const vueOptionsDev = {
   loaders: {
-    ts  : [
-      'awesome-typescript-loader',
+    ts: [
+      'babel-loader',
+      {
+        loader : 'ts-loader',
+        options: {
+          transpileOnly: true,
+          configFile   : config.absRoot('tsconfig.json'),
+        },
+      },
       'tslint-loader',
     ],
+
     sass: [
       'vue-style-loader',
       'css-loader?importLoaders=2',
       'resolve-url-loader',
       sassLoader,
     ],
+
     scss: [
       'vue-style-loader',
       'css-loader?importLoaders=2',
@@ -26,7 +36,14 @@ export const vueOptionsDev = {
 export const vueOptionsProd = {
   loaders: {
     ts: [
-      'awesome-typescript-loader?useCache=false',
+      'babel-loader',
+      {
+        loader : 'ts-loader',
+        options: {
+          transpileOnly: true,
+          configFile   : config.absRoot('tsconfig.json'),
+        },
+      },
     ],
 
     css: ExtractTextPlugin.extract({

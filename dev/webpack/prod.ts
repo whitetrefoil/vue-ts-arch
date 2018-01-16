@@ -1,19 +1,18 @@
 // tslint:disable:no-implicit-dependencies
-import * as ExtractTextPlugin     from 'extract-text-webpack-plugin'
-import * as UglifyJsPlugin        from 'uglifyjs-webpack-plugin'
-import * as webpack               from 'webpack'
-import { BundleAnalyzerPlugin }   from 'webpack-bundle-analyzer'
-import config                     from '../config'
-import entries                    from './configs/entries'
-import htmlPages                  from './configs/html-webpack-plugin'
-import lodashPlugin               from './configs/lodash'
-import { sassLoader, scssLoader } from './configs/sass'
-import { vueLoaderProd }          from './configs/vue'
+import * as ExtractTextPlugin          from 'extract-text-webpack-plugin'
+import * as ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
+import * as webpack                    from 'webpack'
+import { BundleAnalyzerPlugin }        from 'webpack-bundle-analyzer'
+import config                          from '../config'
+import entries                         from './configs/entries'
+import htmlPages                       from './configs/html-webpack-plugin'
+import lodashPlugin                    from './configs/lodash'
+import { sassLoader, scssLoader }      from './configs/sass'
+import { vueLoaderProd }               from './configs/vue'
 
 const SIZE_14KB = 14336
 
-// tslint:disable:no-object-literal-type-assertion
-export default {
+const prodConf: webpack.Configuration = {
 
   context: config.absSource(''),
 
@@ -21,7 +20,7 @@ export default {
 
   resolve: {
     extensions: ['.vue', '.ts', '.js', '.json'],
-    mainFields: ['webpack', 'jsnext:main', 'module', 'browser', 'web', 'browserify', ['jam', 'main'], 'main'],
+    mainFields: ['webpack', 'jsnext:main', 'module', 'browser', 'web', 'browserify', 'main'],
   },
 
   output: {
@@ -41,7 +40,17 @@ export default {
       {
         test   : /\.ts$/,
         exclude: /node_modules/,
-        use    : ['awesome-typescript-loader?failOnHint&useCache=false'],
+        use    : [
+          'babel-loader',
+          {
+            loader : 'ts-loader',
+            options: {
+              transpileOnly   : true,
+              configFile      : config.absRoot('tsconfig.json'),
+              appendTsSuffixTo: [/\.vue$/],
+            },
+          },
+        ],
       },
       {
         test: /\.vue/,
@@ -105,6 +114,10 @@ export default {
 
   plugins: [
     lodashPlugin,
+    new ForkTsCheckerWebpackPlugin({
+      tsconfig: config.absRoot('tsconfig.json'),
+      vue: true,
+    }),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
@@ -121,12 +134,13 @@ export default {
       openAnalyzer  : false,
       reportFilename: '../test_results/bundle-analysis-report.html',
     }),
-    // new webpack.optimize.UglifyJsPlugin(),
-    new UglifyJsPlugin(),
+    new webpack.optimize.UglifyJsPlugin(),
     new ExtractTextPlugin({
       filename : 'css/[name]-[contenthash].css',
       allChunks: true,
     }),
     htmlPages,
   ],
-} as webpack.Configuration
+}
+
+export default prodConf

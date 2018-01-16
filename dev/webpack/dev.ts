@@ -1,14 +1,14 @@
 // tslint:disable:no-implicit-dependencies
-import * as webpack               from 'webpack'
-import config                     from '../config'
-import entries                    from './configs/entries'
-import htmlPages                  from './configs/html-webpack-plugin'
-import lodashPlugin               from './configs/lodash'
-import { sassLoader, scssLoader } from './configs/sass'
-import { vueLoaderDev }           from './configs/vue'
+import * as ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
+import * as webpack                    from 'webpack'
+import config                          from '../config'
+import entries                         from './configs/entries'
+import htmlPages                       from './configs/html-webpack-plugin'
+import lodashPlugin                    from './configs/lodash'
+import { sassLoader, scssLoader }      from './configs/sass'
+import { vueLoaderDev }                from './configs/vue'
 
-// tslint:disable:no-object-literal-type-assertion
-export default {
+const devConfig: webpack.Configuration = {
 
   devtool: 'source-map',
 
@@ -18,7 +18,7 @@ export default {
 
   resolve: {
     extensions: ['.vue', '.ts', '.js', '.json'],
-    mainFields: ['webpack', 'jsnext:main', 'module', 'browser', 'web', 'browserify', ['jam', 'main'], 'main'],
+    mainFields: ['webpack', 'jsnext:main', 'module', 'browser', 'web', 'browserify', 'main'],
   },
 
   output: {
@@ -50,7 +50,17 @@ export default {
       {
         test   : /\.ts$/,
         exclude: /node_modules/,
-        use    : ['awesome-typescript-loader'],
+        use    : [
+          'babel-loader',
+          {
+            loader : 'ts-loader',
+            options: {
+              transpileOnly   : true,
+              configFile      : config.absRoot('tsconfig.json'),
+              appendTsSuffixTo: [/\.vue$/],
+            },
+          },
+        ],
       },
       {
         test: /\.vue/,
@@ -96,6 +106,10 @@ export default {
   plugins: [
     // Refer to: https://github.com/lodash/lodash-webpack-plugin
     lodashPlugin,
+    new ForkTsCheckerWebpackPlugin({
+      tsconfig: config.absRoot('tsconfig.json'),
+      vue: true,
+    }),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
@@ -113,4 +127,6 @@ export default {
   performance: {
     hints: false,
   },
-} as webpack.Configuration
+}
+
+export default devConfig

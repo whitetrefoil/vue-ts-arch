@@ -1,5 +1,5 @@
 {
-  "compilerOptions"               : {
+  "compilerOptions": {
     "outDir"                        : ".building",
     "allowJs"                       : true,
     "allowSyntheticDefaultImports"  : false,
@@ -17,12 +17,8 @@
     "noImplicitAny"                 : true,
     "suppressImplicitAnyIndexErrors": true
   },
-  "include"                       : [
+  "include"        : [
     "src/**/*",
     "declarations/*.d.ts"
-  ],
-  "awesomeTypescriptLoaderOptions": {
-    "useBabel": true,
-    "useCache": false
-  }
+  ]
 }

@@ -1,20 +1,20 @@
 {
   "presets"      : [
     [
-      "env",
+      "@babel/preset-env",
       {
         "targets"    : {
           "browsers": "Android >= 4.3, iOS >= 8.0, last 5 Chrome versions, last 5 Firefox versions, last 5 Opera versions, IE >= 10, last 5 Edge versions"
         },
         "modules"    : false,
-        "useBuiltIns": true
+        "useBuiltIns": "usage"
       }
     ]
   ],
   "compact"      : false,
   "plugins"      : [
     "lodash",
-    "syntax-dynamic-import"
+    "@babel/plugin-syntax-dynamic-import"
   ],
   "highlightCode": false,
   "sourceMaps"   : true,
@@ -24,15 +24,16 @@
     "test": {
       "presets": [
         [
-          "env",
+          "@babel/preset-env",
           {
             "targets"    : {
               "browsers": "Android >= 4.3, iOS >= 8.0, last 5 Chrome versions, last 5 Firefox versions, last 5 Opera versions, IE >= 10, last 5 Edge versions"
             },
             "modules"    : "commonjs",
-            "useBuiltIns": true
+            "useBuiltIns": false
           }
-        ]
+        ],
+        "@babel/preset-typescript"
       ],
       "plugins": [
         "lodash",
