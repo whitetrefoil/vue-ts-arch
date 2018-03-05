@@ -125,7 +125,7 @@
       "ts-jest": {
         "tsConfigFile": "tests/tsconfig.json",
         "skipBabel": false,
-        "useBabelrc": true
+        "useBabelrc": false
       }
     },
     "mapCoverage": true,
