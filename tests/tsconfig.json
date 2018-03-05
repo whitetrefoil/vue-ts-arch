@@ -7,6 +7,7 @@
     "lib"                           : ["es2017", "es6", "dom.iterable"],
     "module"                        : "commonjs",
     "moduleResolution"              : "node",
+    "strict"                        : true,
     "inlineSources"                 : true,
     "inlineSourceMap"               : false,
     "skipLibCheck"                  : true,
@@ -20,6 +21,6 @@
   "include"        : [
     "**/*.ts",
     "../src/**/*",
-    "../declarations/*.d.ts"
+    "../declarations/**/*.d.ts"
   ]
 }

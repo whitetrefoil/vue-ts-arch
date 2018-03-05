@@ -101,7 +101,7 @@ const argv = meow<IFlags>(
     For more detail of tasks / options, see code in "dev/gulp" directory.
   `,
   {
-    flags:   {
+    flags: {
       base       : {
         alias  : 'b',
         default: DEFAULT_BASE,
@@ -155,9 +155,7 @@ const sourceDir   = DEFAULT_SOURCE_BASE_DIR
 const buildingDir = DEFAULT_BUILDING_DIR
 const outputDir   = DEFAULT_OUTPUT_DIR
 
-if (typeof process.env.NODE_ENV !== 'string') {
-  process.env.NODE_ENV = (argv.flags.development || DEFAULT_IS_DEVELOPMENT) ? 'development' : 'production'
-}
+process.env.NODE_ENV        = (argv.flags.development || DEFAULT_IS_DEVELOPMENT) ? 'development' : 'production'
 process.env.BABEL_ENV       = process.env.NODE_ENV
 process.env.VUE_ROUTER_BASE = argv.flags.base
 

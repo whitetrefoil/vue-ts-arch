@@ -14,6 +14,8 @@ const SIZE_14KB = 14336
 
 const prodConf: webpack.Configuration = {
 
+  mode: 'production',
+
   context: config.absSource(''),
 
   entry: entries,
@@ -121,12 +123,8 @@ const prodConf: webpack.Configuration = {
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV       : JSON.stringify(process.env.NODE_ENV),
         VUE_ROUTER_BASE: JSON.stringify(process.env.VUE_ROUTER_BASE),
       },
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      names: ['index', 'theme', 'vendor', 'polyfills'],
     }),
     new BundleAnalyzerPlugin({
       analyzerMode  : 'static',
@@ -134,7 +132,6 @@ const prodConf: webpack.Configuration = {
       openAnalyzer  : false,
       reportFilename: '../test_results/bundle-analysis-report.html',
     }),
-    new webpack.optimize.UglifyJsPlugin(),
     new ExtractTextPlugin({
       filename : 'css/[name]-[contenthash].css',
       allChunks: true,

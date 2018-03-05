@@ -11,7 +11,7 @@ import ComponentInModule             from './component-in-module'
 })
 export default class HelloComponent extends Vue {
 
-  get receptionist(): Receptionist {
+  get receptionist(): Receptionist|null {
     return store.state.hello.receptionist
   }
 

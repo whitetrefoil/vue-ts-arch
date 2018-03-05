@@ -10,7 +10,9 @@ import { vueLoaderDev }                from './configs/vue'
 
 const devConfig: webpack.Configuration = {
 
-  devtool: 'source-map',
+  mode: 'development',
+
+  devtool: 'eval-source-map',
 
   context: config.absSource(''),
 
@@ -19,6 +21,7 @@ const devConfig: webpack.Configuration = {
   resolve: {
     extensions: ['.vue', '.ts', '.js', '.json'],
     mainFields: ['webpack', 'jsnext:main', 'module', 'browser', 'web', 'browserify', 'main'],
+    unsafeCache: false,
   },
 
   output: {
@@ -111,22 +114,13 @@ const devConfig: webpack.Configuration = {
       vue: true,
     }),
     new webpack.optimize.ModuleConcatenationPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV       : JSON.stringify(process.env.NODE_ENV),
         VUE_ROUTER_BASE: JSON.stringify(process.env.VUE_ROUTER_BASE),
       },
     }),
-    new webpack.optimize.CommonsChunkPlugin({
-      names: ['index', 'theme', 'vendor', 'polyfills'],
-    }),
     htmlPages,
   ],
-
-  performance: {
-    hints: false,
-  },
 }
 
 export default devConfig

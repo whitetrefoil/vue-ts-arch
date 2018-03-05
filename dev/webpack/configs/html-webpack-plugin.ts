@@ -14,7 +14,7 @@ function sortChunks(chunk1: HtmlWebpackPlugin.Chunk, chunk2: HtmlWebpackPlugin.C
 export default new HtmlWebpackPlugin({
   filename      : 'index.html',
   template      : './index.html',
-  chunks        : ['polyfills', 'vendor', 'theme', 'index'],
+  chunks        : ['theme', 'index'],
   hash          : false,
   minify        : false,
   inject        : 'body',
