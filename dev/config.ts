@@ -1,8 +1,8 @@
 // tslint:disable:no-implicit-dependencies
-import Chalk         from 'chalk'
-import * as meow     from 'meow'
-import * as path     from 'path'
-import { getLogger } from './utils/log'
+import Chalk     from 'chalk'
+import * as log  from 'fancy-log'
+import * as meow from 'meow'
+import * as path from 'path'
 
 // region - Interfaces
 
@@ -60,8 +60,6 @@ const DEFAULT_OUTPUT_DIR      = 'dist'
 const DEFAULT_SOURCE_BASE_DIR = 'src'
 
 // endregion
-
-const logger = getLogger(__filename)
 
 const { blue, green, gray, yellow } = Chalk
 
@@ -159,8 +157,8 @@ process.env.NODE_ENV        = (argv.flags.development || DEFAULT_IS_DEVELOPMENT)
 process.env.BABEL_ENV       = process.env.NODE_ENV
 process.env.VUE_ROUTER_BASE = argv.flags.base
 
-logger.log(`Initializing project in "${rootDir}" for ${process.env.NODE_ENV} environment.`)
-logger.log(`The base path is "${argv.flags.base}"`)
+log(`Initializing project in "${rootDir}" for ${process.env.NODE_ENV} environment.`)
+log(`The base path is "${argv.flags.base}"`)
 
 const root: IBuildPathFn = (...pathInRoot) => path.join(rootDir, ...pathInRoot)
 const absRoot            = root

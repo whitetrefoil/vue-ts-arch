@@ -1,4 +1,5 @@
 // tslint:disable:no-implicit-dependencies
+import * as log              from 'fancy-log'
 import * as gulp             from 'gulp'
 import * as http             from 'http'
 import * as _                from 'lodash'
@@ -21,7 +22,7 @@ gulp.task('devServer', (done: () => void) => {
     .unshift(`webpack-dev-server/client?http://${config.livereloadHost}:${config.serverPort}`
       , 'webpack/hot/dev-server')
 
-  const webpackCompiler = webpack(devConfig)
+  const webpackCompiler       = webpack(devConfig)
   const webpackCompilerConfig = {
     publicPath        : '',
     contentBase       : config.absOutputByEnv(''),
@@ -43,14 +44,11 @@ gulp.task('devServer', (done: () => void) => {
 
   server.listen(config.serverPort, (error?: Error) => {
     if (error) {
-      // tslint:disable-next-line:no-console
-      console.error('Webpack Dev Server startup failed!  Detail:')
-      // tslint:disable-next-line:no-console
-      console.error(error)
+      log.error('Webpack Dev Server startup failed!  Detail:')
+      log.error(error)
       return
     }
-    // tslint:disable-next-line no-console
-    console.log(`Webpack Dev Server started at port ${config.serverPort}`)
+    log(`Webpack Dev Server started at port ${config.serverPort}`)
 
     http.get({
       port   : config.serverPort,
@@ -60,10 +58,8 @@ gulp.task('devServer', (done: () => void) => {
       res.on('end', done)
     })
       .on('error', (err?: Error) => {
-        // tslint:disable-next-line:no-console
-        console.warn('There must be something wrong with webpack dev server:')
-        // tslint:disable-next-line:no-console
-        console.warn(err)
+        log.warn('There must be something wrong with webpack dev server:')
+        log.warn(err)
         done()
       })
   })

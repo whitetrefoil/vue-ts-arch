@@ -18,7 +18,4 @@
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8u111" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
-  <component name="WebPackConfiguration">
-    <option name="path" value="$PROJECT_DIR$/webpack.config.js" />
-  </component>
 </project>

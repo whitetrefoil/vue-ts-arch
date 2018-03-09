@@ -1,5 +1,7 @@
 // tslint:disable:no-implicit-dependencies
+
 import * as bodyparser                     from 'body-parser'
+import * as log                            from 'fancy-log'
 import * as gulp                           from 'gulp'
 import * as connect                        from 'gulp-connect'
 import { IncomingMessage, ServerResponse } from 'http'
@@ -26,8 +28,7 @@ gulp.task('backend', (done: Noop) => {
       const middleware = [bodyparser.json()]
 
       if (proxy.server == null) {
-        // tslint:disable-next-line:no-console
-        console.log('No proxy server exists, will use StubAPI mode.')
+        log('No proxy server exists, will use StubAPI mode.')
 
         const msm = new MSM({
           apiPrefixes  : config.apiPrefixes,
@@ -39,8 +40,7 @@ gulp.task('backend', (done: Noop) => {
         })
         middleware.push(msm.middleware())
       } else {
-        // tslint:disable-next-line:no-console
-        console.log('Existing proxy server found, will use proxy mode.')
+        log('Existing proxy server found, will use proxy mode.')
         middleware.push(proxyMiddlewareFactory(proxy.server))
       }
 

@@ -1,18 +1,17 @@
 // tslint:disable:no-implicit-dependencies
+
+import * as log       from 'fancy-log'
 import * as gulp      from 'gulp'
 import * as httpProxy from 'http-proxy'
 import config         from '../config'
-import { getLogger }  from '../utils/log'
-
-const { debug } = getLogger(__filename)
 
 class DevServerProxy {
   server: NodeJS.EventEmitter = null
 
   startProxy(proxyConfig: any) {
-    debug(`Building proxy to ${config.backendDest}`)
+    log(`Building proxy to ${config.backendDest}`)
     this.server = httpProxy.createProxyServer(proxyConfig)
-    this.server.on('error', console.warn)
+    this.server.on('error', log.warn)
   }
 }
 
