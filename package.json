@@ -104,7 +104,6 @@
     "vue-template-compiler": "^2.5.13",
     "webpack": "^4.1.1",
     "webpack-bundle-analyzer": "^2.11.1",
-    "webpack-cli": "^2.0.10",
     "webpack-dev-server": "^3.1.0"
   },
   "jest": {
