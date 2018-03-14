@@ -1,12 +1,13 @@
 // tslint:disable:no-implicit-dependencies
-import * as ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
-import * as webpack                    from 'webpack'
-import config                          from '../config'
-import entries                         from './configs/entries'
-import htmlPages                       from './configs/html-webpack-plugin'
-import lodashPlugin                    from './configs/lodash'
-import { sassLoader, scssLoader }      from './configs/sass'
-import { vueLoaderDev }                from './configs/vue'
+
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
+import * as webpack               from 'webpack'
+import config                     from '../config'
+import entries                    from './configs/entries'
+import htmlPages                  from './configs/html-webpack-plugin'
+import lodashPlugin               from './configs/lodash'
+import { sassLoader, scssLoader } from './configs/sass'
+import { vueLoaderDev }           from './configs/vue'
 
 const devConfig: webpack.Configuration = {
 
@@ -19,8 +20,8 @@ const devConfig: webpack.Configuration = {
   entry: entries,
 
   resolve: {
-    extensions: ['.vue', '.ts', '.js', '.json'],
-    mainFields: ['webpack', 'jsnext:main', 'module', 'browser', 'web', 'browserify', 'main'],
+    extensions : ['.vue', '.ts', '.js', '.json'],
+    mainFields : ['webpack', 'jsnext:main', 'module', 'browser', 'web', 'browserify', 'main'],
     unsafeCache: false,
   },
 
@@ -111,7 +112,7 @@ const devConfig: webpack.Configuration = {
     lodashPlugin,
     new ForkTsCheckerWebpackPlugin({
       tsconfig: config.absRoot('tsconfig.json'),
-      vue: true,
+      vue     : true,
     }),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin({

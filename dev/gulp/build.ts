@@ -1,13 +1,12 @@
 // tslint:disable:no-implicit-dependencies
 
-import * as del     from 'del'
-import * as log     from 'fancy-log'
-import * as gulp    from 'gulp'
-import * as gutil   from 'gulp-util'
-import * as webpack from 'webpack'
-import config       from '../config'
-import devConfig    from '../webpack/dev'
-import prodConfig   from '../webpack/prod'
+import del        from 'del'
+import log        from 'fancy-log'
+import gulp       from 'gulp'
+import webpack    from 'webpack'
+import config     from '../config'
+import devConfig  from '../webpack/dev'
+import prodConfig from '../webpack/prod'
 
 gulp.task('build', (done: () => void) => {
 
@@ -19,7 +18,7 @@ gulp.task('build', (done: () => void) => {
     .then((): void => {
       webpack(webpackConfig, (err: Error, stats: any) => {
         if (err != null) {
-          throw new gutil.PluginError('webpack', err)
+          throw err
         }
         log('[webpack]:\n', stats.toString('minimal'))
         gulp.src(config.source('data/**'))

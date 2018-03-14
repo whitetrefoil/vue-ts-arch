@@ -1,8 +1,8 @@
 // tslint:disable:no-implicit-dependencies
 
 import * as bodyparser                     from 'body-parser'
-import * as log                            from 'fancy-log'
-import * as gulp                           from 'gulp'
+import log                                 from 'fancy-log'
+import gulp                                from 'gulp'
 import * as connect                        from 'gulp-connect'
 import { IncomingMessage, ServerResponse } from 'http'
 import * as _                              from 'lodash'
@@ -12,7 +12,7 @@ import { proxy }                           from './proxy'
 
 const proxyMiddlewareFactory = (proxyServer: any) =>
   (req: IncomingMessage, res: ServerResponse, next: Function) => {
-    if (_.every(config.apiPrefixes, (p) => req.url.indexOf(p) !== 0)) {
+    if (_.every(config.apiPrefixes, (p) => req.url != null && req.url.indexOf(p) !== 0)) {
       next()
       return
     }
@@ -48,6 +48,7 @@ gulp.task('backend', (done: Noop) => {
     },
   })
 
+  if (server.server == null) { throw new Error('No "server" found...')}
   server.server.on('listening', () => {
     done()
   })

@@ -1,13 +1,14 @@
 // tslint:disable:no-implicit-dependencies
-import * as log              from 'fancy-log'
-import * as gulp             from 'gulp'
-import * as http             from 'http'
-import * as _                from 'lodash'
-import * as webpack          from 'webpack'
-import * as WebpackDevServer from 'webpack-dev-server'
-import config                from '../config'
-import entries               from '../webpack/configs/entries'
-import devConfig             from '../webpack/dev'
+
+import log              from 'fancy-log'
+import gulp             from 'gulp'
+import http             from 'http'
+import * as _           from 'lodash'
+import webpack          from 'webpack'
+import WebpackDevServer from 'webpack-dev-server'
+import config           from '../config'
+import entries          from '../webpack/configs/entries'
+import devConfig        from '../webpack/dev'
 
 const WAIT_FOR_STARTUP_IN_MS = 30000
 
@@ -15,6 +16,10 @@ gulp.task('devServer', (done: () => void) => {
 
   devConfig.plugins = devConfig.plugins || []
   devConfig.plugins.push(new webpack.HotModuleReplacementPlugin())
+
+  if (devConfig.output == null) {
+    devConfig.output = {}
+  }
   devConfig.output.path = config.absOutput('')
 
   const entriesInConfig = devConfig.entry as typeof entries

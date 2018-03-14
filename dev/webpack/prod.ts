@@ -1,14 +1,15 @@
 // tslint:disable:no-implicit-dependencies
-import * as ExtractTextPlugin          from 'extract-text-webpack-plugin'
-import * as ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
-import * as webpack                    from 'webpack'
-import { BundleAnalyzerPlugin }        from 'webpack-bundle-analyzer'
-import config                          from '../config'
-import entries                         from './configs/entries'
-import htmlPages                       from './configs/html-webpack-plugin'
-import lodashPlugin                    from './configs/lodash'
-import { sassLoader, scssLoader }      from './configs/sass'
-import { vueLoaderProd }               from './configs/vue'
+
+import ExtractTextPlugin          from 'extract-text-webpack-plugin'
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
+import * as webpack               from 'webpack'
+import { BundleAnalyzerPlugin }   from 'webpack-bundle-analyzer'
+import config                     from '../config'
+import entries                    from './configs/entries'
+import htmlPages                  from './configs/html-webpack-plugin'
+import lodashPlugin               from './configs/lodash'
+import { sassLoader, scssLoader } from './configs/sass'
+import { vueLoaderProd }          from './configs/vue'
 
 const SIZE_14KB = 14336
 
@@ -118,7 +119,7 @@ const prodConf: webpack.Configuration = {
     lodashPlugin,
     new ForkTsCheckerWebpackPlugin({
       tsconfig: config.absRoot('tsconfig.json'),
-      vue: true,
+      vue     : true,
     }),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin({

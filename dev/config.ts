@@ -1,8 +1,9 @@
 // tslint:disable:no-implicit-dependencies
-import Chalk     from 'chalk'
-import * as log  from 'fancy-log'
-import * as meow from 'meow'
-import * as path from 'path'
+
+import Chalk from 'chalk'
+import log   from 'fancy-log'
+import meow  from 'meow'
+import path  from 'path'
 
 // region - Interfaces
 

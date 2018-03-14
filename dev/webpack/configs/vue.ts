@@ -1,5 +1,6 @@
 // tslint:disable:no-implicit-dependencies
-import * as ExtractTextPlugin     from 'extract-text-webpack-plugin'
+
+import ExtractTextPlugin          from 'extract-text-webpack-plugin'
 import config                     from '../../config'
 import { sassLoader, scssLoader } from './sass'
 

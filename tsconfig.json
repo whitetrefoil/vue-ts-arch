@@ -1,22 +1,19 @@
 {
   "compilerOptions": {
-    "outDir"                        : ".building",
-    "allowJs"                       : true,
-    "allowSyntheticDefaultImports"  : false,
-    "target"                        : "es2017",
-    "lib"                           : ["es2017", "es6", "dom.iterable"],
+    "esModuleInterop"               : true,
+    "experimentalDecorators"        : true,
+    "inlineSourceMap"               : false,
+    "inlineSources"                 : true,
+    "lib"                           : ["esnext", "dom", "dom.iterable"],
     "module"                        : "esnext",
     "moduleResolution"              : "node",
-    "strict"                        : true,
-    "inlineSources"                 : true,
-    "inlineSourceMap"               : false,
+    "outDir"                        : ".building",
+    "pretty"                        : true,
     "skipLibCheck"                  : true,
     "sourceMap"                     : true,
-    "emitDecoratorMetadata"         : true,
-    "experimentalDecorators"        : true,
-    "removeComments"                : false,
-    "noImplicitAny"                 : true,
-    "suppressImplicitAnyIndexErrors": true
+    "strict"                        : true,
+    "suppressImplicitAnyIndexErrors": true,
+    "target"                        : "esnext"
   },
   "include"        : [
     "src/**/*",
