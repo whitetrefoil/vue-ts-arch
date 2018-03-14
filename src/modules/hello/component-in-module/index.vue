@@ -3,5 +3,7 @@
 <template>
   <div class="component-in-module">
     <p>This is a component in "{{name}}" module.</p>
+
+    <p>{{testData}}</p>
   </div>
 </template>
