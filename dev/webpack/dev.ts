@@ -12,7 +12,7 @@ const devConfig: webpack.Configuration = {
 
   mode: 'development',
 
-  devtool: 'eval-source-map',
+  devtool: 'cheap-module-eval-source-map',
 
   context: config.absSource(''),
 

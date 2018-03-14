@@ -4,7 +4,7 @@ import config                     from '../../config'
 import { sassLoader, scssLoader } from './sass'
 
 export const vueOptionsDev = {
-  loaders: {
+  loaders   : {
     ts: [
       'babel-loader',
       {
@@ -14,7 +14,6 @@ export const vueOptionsDev = {
           configFile   : config.absRoot('tsconfig.json'),
         },
       },
-      'tslint-loader',
     ],
 
     sass: [
@@ -30,6 +29,9 @@ export const vueOptionsDev = {
       'resolve-url-loader',
       scssLoader,
     ],
+  },
+  preLoaders: {
+    ts: 'tslint-loader!source-map-loader',
   },
 }
 

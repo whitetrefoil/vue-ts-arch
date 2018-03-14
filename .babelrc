@@ -11,7 +11,7 @@
       }
     ]
   ],
-  "compact"      : false,
+  "compact"      : true,
   "plugins"      : [
     "lodash",
     "@babel/plugin-syntax-dynamic-import"
