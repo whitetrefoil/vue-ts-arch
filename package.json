@@ -17,7 +17,7 @@
     "node": ">=8.9.4"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.0.0-beta.40",
+    "@babel/polyfill": "^7.0.0-beta.41",
     "av-ts": "^0.9.3",
     "axios": "^0.18.0",
     "axios-retry": "^3.0.2",
@@ -30,10 +30,10 @@
     "vuex-router-sync": "^5.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.40",
-    "@babel/plugin-syntax-dynamic-import": "^7.0.0-beta.40",
-    "@babel/preset-env": "^7.0.0-beta.40",
-    "@babel/preset-typescript": "^7.0.0-beta.40",
+    "@babel/core": "^7.0.0-beta.41",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0-beta.41",
+    "@babel/preset-env": "^7.0.0-beta.41",
+    "@babel/preset-typescript": "^7.0.0-beta.41",
     "@types/body-parser": "^1.16.8",
     "@types/clear-require": "^2.0.0",
     "@types/core-js": "^0.9.46",

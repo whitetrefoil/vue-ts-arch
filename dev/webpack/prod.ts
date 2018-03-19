@@ -2,11 +2,11 @@
 
 import ExtractTextPlugin          from 'extract-text-webpack-plugin'
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
+import HtmlWebpackPlugin          from 'html-webpack-plugin'
+import * as _                     from 'lodash'
 import * as webpack               from 'webpack'
 import { BundleAnalyzerPlugin }   from 'webpack-bundle-analyzer'
 import config                     from '../config'
-import entries                    from './configs/entries'
-import htmlPages                  from './configs/html-webpack-plugin'
 import lodashPlugin               from './configs/lodash'
 import { sassLoader, scssLoader } from './configs/sass'
 import { vueLoaderProd }          from './configs/vue'
@@ -19,7 +19,9 @@ const prodConf: webpack.Configuration = {
 
   context: config.absSource(''),
 
-  entry: entries,
+  entry: {
+    index: ['./index'],
+  },
 
   resolve: {
     extensions: ['.vue', '.ts', '.js', '.json'],
@@ -137,7 +139,18 @@ const prodConf: webpack.Configuration = {
       filename : 'css/[name]-[contenthash].css',
       allChunks: true,
     }),
-    htmlPages,
+    new HtmlWebpackPlugin({
+      filename      : 'index.html',
+      template      : './index.html',
+      // chunks        : ['index'],
+      hash          : false,
+      minify        : false,
+      inject        : 'body',
+      chunksSortMode: 'auto',
+      base          : _.isEmpty(config.base)
+                      ? '/'
+                      : config.base,
+    }),
   ],
 }
 

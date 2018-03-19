@@ -1,5 +1,8 @@
 // tslint:disable:no-import-side-effect
 
+import './polyfills'
+import './theme'
+
 import Vue           from 'vue'
 import MyApp         from './components/my-app'
 import router        from './router'

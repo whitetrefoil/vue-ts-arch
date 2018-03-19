@@ -1,13 +1,14 @@
 // tslint:disable:no-implicit-dependencies
 
 import log              from 'fancy-log'
+import fs               from 'fs'
 import gulp             from 'gulp'
 import http             from 'http'
 import * as _           from 'lodash'
+import path             from 'path'
 import webpack          from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
 import config           from '../config'
-import entries          from '../webpack/configs/entries'
 import devConfig        from '../webpack/dev'
 
 const WAIT_FOR_STARTUP_IN_MS = 30000
@@ -22,7 +23,7 @@ gulp.task('devServer', (done: () => void) => {
   }
   devConfig.output.path = config.absOutput('')
 
-  const entriesInConfig = devConfig.entry as typeof entries
+  const entriesInConfig = devConfig.entry as { index: string[] }
   entriesInConfig.index
     .unshift(`webpack-dev-server/client?http://${config.livereloadHost}:${config.serverPort}`
       , 'webpack/hot/dev-server')
@@ -35,6 +36,7 @@ gulp.task('devServer', (done: () => void) => {
     noInfo            : false,
     historyApiFallback: true,
     stats             : 'minimal' as 'minimal',
+    // https             : true,
     proxy             : [
       {
         context: _.map(config.apiPrefixes, (p: string): string => `${p}**`),

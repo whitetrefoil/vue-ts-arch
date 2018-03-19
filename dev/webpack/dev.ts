@@ -1,10 +1,10 @@
 // tslint:disable:no-implicit-dependencies
 
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
+import HtmlWebpackPlugin          from 'html-webpack-plugin'
+import * as _                     from 'lodash'
 import * as webpack               from 'webpack'
 import config                     from '../config'
-import entries                    from './configs/entries'
-import htmlPages                  from './configs/html-webpack-plugin'
 import lodashPlugin               from './configs/lodash'
 import { sassLoader, scssLoader } from './configs/sass'
 import { vueLoaderDev }           from './configs/vue'
@@ -17,7 +17,9 @@ const devConfig: webpack.Configuration = {
 
   context: config.absSource(''),
 
-  entry: entries,
+  entry: {
+    index: ['./index'],
+  },
 
   resolve: {
     extensions : ['.vue', '.ts', '.js', '.json'],
@@ -120,7 +122,18 @@ const devConfig: webpack.Configuration = {
         VUE_ROUTER_BASE: JSON.stringify(process.env.VUE_ROUTER_BASE),
       },
     }),
-    htmlPages,
+    new HtmlWebpackPlugin({
+      filename      : 'index.html',
+      template      : './index.html',
+      // chunks        : ['index'],
+      hash          : false,
+      minify        : false,
+      inject        : 'body',
+      chunksSortMode: 'auto',
+      base          : _.isEmpty(config.base)
+                      ? '/'
+                      : config.base,
+    }),
   ],
 }
 
