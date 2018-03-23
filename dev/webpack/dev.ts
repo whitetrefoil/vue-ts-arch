@@ -116,7 +116,6 @@ const devConfig: webpack.Configuration = {
       tsconfig: config.absRoot('tsconfig.json'),
       vue     : true,
     }),
-    new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         VUE_ROUTER_BASE: JSON.stringify(process.env.VUE_ROUTER_BASE),
