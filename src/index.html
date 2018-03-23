@@ -53,7 +53,7 @@
   function showWarning() {
     var appElem = document.getElementById('app')
     var warningElem = document.getElementById('loading-error')
-    if (warningElem != null || (appElem != null && appElem.innerHTML.length > 0)) { return }
+    if (warningElem == null || (appElem != null && appElem.innerHTML.length > 0)) { return }
     warningElem.removeAttribute('style')
   }
 
