@@ -16,7 +16,7 @@
     "target"                        : "esnext"
   },
   "include"        : [
-    "src/**/*",
+    "src/test.ts",
     "declarations/**/*.d.ts"
   ]
 }

@@ -65,11 +65,6 @@ const DEFAULT_SOURCE_BASE_DIR = 'src'
 const { blue, green, gray, yellow } = Chalk
 
 // region - Configure Meow
-meow({
-  description: 'asdf',
-  help       : 'help',
-  autoHelp   : false,
-})
 const argv = meow<IFlags>(
   `
     Usage:
