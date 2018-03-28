@@ -136,7 +136,7 @@ const prodConf: webpack.Configuration = {
       reportFilename: '../test_results/bundle-analysis-report.html',
     }),
     new ExtractTextPlugin({
-      filename : 'css/[name]-[contenthash].css',
+      filename : 'css/[name]-[hash].css',
       allChunks: true,
     }),
     new HtmlWebpackPlugin({

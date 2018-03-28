@@ -17,7 +17,7 @@ class DevServerProxy {
 
 export const proxy = new DevServerProxy()
 
-gulp.task('proxy', () => {
+gulp.task('proxy', (done) => {
   proxy.startProxy({
     target : config.backendDest,
     secure : false,
@@ -28,4 +28,6 @@ gulp.task('proxy', () => {
       referer: `${config.backendDest}/`,
     },
   })
+
+  done()
 })

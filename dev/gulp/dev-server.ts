@@ -1,15 +1,17 @@
 // tslint:disable:no-implicit-dependencies
 
-import log              from 'fancy-log'
-import fs               from 'fs'
-import gulp             from 'gulp'
-import http             from 'http'
-import * as _           from 'lodash'
-import path             from 'path'
-import webpack          from 'webpack'
-import WebpackDevServer from 'webpack-dev-server'
-import config           from '../config'
-import devConfig        from '../webpack/dev'
+import { NextHandleFunction } from 'connect'
+import history                from 'connect-history-api-fallback'
+import log                    from 'fancy-log'
+import gulp                   from 'gulp'
+import http                   from 'http'
+import proxy                  from 'http-proxy-middleware'
+import c2k                    from 'koa-connect'
+import * as _                 from 'lodash'
+import webpack                from 'webpack'
+import serve                  from 'webpack-serve'
+import config                 from '../config'
+import devConfig              from '../webpack/dev'
 
 const WAIT_FOR_STARTUP_IN_MS = 30000
 
@@ -28,46 +30,50 @@ gulp.task('devServer', (done: () => void) => {
     .unshift(`webpack-dev-server/client?http://${config.livereloadHost}:${config.serverPort}`
       , 'webpack/hot/dev-server')
 
-  const webpackCompiler       = webpack(devConfig)
-  const webpackCompilerConfig = {
-    publicPath        : '',
-    contentBase       : config.absOutputByEnv(''),
-    hot               : true,
-    noInfo            : false,
-    historyApiFallback: true,
-    stats             : 'minimal' as 'minimal',
-    // https             : true,
-    proxy             : [
-      {
-        context: _.map(config.apiPrefixes, (p: string): string => `${p}**`),
-        target : `http://${config.livereloadHost}:${config.serverPort + 1}`,
-        secure : false,
-      },
-    ],
-    disableHostCheck  : true,
-  }
+  serve({
+    config : devConfig,
+    port   : config.serverPort,
+    dev    : { publicPath: '', stats: 'minimal' },
+    content: config.absOutputByEnv(''),
+    add    : (app, middleware) => {
+      middleware.webpack()
+      middleware.content()
 
-  const server = new WebpackDevServer(webpackCompiler, webpackCompilerConfig)
+      app.use(c2k(proxy(
+        config.apiPrefixes,
+        {
+          target: `http://${config.livereloadHost}:${config.serverPort + 1}`,
+          secure: false,
+        },
+      ) as NextHandleFunction))
 
-  server.listen(config.serverPort, (error?: Error) => {
-    if (error) {
+      app.use(c2k(history({
+        index: config.serverIndex,
+      }) as NextHandleFunction))
+    },
+  })
+    .then((server) => {
+      server.on('listening', () => {
+        log('Checking Dev Server status...')
+
+        http.get({
+          port   : config.serverPort,
+          timeout: WAIT_FOR_STARTUP_IN_MS,
+        }, (res: http.IncomingMessage) => {
+          log(`Webpack Dev Server started at port ${config.serverPort}`)
+          res.on('data', _.noop)
+          res.on('end', done)
+        })
+          .on('error', (err?: Error) => {
+            log.warn('There must be something wrong with webpack dev server:')
+            log.warn(err)
+            done()
+          })
+      })
+    }, (error) => {
       log.error('Webpack Dev Server startup failed!  Detail:')
       log.error(error)
       return
-    }
-    log(`Webpack Dev Server started at port ${config.serverPort}`)
-
-    http.get({
-      port   : config.serverPort,
-      timeout: WAIT_FOR_STARTUP_IN_MS,
-    }, (res: http.IncomingMessage) => {
-      res.on('data', _.noop)
-      res.on('end', done)
     })
-      .on('error', (err?: Error) => {
-        log.warn('There must be something wrong with webpack dev server:')
-        log.warn(err)
-        done()
-      })
-  })
+
 })
