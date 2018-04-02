@@ -1,6 +1,7 @@
 // tslint:disable:no-implicit-dependencies
 
 import * as bodyparser                     from 'body-parser'
+import { NextHandleFunction }              from 'connect'
 import log                                 from 'fancy-log'
 import gulp                                from 'gulp'
 import * as connect                        from 'gulp-connect'
@@ -19,13 +20,12 @@ const proxyMiddlewareFactory = (proxyServer: any) =>
     proxyServer.web(req, res)
   }
 
-gulp.task('backend', (done: Noop) => {
-
-  const server = connect.server({
+gulp.task('backend', (done) => {
+  connect.server({
     root      : [config.source('')],
     port      : config.serverPort + 1,
     middleware: () => {
-      const middleware = [bodyparser.json()]
+      const middleware = [bodyparser.json() as NextHandleFunction]
 
       if (proxy.server == null) {
         log('No proxy server exists, will use StubAPI mode.')
@@ -38,7 +38,7 @@ gulp.task('backend', (done: Noop) => {
           preserveQuery: false,
           logLevel     : 'DEBUG',
         })
-        middleware.push(msm.middleware())
+        middleware.push(msm.middleware() as NextHandleFunction)
       } else {
         log('Existing proxy server found, will use proxy mode.')
         middleware.push(proxyMiddlewareFactory(proxy.server))
@@ -48,8 +48,5 @@ gulp.task('backend', (done: Noop) => {
     },
   })
 
-  if (server.server == null) { throw new Error('No "server" found...')}
-  server.server.on('listening', () => {
-    done()
-  })
+  done()
 })

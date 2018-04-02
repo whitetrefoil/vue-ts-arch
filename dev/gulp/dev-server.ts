@@ -17,18 +17,10 @@ const WAIT_FOR_STARTUP_IN_MS = 30000
 
 gulp.task('devServer', (done: () => void) => {
 
-  devConfig.plugins = devConfig.plugins || []
-  devConfig.plugins.push(new webpack.HotModuleReplacementPlugin())
-
   if (devConfig.output == null) {
     devConfig.output = {}
   }
   devConfig.output.path = config.absOutput('')
-
-  const entriesInConfig = devConfig.entry as { index: string[] }
-  entriesInConfig.index
-    .unshift(`webpack-dev-server/client?http://${config.livereloadHost}:${config.serverPort}`
-      , 'webpack/hot/dev-server')
 
   serve({
     config : devConfig,
