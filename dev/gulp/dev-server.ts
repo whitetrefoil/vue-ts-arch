@@ -8,7 +8,6 @@ import http                   from 'http'
 import proxy                  from 'http-proxy-middleware'
 import c2k                    from 'koa-connect'
 import * as _                 from 'lodash'
-import webpack                from 'webpack'
 import serve                  from 'webpack-serve'
 import config                 from '../config'
 import devConfig              from '../webpack/dev'
@@ -28,7 +27,6 @@ gulp.task('devServer', (done: () => void) => {
     dev    : { publicPath: '', stats: 'minimal' },
     content: config.absOutputByEnv(''),
     add    : (app, middleware) => {
-      middleware.webpack()
       middleware.content()
 
       app.use(c2k(proxy(
@@ -42,6 +40,8 @@ gulp.task('devServer', (done: () => void) => {
       app.use(c2k(history({
         index: config.serverIndex,
       }) as NextHandleFunction))
+
+      middleware.webpack()
     },
   })
     .then((server) => {
