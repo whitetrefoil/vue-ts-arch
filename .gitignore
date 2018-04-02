@@ -186,6 +186,8 @@ fabric.properties
 # Markdown Navigator
 .idea/markdown-*
 
+# Eclipse Code Formatter
+.idea/eclipseCodeFormatter.xml
 
 ### VSCode
 .vscode/
