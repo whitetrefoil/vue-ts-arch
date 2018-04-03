@@ -49,6 +49,7 @@ gulp.task('devServer', (done: () => void) => {
         log('Checking Dev Server status...')
 
         http.get({
+          host   : config.livereloadHost,
           port   : config.serverPort,
           timeout: WAIT_FOR_STARTUP_IN_MS,
         }, (res: http.IncomingMessage) => {

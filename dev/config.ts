@@ -88,7 +88,7 @@ const argv = meow<IFlags>(
         -x, --prefix       prefix to determine backend requests  [${green('"/api/"')}]
                            can use ',' to specify multiple ones
         -i, --index        index page of preview server          [${green('"index.html"')}]
-        -l, --livereload   the hostname in livereload script     [${green('"localhost"')}]
+        -l, --livereload   the hostname to bind & livereload     [${green('"localhost"')}]
         --ping             emulate the network delay (ms)        [${blue('0')}]
         -e, --backend      destination of backend proxy          [${green('"http://localhost:8091"')}]
 
