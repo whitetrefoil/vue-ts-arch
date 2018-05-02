@@ -3,11 +3,11 @@
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import HtmlWebpackPlugin          from 'html-webpack-plugin'
 import * as _                     from 'lodash'
+import { VueLoaderPlugin }        from 'vue-loader'
 import * as webpack               from 'webpack'
 import config                     from '../config'
 import lodashPlugin               from './configs/lodash'
 import { sassLoader, scssLoader } from './configs/sass'
-import { vueLoaderDev }           from './configs/vue'
 
 const devConfig: webpack.Configuration = {
 
@@ -53,6 +53,22 @@ const devConfig: webpack.Configuration = {
         exclude: /node_modules/,
         use    : ['html-loader?interpolate'],
       },
+      /* See: https://vue-loader.vuejs.org/migrating.html
+      {
+        test : /\.pug$/,
+        oneOf: [
+          // this applies to <template lang="pug"> in Vue components
+          {
+            resourceQuery: /^\?vue/,
+            use          : ['pug-plain-loader'],
+          },
+          // this applies to pug imports inside JavaScript
+          {
+            use: ['raw-loader', 'pug-plain-loader'],
+          },
+        ],
+      },
+      */
       {
         test   : /\.ts$/,
         exclude: /node_modules/,
@@ -63,27 +79,38 @@ const devConfig: webpack.Configuration = {
             options: {
               transpileOnly   : true,
               configFile      : config.absRoot('tsconfig.json'),
-              appendTsSuffixTo: [/\.vue$/],
+              // appendTsSuffixTo: [/\.vue$/],
             },
           },
         ],
       },
       {
+        test   : /\.js$/,
+        loader : 'babel-loader',
+        exclude: (file) => (
+          /node_modules/.test(file)
+          && !/\/@whitetrefoil\//.test(file)
+          && !/\.vue\.js/.test(file)
+        ),
+      },
+      {
         test: /\.vue/,
-        use : [vueLoaderDev],
+        use : ['vue-loader'],
       },
       {
         test: /\.css$/,
         use : [
           'vue-style-loader',
-          'css-loader?sourceMap',
+          'css-loader?sourceMap&importLoaders=1',
+          'postcss-loader?sourceMap',
         ],
       },
       {
         test: /\.sass$/,
         use : [
           'vue-style-loader',
-          'css-loader?sourceMap&importLoaders=2',
+          'css-loader?sourceMap&importLoaders=3',
+          'postcss-loader?sourceMap',
           'resolve-url-loader?sourceMap',
           sassLoader,
         ],
@@ -92,7 +119,8 @@ const devConfig: webpack.Configuration = {
         test: /\.scss$/,
         use : [
           'vue-style-loader',
-          'css-loader?sourceMap&importLoaders=2',
+          'css-loader?sourceMap&importLoaders=3',
+          'postcss-loader?sourceMap',
           'resolve-url-loader?sourceMap',
           scssLoader,
         ],
@@ -112,6 +140,7 @@ const devConfig: webpack.Configuration = {
   plugins: [
     // Refer to: https://github.com/lodash/lodash-webpack-plugin
     lodashPlugin,
+    new VueLoaderPlugin(),
     new ForkTsCheckerWebpackPlugin({
       tsconfig: config.absRoot('tsconfig.json'),
       vue     : true,
@@ -130,8 +159,8 @@ const devConfig: webpack.Configuration = {
       inject        : 'body',
       chunksSortMode: 'auto',
       base          : _.isEmpty(config.base)
-                      ? '/'
-                      : config.base,
+        ? '/'
+        : config.base,
     }),
   ],
 }

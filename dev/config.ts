@@ -184,7 +184,7 @@ const config: IConfig = {
   base          : argv.flags.base,
   serverPort    : parseInt(argv.flags.port, 10),
   apiPrefixes   : argv.flags.prefix.split(','),
-  serverIndex   : argv.flags.index,
+  serverIndex   : argv.flags.index[0] === '/' ? argv.flags.index : `/${argv.flags.index}`,
   livereloadHost: argv.flags.livereload,
   ping          : parseInt(argv.flags.ping, 10),
   backendDest   : argv.flags.backend === '' ? DEFAULT_BACKEND : argv.flags.backend,

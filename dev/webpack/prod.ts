@@ -1,15 +1,15 @@
 // tslint:disable:no-implicit-dependencies
 
-import ExtractTextPlugin          from 'extract-text-webpack-plugin'
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import HtmlWebpackPlugin          from 'html-webpack-plugin'
 import * as _                     from 'lodash'
+import MiniCssExtractPlugin       from 'mini-css-extract-plugin'
+import { VueLoaderPlugin }        from 'vue-loader'
 import * as webpack               from 'webpack'
 import { BundleAnalyzerPlugin }   from 'webpack-bundle-analyzer'
 import config                     from '../config'
 import lodashPlugin               from './configs/lodash'
 import { sassLoader, scssLoader } from './configs/sass'
-import { vueLoaderProd }          from './configs/vue'
 
 const SIZE_14KB = 14336
 
@@ -31,8 +31,8 @@ const prodConf: webpack.Configuration = {
   output: {
     path         : config.absOutput(''),
     publicPath   : config.base,
-    filename     : 'js/[name]-[chunkHash].js',
-    chunkFilename: 'js/chunks/[id]-[chunkHash].chunk.js',
+    filename     : 'assets/[name]-[chunkHash].js',
+    chunkFilename: 'assets/chunks/[id]-[chunkHash].chunk.js',
   },
 
   module: {
@@ -42,6 +42,22 @@ const prodConf: webpack.Configuration = {
         exclude: /node_modules/,
         use    : ['html-loader?interpolate'],
       },
+      /* See: https://vue-loader.vuejs.org/migrating.html
+      {
+        test : /\.pug$/,
+        oneOf: [
+          // this applies to <template lang="pug"> in Vue components
+          {
+            resourceQuery: /^\?vue/,
+            use          : ['pug-plain-loader'],
+          },
+          // this applies to pug imports inside JavaScript
+          {
+            use: ['raw-loader', 'pug-plain-loader'],
+          },
+        ],
+      },
+      */
       {
         test   : /\.ts$/,
         exclude: /node_modules/,
@@ -52,40 +68,51 @@ const prodConf: webpack.Configuration = {
             options: {
               transpileOnly   : true,
               configFile      : config.absRoot('tsconfig.json'),
-              appendTsSuffixTo: [/\.vue$/],
+              // appendTsSuffixTo: [/\.vue$/],
             },
           },
         ],
       },
       {
+        test   : /\.js$/,
+        loader : 'babel-loader',
+        exclude: (file) => (
+          /node_modules/.test(file)
+          && !/\/@whitetrefoil\//.test(file)
+          && !/\.vue\.js/.test(file)
+        ),
+      },
+      {
         test: /\.vue/,
-        use : [vueLoaderProd],
+        use : ['vue-loader'],
       },
       {
         test: /\.css$/,
-        use : ExtractTextPlugin.extract({
-          use: ['css-loader?minimize&safe'],
-        }),
+        use : [
+          MiniCssExtractPlugin.loader,
+          'css-loader?minimize&safe&importLoaders=1',
+          'postcss-loader',
+        ],
       },
       {
         test: /\.sass$/,
-        use : ExtractTextPlugin.extract({
-          use: [
-            'css-loader?minimize&safe&importLoaders=2',
-            'resolve-url-loader?keepQuery',
-            sassLoader,
-          ],
-        }),
+        use : [
+          MiniCssExtractPlugin.loader,
+          'css-loader?minimize&safe&importLoaders=3',
+          'postcss-loader',
+          'resolve-url-loader?keepQuery',
+          sassLoader,
+        ],
       },
       {
         test: /\.scss$/,
-        use : ExtractTextPlugin.extract({
-          use: [
-            'css-loader?minimize&safe&importLoaders=2',
-            'resolve-url-loader?keepQuery',
-            scssLoader,
-          ],
-        }),
+        use : [
+          MiniCssExtractPlugin.loader,
+          'css-loader?minimize&safe&importLoaders=3',
+          'postcss-loader',
+          'resolve-url-loader?keepQuery',
+          scssLoader,
+        ],
       },
       {
         test   : /\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
@@ -119,11 +146,11 @@ const prodConf: webpack.Configuration = {
 
   plugins: [
     lodashPlugin,
+    new VueLoaderPlugin(),
     new ForkTsCheckerWebpackPlugin({
       tsconfig: config.absRoot('tsconfig.json'),
       vue     : true,
     }),
-    new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         VUE_ROUTER_BASE: JSON.stringify(process.env.VUE_ROUTER_BASE),
@@ -135,9 +162,9 @@ const prodConf: webpack.Configuration = {
       openAnalyzer  : false,
       reportFilename: '../test_results/bundle-analysis-report.html',
     }),
-    new ExtractTextPlugin({
-      filename : 'css/[name]-[hash].css',
-      allChunks: true,
+    new MiniCssExtractPlugin({
+      filename     : 'assets/[name]-[chunkHash].css',
+      chunkFilename: 'assets/chunks/[id]-[chunkHash].chunk.css',
     }),
     new HtmlWebpackPlugin({
       filename      : 'index.html',
@@ -148,8 +175,8 @@ const prodConf: webpack.Configuration = {
       inject        : 'body',
       chunksSortMode: 'auto',
       base          : _.isEmpty(config.base)
-                      ? '/'
-                      : config.base,
+        ? '/'
+        : config.base,
     }),
   ],
 }

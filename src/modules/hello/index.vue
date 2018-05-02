@@ -1,5 +1,5 @@
-<style lang="sass" src="./index.sass" scoped></style>
-<script lang="ts" src="./index.ts"></script>
+<style lang="sass" src="./index.sass"></style>
+
 <template>
   <div class="hello">
     <h1 class="h1">Hello!!!</h1>
@@ -18,3 +18,5 @@
     </section>
   </div>
 </template>
+
+<script lang="ts" src="./index.ts"></script>
