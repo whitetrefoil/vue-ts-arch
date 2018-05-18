@@ -10,6 +10,7 @@ import path  from 'path'
 interface IFlags {
   base?: string
   development: boolean
+  skipNpmCheck: boolean
   port: string
   prefix: string
   index: string
@@ -24,6 +25,7 @@ interface IConfig {
   argv: meow.Result<IFlags>
   pkg: any
   base: string
+  skipNpmCheck: boolean
   serverPort: number
   apiPrefixes: string[]
   serverIndex: string
@@ -51,7 +53,7 @@ const DEFAULT_BASE           = '/'
 const DEFAULT_IS_DEVELOPMENT = false
 const DEFAULT_PORT           = 8888
 const DEFAULT_PREFIX         = '/api/'
-const DEFAULT_INDEX          = 'index.html'
+const DEFAULT_INDEX          = '/index.html'
 const DEFAULT_PING           = 0
 const DEFAULT_LIVERELOAD     = 'localhost'
 const DEFAULT_BACKEND        = 'http://localhost:8091'
@@ -71,67 +73,73 @@ const argv = meow<IFlags>(
       $ npm ${yellow('<task>')} -- ${yellow('<options>')}
 
     Tasks:
-      run server           start preview server
-      start                alias of "run server"
-      test                 run tests
-      run coverage         generate coverage report
-      run build            build the source code
+      run serve               start preview server
+      start                   alias of "run serve"
+      test                    run tests
+      run coverage            generate coverage report
+      run build               build the source code
 
-    Options:                                                     [${gray('default value')}]
+    Options:                                                        [${gray('default value')}]
       building:
-        -b, --base         Base directory of site.               [${green('"/"')}]
+        -b, --base            Base directory of site.               [${green('"/"')}]
       common:
-        -h, --help         show this help message
-        -d, --development  Set NODE_ENV to "development"         [${yellow('false')}]
+        -h, --help            show this help message
+        -d, --development     Set NODE_ENV to "development"         [${yellow('false')}]
+        -s, --skip-npm-check
       developing:
-        -p, --port         port of preview server                [${blue('8888')}]
-        -x, --prefix       prefix to determine backend requests  [${green('"/api/"')}]
-                           can use ',' to specify multiple ones
-        -i, --index        index page of preview server          [${green('"index.html"')}]
-        -l, --livereload   the hostname to bind & livereload     [${green('"localhost"')}]
-        --ping             emulate the network delay (ms)        [${blue('0')}]
-        -e, --backend      destination of backend proxy          [${green('"http://localhost:8091"')}]
+        -p, --port            port of preview server                [${blue('8888')}]
+        -x, --prefix          prefix to determine backend requests  [${green('"/api/"')}]
+                              can use ',' to specify multiple ones
+        -i, --index           index page of preview server          [${green('"index.html"')}]
+        -l, --livereload      the hostname to bind & livereload     [${green('"localhost"')}]
+        --ping                emulate the network delay (ms)        [${blue('0')}]
+        -e, --backend         destination of backend proxy          [${green('"http://localhost:8091"')}]
 
     For more detail of tasks / options, see code in "dev/gulp" directory.
   `,
   {
     flags: {
-      base       : {
+      base        : {
         alias  : 'b',
         default: DEFAULT_BASE,
         type   : 'string',
       },
-      help       : {
+      help        : {
         alias: 'h',
       },
-      development: {
+      development : {
         alias  : 'd',
         default: DEFAULT_IS_DEVELOPMENT,
         type   : 'boolean',
       },
-      port       : {
+      skipNpmCheck: {
+        alias  : 's',
+        default: false,
+        type   : 'boolean',
+      },
+      port        : {
         alias  : 'p',
         default: DEFAULT_PORT,
       },
-      prefix     : {
+      prefix      : {
         alias  : 'x',
         default: DEFAULT_PREFIX,
         type   : 'string',
       },
-      index      : {
+      index       : {
         alias  : 'i',
         default: DEFAULT_INDEX,
         type   : 'string',
       },
-      livereload : {
+      livereload  : {
         alias  : 'l',
         default: DEFAULT_LIVERELOAD,
         type   : 'string',
       },
-      ping       : {
+      ping        : {
         default: DEFAULT_PING,
       },
-      backend    : {
+      backend     : {
         alias  : 'e',
         default: DEFAULT_BACKEND,
         type   : 'string',
@@ -182,6 +190,7 @@ const config: IConfig = {
   argv,
   pkg           : argv.pkg || {},
   base          : argv.flags.base,
+  skipNpmCheck  : argv.flags.skipNpmCheck,
   serverPort    : parseInt(argv.flags.port, 10),
   apiPrefixes   : argv.flags.prefix.split(','),
   serverIndex   : argv.flags.index[0] === '/' ? argv.flags.index : `/${argv.flags.index}`,

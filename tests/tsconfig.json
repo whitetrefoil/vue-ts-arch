@@ -1,13 +1,13 @@
 {
   "extends"        : "../tsconfig.json",
   "compilerOptions": {
+    "module": "commonjs",
     "outDir": "../.building",
-    "target": "es2015",
-    "module": "commonjs"
+    "target": "es2015"
   },
   "include"        : [
-    "**/*.ts",
+    "../declarations/**/*.d.ts",
     "../src/**/*",
-    "../declarations/**/*.d.ts"
+    "**/*.ts"
   ]
 }

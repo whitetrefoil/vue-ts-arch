@@ -1,6 +1,5 @@
 // tslint:disable:no-import-side-effect
 
-import './polyfills'
 import './theme'
 
 import Vue           from 'vue'

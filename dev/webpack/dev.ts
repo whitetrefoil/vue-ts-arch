@@ -13,12 +13,12 @@ const devConfig: webpack.Configuration = {
 
   mode: 'development',
 
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'source-map',
 
   context: config.absSource(''),
 
   entry: {
-    index: ['./index'],
+    index: ['./polyfills', './index'],
   },
 
   resolve: {
@@ -53,22 +53,6 @@ const devConfig: webpack.Configuration = {
         exclude: /node_modules/,
         use    : ['html-loader?interpolate'],
       },
-      /* See: https://vue-loader.vuejs.org/migrating.html
-      {
-        test : /\.pug$/,
-        oneOf: [
-          // this applies to <template lang="pug"> in Vue components
-          {
-            resourceQuery: /^\?vue/,
-            use          : ['pug-plain-loader'],
-          },
-          // this applies to pug imports inside JavaScript
-          {
-            use: ['raw-loader', 'pug-plain-loader'],
-          },
-        ],
-      },
-      */
       {
         test   : /\.ts$/,
         exclude: /node_modules/,
@@ -79,15 +63,15 @@ const devConfig: webpack.Configuration = {
             options: {
               transpileOnly   : true,
               configFile      : config.absRoot('tsconfig.json'),
-              // appendTsSuffixTo: [/\.vue$/],
+              appendTsSuffixTo: [/\.vue$/],
             },
           },
         ],
       },
       {
         test   : /\.js$/,
-        loader : 'babel-loader',
-        exclude: (file) => (
+        use    : ['babel-loader'],
+        exclude: (file: string) => (
           /node_modules/.test(file)
           && !/\/@whitetrefoil\//.test(file)
           && !/\.vue\.js/.test(file)

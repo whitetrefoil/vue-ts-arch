@@ -4,16 +4,18 @@
       "@babel/preset-env",
       {
         "targets"    : {
-          "browsers": "Android >= 4.3, iOS >= 8.0, last 5 Chrome versions, last 5 Firefox versions, last 5 Opera versions, IE >= 10, last 5 Edge versions"
+          "browsers": "Android >= 5.0, iOS >= 8.0, last 5 Chrome versions, last 5 Firefox versions, last 5 Opera versions, IE >= 10, last 5 Edge versions"
         },
         "modules"    : false,
-        "useBuiltIns": "usage"
+        "useBuiltIns": "entry"
       }
     ]
   ],
   "compact"      : true,
   "plugins"      : [
     "lodash",
+    "transform-node-env-inline",
+    "@babel/plugin-proposal-object-rest-spread",
     "@babel/plugin-syntax-dynamic-import"
   ],
   "highlightCode": false,
@@ -27,7 +29,7 @@
           "@babel/preset-env",
           {
             "targets"    : {
-              "browsers": "Android >= 4.3, iOS >= 8.0, last 5 Chrome versions, last 5 Firefox versions, last 5 Opera versions, IE >= 10, last 5 Edge versions"
+              "browsers": "Android >= 5.0, iOS >= 8.0, last 5 Chrome versions, last 5 Firefox versions, last 5 Opera versions, IE >= 10, last 5 Edge versions"
             },
             "modules"    : "commonjs",
             "useBuiltIns": false

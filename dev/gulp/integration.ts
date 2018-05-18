@@ -4,6 +4,7 @@ import { parallel, series, task } from 'gulp'
 
 import './backend'
 import './dev-server'
+import './pre-check'
 import './proxy'
 
-task('integration', series(parallel('devServer', 'proxy'), 'backend'))
+task('integration', series('preCheck', parallel('devServer', 'proxy'), 'backend'))

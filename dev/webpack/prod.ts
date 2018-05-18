@@ -20,7 +20,7 @@ const prodConf: webpack.Configuration = {
   context: config.absSource(''),
 
   entry: {
-    index: ['./index'],
+    index: ['./polyfills', './index'],
   },
 
   resolve: {
@@ -42,22 +42,6 @@ const prodConf: webpack.Configuration = {
         exclude: /node_modules/,
         use    : ['html-loader?interpolate'],
       },
-      /* See: https://vue-loader.vuejs.org/migrating.html
-      {
-        test : /\.pug$/,
-        oneOf: [
-          // this applies to <template lang="pug"> in Vue components
-          {
-            resourceQuery: /^\?vue/,
-            use          : ['pug-plain-loader'],
-          },
-          // this applies to pug imports inside JavaScript
-          {
-            use: ['raw-loader', 'pug-plain-loader'],
-          },
-        ],
-      },
-      */
       {
         test   : /\.ts$/,
         exclude: /node_modules/,
@@ -68,7 +52,7 @@ const prodConf: webpack.Configuration = {
             options: {
               transpileOnly   : true,
               configFile      : config.absRoot('tsconfig.json'),
-              // appendTsSuffixTo: [/\.vue$/],
+              appendTsSuffixTo: [/\.vue$/],
             },
           },
         ],

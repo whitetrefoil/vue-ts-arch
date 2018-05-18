@@ -153,6 +153,8 @@ local.properties
 .idea/dynamic.xml
 .idea/uiDesigner.xml
 
+.idea/misc.xml
+
 # Gradle:
 .idea/gradle.xml
 .idea/libraries
@@ -188,6 +190,10 @@ fabric.properties
 
 # Eclipse Code Formatter
 .idea/eclipseCodeFormatter.xml
+
+# Kotlin
+.idea/kotlinc.xml
+
 
 ### VSCode
 .vscode/

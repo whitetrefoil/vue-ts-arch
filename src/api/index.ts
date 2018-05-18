@@ -2,7 +2,6 @@
 
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import axiosRetry                           from 'axios-retry/lib'
-import * as _                               from 'lodash'
 
 export interface IServerResponseData<T> {
   code: string
@@ -43,7 +42,7 @@ export class ServerError extends Error {
 }
 
 function parseError(error: IAxiosError<any>): never {
-  if (_.isNil(error.response)) {
+  if (error.response == null) {
     throw new NetworkError('Network error!')
   }
   throw new ServerError('Unknown server error!', error.response)

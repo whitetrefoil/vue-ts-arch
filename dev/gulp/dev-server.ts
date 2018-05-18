@@ -14,7 +14,7 @@ import devConfig              from '../webpack/dev'
 
 const WAIT_FOR_STARTUP_IN_MS = 30000
 
-gulp.task('devServer', (done: () => void) => {
+gulp.task('devServer', (done) => {
 
   if (devConfig.output == null) {
     devConfig.output = {}
@@ -23,6 +23,7 @@ gulp.task('devServer', (done: () => void) => {
 
   serve({
     config : devConfig,
+    host   : config.livereloadHost,
     port   : config.serverPort,
     dev    : { publicPath: '', stats: 'minimal' },
     content: config.absOutputByEnv(''),
@@ -32,13 +33,14 @@ gulp.task('devServer', (done: () => void) => {
       app.use(c2k(proxy(
         config.apiPrefixes,
         {
-          target: `http://${config.livereloadHost}:${config.serverPort + 1}`,
+          target: `http://localhost:${config.serverPort + 1}`,
           secure: false,
         },
       ) as NextHandleFunction))
 
       app.use(c2k(history({
-        index: config.serverIndex,
+        index  : `/${config.serverIndex}`,
+        verbose: false,
       }) as NextHandleFunction))
 
       middleware.webpack()

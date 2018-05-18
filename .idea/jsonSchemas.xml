@@ -8,10 +8,15 @@
             <SchemaInfo>
               <option name="name" value="response.schema" />
               <option name="relativePathToSchema" value="stubapi/schemata/response.schema.json" />
+              <option name="schemaVersion" value="JSON schema version 7" />
               <option name="patterns">
                 <list>
                   <Item>
-                    <option name="path" value="stubapi" />
+                    <option name="path" value="stubapi/get" />
+                    <option name="path" value="stubapi/post" />
+                    <option name="path" value="stubapi/put" />
+                    <option name="path" value="stubapi/patch" />
+                    <option name="path" value="stubapi/delete" />
                     <option name="directory" value="true" />
                   </Item>
                 </list>
