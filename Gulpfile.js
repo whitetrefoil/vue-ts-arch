@@ -1,6 +1,7 @@
 require('ts-node').register({
   project: './dev/tsconfig.json',
   fast   : true,
+  files  : true,
   cache  : false,
 })
 
