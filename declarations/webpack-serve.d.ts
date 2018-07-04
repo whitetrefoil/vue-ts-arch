@@ -45,9 +45,9 @@ declare module 'webpack-serve' {
     config?: webpack.Configuration
     content?: string|string[]
     clipboard?: boolean
-    dev?: devMiddleware.Options
+    devMiddleware?: devMiddleware.Options
     host?: string|IWebSocketHost
-    hot?: false|IHotClientOptions
+    hotClient?: false|IHotClientOptions
     http2?: boolean
     https?: IHttpsConfig
     logLevel?: ILogLevel
@@ -65,7 +65,7 @@ declare module 'webpack-serve' {
     on(eventName: IEvent, fn: Function)
   }
 
-  function serve(options?: IOptions): Promise<IServe>
+  function serve(argv?: object, options?: IOptions): Promise<IServe>
 
   export = serve
 }

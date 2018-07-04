@@ -21,13 +21,13 @@ gulp.task('devServer', (done) => {
   }
   devConfig.output.path = config.absOutput('')
 
-  serve({
-    config : devConfig,
-    host   : config.livereloadHost,
-    port   : config.serverPort,
-    dev    : { publicPath: '', stats: 'minimal' },
-    content: config.absOutputByEnv(''),
-    add    : (app, middleware) => {
+  serve({}, {
+    config       : devConfig,
+    host         : config.livereloadHost,
+    port         : config.serverPort,
+    devMiddleware: { publicPath: '', stats: 'minimal' },
+    content      : config.absOutputByEnv(''),
+    add          : (app, middleware) => {
       middleware.content()
 
       app.use(c2k(proxy(
