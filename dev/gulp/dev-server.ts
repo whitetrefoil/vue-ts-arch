@@ -1,74 +1,57 @@
-// tslint:disable:no-implicit-dependencies
+import log              from 'fancy-log'
+import gulp             from 'gulp'
+import * as _           from 'lodash'
+import webpack          from 'webpack'
+import WebpackDevServer from 'webpack-dev-server'
+import config           from '../config'
+import devConfig        from '../webpack/dev'
+import prodConfig       from '../webpack/prod'
 
-import { NextHandleFunction } from 'connect'
-import history                from 'connect-history-api-fallback'
-import log                    from 'fancy-log'
-import gulp                   from 'gulp'
-import http                   from 'http'
-import proxy                  from 'http-proxy-middleware'
-import c2k                    from 'koa-connect'
-import * as _                 from 'lodash'
-import serve                  from 'webpack-serve'
-import config                 from '../config'
-import devConfig              from '../webpack/dev'
 
-const WAIT_FOR_STARTUP_IN_MS = 30000
+gulp.task('devServer', done => {
 
-gulp.task('devServer', (done) => {
+  const webpackConfig = process.env.NODE_ENV === 'development' ? devConfig : prodConfig
 
-  if (devConfig.output == null) {
-    devConfig.output = {}
+  webpackConfig.plugins = webpackConfig.plugins || []
+  webpackConfig.plugins.push(new webpack.HotModuleReplacementPlugin())
+  if (webpackConfig.output == null) {
+    webpackConfig.output = {}
   }
-  devConfig.output.path = config.absOutput('')
+  webpackConfig.output.path = config.absOutput('')
 
-  serve({
-    config : devConfig,
-    host   : config.livereloadHost,
-    port   : config.serverPort,
-    dev    : { publicPath: '', stats: 'minimal' },
-    content: config.absOutputByEnv(''),
-    add    : (app, middleware) => {
-      middleware.content()
+  const devServerOptions: WebpackDevServer.Configuration = {
+    host              : '0.0.0.0',
+    port              : config.serverPort,
+    publicPath        : config.base,
+    contentBase       : [config.absOutputByEnv(''), config.absRoot('stubapi/static')],
+    hot               : true,
+    noInfo            : false,
+    stats             : 'errors-only',
+    proxy             : [
+      {
+        context: _.map(config.apiPrefixes, (p: string): string => `${p}**`),
+        target : `http://0.0.0.0:${config.serverPort + 1}`,
+        secure : false,
+      },
+    ],
+    historyApiFallback: true,
+    disableHostCheck  : true,
+  }
 
-      app.use(c2k(proxy(
-        config.apiPrefixes,
-        {
-          target: `http://localhost:${config.serverPort + 1}`,
-          secure: false,
-        },
-      ) as NextHandleFunction))
+  WebpackDevServer.addDevServerEntrypoints(webpackConfig, devServerOptions)
 
-      app.use(c2k(history({
-        index  : `/${config.serverIndex}`,
-        verbose: false,
-      }) as NextHandleFunction))
+  const webpackCompiler = webpack(webpackConfig)
 
-      middleware.webpack()
-    },
-  })
-    .then((server) => {
-      server.on('listening', () => {
-        log('Checking Dev Server status...')
+  const server = new WebpackDevServer(webpackCompiler, devServerOptions)
 
-        http.get({
-          host   : config.livereloadHost,
-          port   : config.serverPort,
-          timeout: WAIT_FOR_STARTUP_IN_MS,
-        }, (res: http.IncomingMessage) => {
-          log(`Webpack Dev Server started at port ${config.serverPort}`)
-          res.on('data', _.noop)
-          res.on('end', done)
-        })
-          .on('error', (err?: Error) => {
-            log.warn('There must be something wrong with webpack dev server:')
-            log.warn(err)
-            done()
-          })
-      })
-    }, (error) => {
+  server.listen(config.serverPort, '0.0.0.0', error => {
+    if (error != null) {
       log.error('Webpack Dev Server startup failed!  Detail:')
       log.error(error)
-      return
-    })
+    } else {
+      log(`Webpack Dev Server started at port ${config.serverPort}`)
+    }
 
+    done()
+  })
 })

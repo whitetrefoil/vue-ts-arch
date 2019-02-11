@@ -1,5 +1,3 @@
-// tslint:disable:no-implicit-dependencies
-
 import Chalk from 'chalk'
 import log   from 'fancy-log'
 import meow  from 'meow'
@@ -8,13 +6,12 @@ import path  from 'path'
 // region - Interfaces
 
 interface IFlags {
+  help: boolean
+  version: boolean
   base?: string
   development: boolean
   skipNpmCheck: boolean
   port: string
-  prefix: string
-  index: string
-  livereload: string
   ping: string
   backend: string
 }
@@ -28,8 +25,6 @@ interface IConfig {
   skipNpmCheck: boolean
   serverPort: number
   apiPrefixes: string[]
-  serverIndex: string
-  livereloadHost: string
   ping: number
   backendDest: string
 
@@ -52,10 +47,8 @@ interface IConfig {
 const DEFAULT_BASE           = '/'
 const DEFAULT_IS_DEVELOPMENT = false
 const DEFAULT_PORT           = 8888
-const DEFAULT_PREFIX         = '/api/'
-const DEFAULT_INDEX          = '/index.html'
+const DEFAULT_PREFIX         = ['/api/']
 const DEFAULT_PING           = 0
-const DEFAULT_LIVERELOAD     = 'localhost'
 const DEFAULT_BACKEND        = 'http://localhost:8091'
 
 const DEFAULT_BUILDING_DIR    = '.building'
@@ -79,71 +72,31 @@ const argv = meow<IFlags>(
       run coverage            generate coverage report
       run build               build the source code
 
-    Options:                                                        [${gray('default value')}]
+    Options:                                                     [${gray('default value')}]
       building:
-        -b, --base            Base directory of site.               [${green('"/"')}]
+        -b, --base            base directory of site.            [${green('"/"')}]
       common:
         -h, --help            show this help message
-        -d, --development     Set NODE_ENV to "development"         [${yellow('false')}]
+        -v, --version         show version
+        -d, --development     set NODE_ENV to "development"      [${yellow('false')}]
         -s, --skip-npm-check
       developing:
-        -p, --port            port of preview server                [${blue('8888')}]
-        -x, --prefix          prefix to determine backend requests  [${green('"/api/"')}]
-                              can use ',' to specify multiple ones
-        -i, --index           index page of preview server          [${green('"index.html"')}]
-        -l, --livereload      the hostname to bind & livereload     [${green('"localhost"')}]
-        --ping                emulate the network delay (ms)        [${blue('0')}]
-        -e, --backend         destination of backend proxy          [${green('"http://localhost:8091"')}]
+        -p, --port            port of preview server             [${blue('8888')}]
+        --ping                emulate the network delay (ms)     [${blue('0')}]
+        -e, --backend         destination of backend proxy       [${green('"http://localhost:8091"')}]
 
     For more detail of tasks / options, see code in "dev/gulp" directory.
   `,
   {
     flags: {
-      base        : {
-        alias  : 'b',
-        default: DEFAULT_BASE,
-        type   : 'string',
-      },
-      help        : {
-        alias: 'h',
-      },
-      development : {
-        alias  : 'd',
-        default: DEFAULT_IS_DEVELOPMENT,
-        type   : 'boolean',
-      },
-      skipNpmCheck: {
-        alias  : 's',
-        default: false,
-        type   : 'boolean',
-      },
-      port        : {
-        alias  : 'p',
-        default: DEFAULT_PORT,
-      },
-      prefix      : {
-        alias  : 'x',
-        default: DEFAULT_PREFIX,
-        type   : 'string',
-      },
-      index       : {
-        alias  : 'i',
-        default: DEFAULT_INDEX,
-        type   : 'string',
-      },
-      livereload  : {
-        alias  : 'l',
-        default: DEFAULT_LIVERELOAD,
-        type   : 'string',
-      },
-      ping        : {
-        default: DEFAULT_PING,
-      },
-      backend     : {
-        alias  : 'e',
-        default: DEFAULT_BACKEND,
-        type   : 'string',
-      },
+      base        : { alias: 'b', type: 'string', default: DEFAULT_BASE },
+      help        : { alias: 'h', type: 'boolean' },
+      version     : { alias: 'v', type: 'boolean' },
+      development : { alias: 'd', type: 'boolean', default: DEFAULT_IS_DEVELOPMENT },
+      skipNpmCheck: { alias: 's', type: 'boolean', default: false },
+      port        : { alias: 'p', default: DEFAULT_PORT },
+      ping        : { default: DEFAULT_PING },
+      backend     : { alias: 'e', type: 'string', default: DEFAULT_BACKEND },
     },
   },
 )
@@ -177,26 +130,24 @@ const output: IBuildPathFn    = (...pathInOutput) => path.join(outputDir, ...pat
 const absOutput: IBuildPathFn = (...pathInOutput) => root(outputDir, ...pathInOutput)
 
 const outputByEnv: IBuildPathFn = (...pathInOutput) => {
-  const dir = process.env.NODE_ENV === 'production' ? outputDir : buildingDir
+  const dir = process.env.NODE_ENV === 'development' ? buildingDir : outputDir
   return path.join(dir, ...pathInOutput)
 }
 
 const absOutputByEnv: IBuildPathFn = (...pathInOutput) => {
-  const dir = process.env.NODE_ENV === 'production' ? outputDir : buildingDir
+  const dir = process.env.NODE_ENV === 'development' ? buildingDir : outputDir
   return root(dir, ...pathInOutput)
 }
 
 const config: IConfig = {
   argv,
-  pkg           : argv.pkg || {},
-  base          : argv.flags.base,
-  skipNpmCheck  : argv.flags.skipNpmCheck,
-  serverPort    : parseInt(argv.flags.port, 10),
-  apiPrefixes   : argv.flags.prefix.split(','),
-  serverIndex   : argv.flags.index[0] === '/' ? argv.flags.index : `/${argv.flags.index}`,
-  livereloadHost: argv.flags.livereload,
-  ping          : parseInt(argv.flags.ping, 10),
-  backendDest   : argv.flags.backend === '' ? DEFAULT_BACKEND : argv.flags.backend,
+  pkg         : argv.pkg || {},
+  base        : argv.flags.base,
+  skipNpmCheck: argv.flags.skipNpmCheck,
+  serverPort  : parseInt(argv.flags.port, 10),
+  apiPrefixes : DEFAULT_PREFIX,
+  ping        : parseInt(argv.flags.ping, 10),
+  backendDest : argv.flags.backend === '' ? DEFAULT_BACKEND : argv.flags.backend,
   root,
   absRoot,
   source,

@@ -1,23 +1,30 @@
-// tslint:disable:no-implicit-dependencies
-
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
+import * as fs                    from 'fs-extra'
 import HtmlWebpackPlugin          from 'html-webpack-plugin'
 import * as _                     from 'lodash'
 import MiniCssExtractPlugin       from 'mini-css-extract-plugin'
+import * as path                  from 'path'
 import { VueLoaderPlugin }        from 'vue-loader'
 import * as webpack               from 'webpack'
 import { BundleAnalyzerPlugin }   from 'webpack-bundle-analyzer'
 import config                     from '../config'
+import excludeFor                 from './configs/exclude'
 import lodashPlugin               from './configs/lodash'
 import { sassLoader, scssLoader } from './configs/sass'
 
 const SIZE_14KB = 14336
+
+// See https://github.com/vuejs/vue-loader/issues/678#issuecomment-370965224
+const babelrc = fs.readJsonSync(path.join(__dirname, '../../.babelrc'))
+
 
 const prodConf: webpack.Configuration = {
 
   mode: 'production',
 
   context: config.absSource(''),
+
+  profile: true,
 
   entry: {
     index: ['./polyfills', './index'],
@@ -31,8 +38,9 @@ const prodConf: webpack.Configuration = {
   output: {
     path         : config.absOutput(''),
     publicPath   : config.base,
-    filename     : 'assets/[name]-[chunkHash].js',
+    filename     : 'assets/[name]-[hash].js',
     chunkFilename: 'assets/chunks/[id]-[chunkHash].chunk.js',
+    globalObject : 'self',
   },
 
   module: {
@@ -44,27 +52,30 @@ const prodConf: webpack.Configuration = {
       },
       {
         test   : /\.ts$/,
-        exclude: /node_modules/,
+        exclude: excludeFor('ts'),
         use    : [
-          'babel-loader',
+          {
+            loader : 'babel-loader',
+            options: babelrc,
+          },
           {
             loader : 'ts-loader',
             options: {
-              transpileOnly   : true,
-              configFile      : config.absRoot('tsconfig.json'),
-              appendTsSuffixTo: [/\.vue$/],
+              transpileOnly: true,
+              configFile   : config.absRoot('tsconfig.json'),
             },
           },
         ],
       },
       {
         test   : /\.js$/,
-        loader : 'babel-loader',
-        exclude: (file) => (
-          /node_modules/.test(file)
-          && !/\/@whitetrefoil\//.test(file)
-          && !/\.vue\.js/.test(file)
-        ),
+        exclude: excludeFor('babel'),
+        use    : [
+          {
+            loader : 'babel-loader',
+            options: babelrc,
+          },
+        ],
       },
       {
         test: /\.vue/,
@@ -74,7 +85,12 @@ const prodConf: webpack.Configuration = {
         test: /\.css$/,
         use : [
           MiniCssExtractPlugin.loader,
-          'css-loader?minimize&safe&importLoaders=1',
+          {
+            loader : 'css-loader',
+            options: {
+              importLoaders: 1,
+            },
+          },
           'postcss-loader',
         ],
       },
@@ -82,7 +98,12 @@ const prodConf: webpack.Configuration = {
         test: /\.sass$/,
         use : [
           MiniCssExtractPlugin.loader,
-          'css-loader?minimize&safe&importLoaders=3',
+          {
+            loader : 'css-loader',
+            options: {
+              importLoaders: 3,
+            },
+          },
           'postcss-loader',
           'resolve-url-loader?keepQuery',
           sassLoader,
@@ -92,7 +113,12 @@ const prodConf: webpack.Configuration = {
         test: /\.scss$/,
         use : [
           MiniCssExtractPlugin.loader,
-          'css-loader?minimize&safe&importLoaders=3',
+          {
+            loader : 'css-loader',
+            options: {
+              importLoaders: 3,
+            },
+          },
           'postcss-loader',
           'resolve-url-loader?keepQuery',
           scssLoader,
@@ -100,16 +126,17 @@ const prodConf: webpack.Configuration = {
       },
       {
         test   : /\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
-        exclude: /(weixin)/,
+        exclude: /weixin/,
         use    : [
           {
             loader : 'url-loader',
             options: {
               // limit for base64 inlining in bytes
-              limit: SIZE_14KB,
+              limit   : SIZE_14KB,
               // custom naming format if file is larger than
               // the threshold
-              name : 'assets/[hash].[ext]',
+              name    : 'assets/[hash].[ext]',
+              fallback: 'file-loader?outputPath=assets/&publicPath=/assets/',
             },
           },
         ],
@@ -121,6 +148,8 @@ const prodConf: webpack.Configuration = {
             loader : 'file-loader',
             options: {
               name: 'assets/[hash].[ext]',
+              // outputPath: 'assets/',
+              // publicPath: '/assets/',
             },
           },
         ],
@@ -128,12 +157,16 @@ const prodConf: webpack.Configuration = {
     ],
   },
 
+  node: {
+    __dirname : true,
+    __filename: true,
+  },
+
   plugins: [
     lodashPlugin,
     new VueLoaderPlugin(),
     new ForkTsCheckerWebpackPlugin({
       tsconfig: config.absRoot('tsconfig.json'),
-      vue     : true,
     }),
     new webpack.DefinePlugin({
       'process.env': {
@@ -144,16 +177,15 @@ const prodConf: webpack.Configuration = {
       analyzerMode  : 'static',
       defaultSizes  : 'gzip',
       openAnalyzer  : false,
-      reportFilename: '../test_results/bundle-analysis-report.html',
+      reportFilename: config.absRoot('test_results/bundle-analysis-report.html'),
     }),
     new MiniCssExtractPlugin({
-      filename     : 'assets/[name]-[chunkHash].css',
-      chunkFilename: 'assets/chunks/[id]-[chunkHash].chunk.css',
+      filename     : 'assets/[name]-[hash].css',
+      chunkFilename: 'assets/[name]-[hash]-[id].chunk.css',
     }),
     new HtmlWebpackPlugin({
       filename      : 'index.html',
       template      : './index.html',
-      // chunks        : ['index'],
       hash          : false,
       minify        : false,
       inject        : 'body',

@@ -1,5 +1,3 @@
-// tslint:disable:no-implicit-dependencies
-
 import LodashPlugin from 'lodash-webpack-plugin'
 
 // Refer to: https://github.com/lodash/lodash-webpack-plugin

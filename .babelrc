@@ -1,13 +1,13 @@
 {
   "presets"      : [
     [
-      "@babel/preset-env",
+      "@babel/env",
       {
-        "targets"    : {
-          "browsers": "Android >= 5.0, iOS >= 8.0, last 5 Chrome versions, last 5 Firefox versions, last 5 Opera versions, IE >= 10, last 5 Edge versions"
+        "targets"           : {
+          "browsers": "Android >= 5.0, iOS >= 8.0, last 5 Chrome versions, last 5 Firefox versions, last 5 Opera versions, IE >= 10, last 2 Edge versions"
         },
-        "modules"    : false,
-        "useBuiltIns": "entry"
+        "modules"           : false,
+        "useBuiltIns"       : "entry"
       }
     ]
   ],
@@ -19,17 +19,16 @@
     "@babel/plugin-syntax-dynamic-import"
   ],
   "highlightCode": false,
-  "sourceMaps"   : true,
   "minified"     : false,
   "comments"     : true,
   "env"          : {
     "test": {
       "presets": [
         [
-          "@babel/preset-env",
+          "@babel/env",
           {
             "targets"    : {
-              "browsers": "Android >= 5.0, iOS >= 8.0, last 5 Chrome versions, last 5 Firefox versions, last 5 Opera versions, IE >= 10, last 5 Edge versions"
+              "browsers": "Android >= 5.0, iOS >= 8.0, last 5 Chrome versions, last 5 Firefox versions, last 5 Opera versions, IE >= 10, last 2 Edge versions"
             },
             "modules"    : "commonjs",
             "useBuiltIns": false
@@ -38,6 +37,7 @@
       ],
       "plugins": [
         "lodash",
+        "@babel/plugin-proposal-object-rest-spread",
         "dynamic-import-node"
       ]
     }

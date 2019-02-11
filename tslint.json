@@ -3,6 +3,7 @@
   "extends": [
     "tslint:latest"
   ],
+  "jsRules": true,
   "rules"  : {
     "adjacent-overload-signatures"    : true,
     "ban-types"                       : [false, ["Object", "Use {} instead."], ["String"]],
@@ -10,12 +11,12 @@
     "member-ordering"                 : false,
     "no-any"                          : false,
     "no-empty-interface"              : true,
-    "no-import-side-effect"           : true,
+    "no-import-side-effect"           : [true, {"ignore-module": "(\\.css|\\.sass|\\.scss)$"}],
     "no-inferrable-types"             : [false, "ignore-params"],
     "no-internal-module"              : true,
     "no-magic-numbers"                : [false, 0, 1],
     "no-namespace"                    : false,
-    "no-non-null-assertion"           : true,
+    "no-non-null-assertion"           : false,
     "no-reference"                    : true,
     "no-var-requires"                 : false,
     "only-arrow-functions"            : [true, "allow-declarations", "allow-named-functions"],
@@ -63,9 +64,9 @@
     "import-blacklist"                : false,
     "label-position"                  : true,
     "no-arg"                          : true,
-    "no-bitwise"                      : true,
+    "no-bitwise"                      : false,
     "no-conditional-assignment"       : true,
-    "no-console"                      : [true, "log", "warn", "debug"],
+    "no-console"                      : [true, "log", "debug"],
     "no-construct"                    : true,
     "no-debugger"                     : true,
     "no-duplicate-super"              : true,
@@ -83,13 +84,15 @@
     "no-switch-case-fall-through"     : true,
     "no-unsafe-finally"               : true,
     "no-unused-expression"            : [true, "allow-new"],
-    "no-unused-variable"              : [true],
+    // Deprecated in v5.11.0
+    //"no-unused-variable"              : [true],
     "no-use-before-declare"           : true,
     "no-var-keyword"                  : true,
     "radix"                           : true,
     "switch-default"                  : true,
     "triple-equals"                   : [true, "allow-null-check"],
-    "typeof-compare"                  : true,
+    // Deprecated in v5.8.0
+    //"typeof-compare"                  : true,
     "use-isnan"                       : true,
     "cyclomatic-complexity"           : [true, 20],
     "eofline"                         : true,
@@ -106,7 +109,7 @@
     "trailing-comma"                  : [true, {"multiline": "always", "singleline": "never"}],
     "align"                           : false,
     "array-type"                      : [true, "array"],
-    "arrow-parens"                    : true,
+    "arrow-parens"                    : [true, "ban-single-arg-parens"],
     "arrow-return-shorthand"          : [true, "multiline"],
     "callable-types"                  : true,
     "class-name"                      : true,
@@ -152,7 +155,7 @@
     "prefer-function-over-method"     : false,
     "prefer-method-signature"         : true,
     "prefer-template"                 : true,
-    "quotemark"                       : [true, "single", "avoid-escape"],
+    "quotemark"                       : [true, "single", "avoid-escape", "jsx-double"],
     "semicolon"                       : [true, "never"],
     "space-before-function-paren"     : [true, "never"],
     "variable-name"                   : [false, "check-format", "allow-leading-underscore"],
@@ -192,10 +195,26 @@
     "no-parameter-reassignment"       : true,
     // v5.8.0 Updates
     "no-return-await"                 : true,
-    "no-redundant-jsdoc"              : false,
+    "no-redundant-jsdoc"              : true,
     "no-duplicate-switch-case"        : true,
     "no-implicit-dependencies"        : true,
     "no-unnecessary-class"            : true,
-    "ban-comma-operator"              : true
+    "ban-comma-operator"              : true,
+    // v5.9.0 Updates
+    "no-dynamic-delete"               : true,
+    "prefer-readonly"                 : [true /*, "only-inline-lambdas"*/],
+    "newline-per-chained-call"        : false,
+    // v5.10.0 Updates
+    "prefer-while"                    : true,
+    // v5.11.0 Updates
+    "file-name-casing"                : [true, {".tsx": "pascal-case", ".ts": "kebab-case"}],
+    // v5.12.0 Updates
+    "type-literal-delimiter"          : true,
+    "ban-ts-ignore"                   : true,
+    "function-constructor"            : true,
+    "increment-decrement"             : [true, "allow-post"],
+    "no-default-import"               : false,
+    "unnecessary-constructor"         : true,
+    "comment-type"                    : false
   }
 }
