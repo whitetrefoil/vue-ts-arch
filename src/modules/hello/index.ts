@@ -1,6 +1,7 @@
 import { Component, Lifecycle, Vue } from 'av-ts'
 import Receptionist                  from '../../models/receptionist'
-import { store, types as t }         from '../../store'
+import { store }                     from '../../store'
+import { fetchRandomReceptionist }   from '../../store/hello/actions'
 import ComponentInModule             from './component-in-module'
 
 @Component({
@@ -23,11 +24,11 @@ export default class HelloComponent extends Vue {
   }
 
   changeReceptionist(): void {
-    store.dispatch(t.HELLO__FETCH_RANDOM_RECEPTIONIST)
+    store.dispatch(fetchRandomReceptionist())
   }
 
   @Lifecycle
   mounted(): void {
-    store.dispatch(t.HELLO__FETCH_RANDOM_RECEPTIONIST)
+    store.dispatch(fetchRandomReceptionist())
   }
 }
