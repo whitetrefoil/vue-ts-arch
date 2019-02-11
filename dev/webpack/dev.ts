@@ -10,6 +10,7 @@ import excludeFor                 from './configs/exclude'
 import lodashPlugin               from './configs/lodash'
 import { sassLoader, scssLoader } from './configs/sass'
 
+const SIZE_1KB = 1024
 
 // See https://github.com/vuejs/vue-loader/issues/678#issuecomment-370965224
 const babelrc = fs.readJsonSync(path.join(__dirname, '../../.babelrc'))
@@ -34,8 +35,8 @@ const devConfig: webpack.Configuration = {
   },
 
   output: {
-    path         : config.absBuilding(''),
-    publicPath   : config.base,
+    path         : config.absOutput(config.base),
+    publicPath   : '',
     filename     : '[name].js',
     chunkFilename: '[name].chunk.js',
   },
@@ -139,11 +140,27 @@ const devConfig: webpack.Configuration = {
       {
         test   : /\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
         exclude: /weixin/,
-        use    : ['url-loader'],
+        use    : [
+          {
+            loader : 'url-loader',
+            options: {
+              limit   : SIZE_1KB,
+              name    : '[name].[ext]',
+              fallback: 'file-loader',
+            },
+          },
+        ],
       },
       {
         test: /weixin.*\.(png|jpe?g|gif|svg|woff2?|ttf|eot|ico)(\?\S*)?$/,
-        use : ['file-loader'],
+        use : [
+          {
+            loader : 'file-loader',
+            options: {
+              name: '[name].[ext]',
+            },
+          },
+        ],
       },
     ],
   },
@@ -172,9 +189,6 @@ const devConfig: webpack.Configuration = {
       minify        : false,
       inject        : 'body',
       chunksSortMode: 'auto',
-      base          : _.isEmpty(config.base)
-        ? '/'
-        : config.base,
     }),
   ],
 }

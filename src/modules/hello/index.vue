@@ -17,6 +17,11 @@
     <section>
       <component-in-module name="hello"></component-in-module>
     </section>
+
+    <section>
+      <h3 class="h3">url-loader test</h3>
+      <div class="image"></div>
+    </section>
   </div>
 </template>
 

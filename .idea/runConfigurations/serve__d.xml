@@ -1,13 +1,13 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="serve -d" type="js.build_tools.gulp" factoryName="Gulp.js">
+  <configuration default="false" name="serve -d" type="js.build_tools.gulp">
     <node-interpreter>project</node-interpreter>
     <node-options />
     <gulpfile>$PROJECT_DIR$/Gulpfile.js</gulpfile>
     <tasks>
       <task>serve</task>
     </tasks>
-    <arguments>-d</arguments>
+    <arguments>-d -b base</arguments>
     <envs />
-    <method />
+    <method v="2" />
   </configuration>
 </component>

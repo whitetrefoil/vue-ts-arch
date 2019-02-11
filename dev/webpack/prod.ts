@@ -36,8 +36,8 @@ const prodConf: webpack.Configuration = {
   },
 
   output: {
-    path         : config.absOutput(''),
-    publicPath   : config.base,
+    path         : config.absOutput(config.base),
+    publicPath   : '',
     filename     : 'assets/[name]-[hash].js',
     chunkFilename: 'assets/chunks/[id]-[chunkHash].chunk.js',
     globalObject : 'self',
@@ -135,8 +135,8 @@ const prodConf: webpack.Configuration = {
               limit   : SIZE_14KB,
               // custom naming format if file is larger than
               // the threshold
-              name    : 'assets/[hash].[ext]',
-              fallback: 'file-loader?outputPath=assets/&publicPath=/assets/',
+              name    : '[hash].[ext]',
+              fallback: 'file-loader?outputPath=assets&publicPath=./',
             },
           },
         ],
@@ -147,9 +147,9 @@ const prodConf: webpack.Configuration = {
           {
             loader : 'file-loader',
             options: {
-              name: 'assets/[hash].[ext]',
-              // outputPath: 'assets/',
-              // publicPath: '/assets/',
+              name      : 'weixin-[hash].[ext]',
+              outputPath: 'assets',
+              publicPath: './assets/',
             },
           },
         ],
@@ -190,9 +190,6 @@ const prodConf: webpack.Configuration = {
       minify        : false,
       inject        : 'body',
       chunksSortMode: 'auto',
-      base          : _.isEmpty(config.base)
-        ? '/'
-        : config.base,
     }),
   ],
 }

@@ -110,9 +110,14 @@ const sourceDir   = DEFAULT_SOURCE_BASE_DIR
 const buildingDir = DEFAULT_BUILDING_DIR
 const outputDir   = DEFAULT_OUTPUT_DIR
 
+const base =
+        (argv.flags.base[0] === '/' ? '' : '/')
+        + argv.flags.base
+        + (argv.flags.base[argv.flags.base.length - 1] === '/' ? '' : '/')
+
 process.env.NODE_ENV        = (argv.flags.development || DEFAULT_IS_DEVELOPMENT) ? 'development' : 'production'
 process.env.BABEL_ENV       = process.env.NODE_ENV
-process.env.VUE_ROUTER_BASE = argv.flags.base
+process.env.VUE_ROUTER_BASE = base
 
 log(`Initializing project in "${rootDir}" for ${process.env.NODE_ENV} environment.`)
 log(`The base path is "${argv.flags.base}"`)
@@ -142,7 +147,7 @@ const absOutputByEnv: IBuildPathFn = (...pathInOutput) => {
 const config: IConfig = {
   argv,
   pkg         : argv.pkg || {},
-  base        : argv.flags.base,
+  base,
   skipNpmCheck: argv.flags.skipNpmCheck,
   serverPort  : parseInt(argv.flags.port, 10),
   apiPrefixes : DEFAULT_PREFIX,
