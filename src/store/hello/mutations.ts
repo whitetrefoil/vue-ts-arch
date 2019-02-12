@@ -1,6 +1,6 @@
+import { addMutation }  from '@whitetrefoil/vuex-type-helpers'
 import { MutationTree } from 'vuex'
 import Receptionist     from '../../models/receptionist'
-import { addMutation }  from '../helpers'
 import * as t           from '../types'
 import { IHelloState }  from './state'
 

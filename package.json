@@ -21,6 +21,7 @@
     "@babel/polyfill": "^7.2.5",
     "@whitetrefoil/debug-log": "^0.1.1",
     "@whitetrefoil/vue-elem-id": "^1.1.0",
+    "@whitetrefoil/vuex-type-helpers": "^0.1.1",
     "av-ts": "^0.10.0",
     "bootstrap": "^4.2.1",
     "debug": "^4.1.1",

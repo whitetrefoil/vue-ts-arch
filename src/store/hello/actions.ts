@@ -1,6 +1,6 @@
+import { addAction }       from '@whitetrefoil/vuex-type-helpers'
 import { ActionTree }      from 'vuex'
 import { getReceptionist } from '../../api/endpoints/receptionist'
-import { addAction }       from '../helpers'
 // import { getLogger }       from '../../services/log'
 import { IRootStateFull }  from '../state'
 import * as t              from '../types'
