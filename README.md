@@ -6,6 +6,12 @@ A basic project structure built with Vue & TS.
 Changelog
 ---------
 
+### v0.9.0
+
+* Upgrade many dependencies especially webpack to v4.
+* Many build process changes.
+* Separate many useful codes to individual "@whitetrefoil/……" repositories.
+
 ### v0.8.0
 
 * Change license in "package.json" to "Unlicense" because the previous value "UNLICENSED" is a mistake.
