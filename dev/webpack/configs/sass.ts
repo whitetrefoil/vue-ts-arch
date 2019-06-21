@@ -1,6 +1,6 @@
-import config from '../../config'
+import config from '../../config';
 
-const BOOTSTRAP_REQUIRED_MINIMAL_PRECISION = 8
+const BOOTSTRAP_REQUIRED_MINIMAL_PRECISION = 8;
 
 export const sassOptions = {
   sourceMap     : true,
@@ -8,12 +8,12 @@ export const sassOptions = {
   indentedSyntax: true,
   outputStyle   : 'expanded',
   precision     : BOOTSTRAP_REQUIRED_MINIMAL_PRECISION,
-}
+};
 
 export const sassLoader = {
   loader : 'sass-loader',
   options: sassOptions,
-}
+};
 
 export const scssOptions = {
   sourceMap     : true,
@@ -21,9 +21,9 @@ export const scssOptions = {
   indentedSyntax: false,
   outputStyle   : 'expanded',
   precision     : BOOTSTRAP_REQUIRED_MINIMAL_PRECISION,
-}
+};
 
 export const scssLoader = {
   loader : 'sass-loader',
   options: scssOptions,
-}
+};

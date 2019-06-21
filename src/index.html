@@ -3,8 +3,10 @@
 <head>
   <base href="${process.env.VUE_ROUTER_BASE}">
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+  >
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="keywords" content="scaffold typescript ts vue">
   <meta name="description" content="A basic project structure built with Vue & TS.">
@@ -25,9 +27,11 @@
     <div lang="zh-CN">
       <h2>网站正在加载中，请稍候&hellip;&hellip;</h2>
 
-      <p>如您长时间看到本页面，也许是因为网络状况不稳定，请尝试刷新页面。也有可能是您的浏览器年代有点久远或过于个性，超出了本网站能够支持的范围之外，请尝试将系统的 IE 升级到 10.0 以上版本，或直接使用<a
-          href="https://www.mozilla.org/zh-CN/firefox/new/">火狐</a>、<a
-          href="https://www.google.cn/chrome/browser/desktop/index.html?standalone=1">酷容</a>、或各大极速版浏览器。</p>
+      <p>如您长时间看到本页面，也许是因为网络状况不稳定，请尝试刷新页面。也有可能是您的浏览器年代有点久远或过于个性，超出了本网站能够支持的范围之外，请尝试使用<a
+          href="https://www.mozilla.org/zh-CN/firefox/new/"
+      >火狐</a>、<a
+          href="https://www.google.cn/chrome/browser/desktop/index.html?standalone=1"
+      >酷容</a>、或各大极速版浏览器。</p>
 
       <p>某些浏览器（如 360 浏览器等）拥有的「极速模式」也可能解决此问题。</p>
     </div>
@@ -41,8 +45,7 @@
 
       <p>Another possible cause is that your browser is aged or quite uncommon,
         which beyonds the supporting scope of this site.
-        In this case, please upgrade your Internet Explorer to at least v10.0,
-        or use <a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a>
+        In this case, please try <a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a>
         / <a href="https://www.google.com/chrome/browser/desktop/index.html?standalone=1">Chrome</a>.</p>
     </div>
   </div>
@@ -50,14 +53,14 @@
 </div>
 
 <script type="text/javascript">
-  function showWarning() {
-    var appElem = document.getElementById('app')
-    var warningElem = document.getElementById('loading-error')
-    if (warningElem == null || (appElem != null && appElem.innerHTML.length > 0)) { return }
-    warningElem.removeAttribute('style')
-  }
+function showWarning() {
+  var appElem     = document.getElementById('app');
+  var warningElem = document.getElementById('loading-error');
+  if (warningElem == null || (appElem != null && appElem.innerHTML.length > 0)) { return; }
+  warningElem.removeAttribute('style');
+}
 
-  setTimeout('showWarning()', 3000)
+setTimeout('showWarning()', 3000);
 </script>
 
 <noscript>

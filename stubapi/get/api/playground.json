@@ -1,9 +1,0 @@
-{
-  "code": 404,
-  "body": {
-    "code"      : 404,
-    "message"   : "Not Found",
-    "devMessage": "This is a test response",
-    "data"      : {}
-  }
-}

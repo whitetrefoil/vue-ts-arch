@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+
+// See: https://stackoverflow.com/a/3943023
+// There's also a Boostrap version "color-yiq()"
+@function fg-color-by-bg($bg-color) {
+  $_r: red($bg-color);
+  $_g: green($bg-color);
+  $_b: blue($bg-color);
+
+  @if ($_r*0.299 + $_g*0.587 + $_b*0.114) > 186 {
+    @return white;
+  } @else {
+    @return black;
+  }
+}
+
+
+@import "~bootstrap/scss/functions";

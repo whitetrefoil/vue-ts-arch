@@ -1,0 +1,47 @@
+@charset "UTF-8";
+
+
+@import "functions";
+
+
+@mixin phark() {
+  text-indent: -99999em;
+}
+
+@mixin nir($url) {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  &:before {
+    content: $url;
+    display: inline-block;
+    font-size: 0;
+    line-height: 0;
+  }
+}
+
+@mixin skm() {
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@mixin h5bp() {
+  border: 0;
+  font: 0/0 a;
+  text-shadow: none;
+  color: transparent;
+}
+
+@mixin visuallyhidden() {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+@import "~bootstrap/scss/mixins";

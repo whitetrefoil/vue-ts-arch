@@ -1,17 +1,16 @@
-import Vue                       from 'vue'
-import Vuex                      from 'vuex'
-import { hello }                 from './hello'
-import { IRootStateFull, state } from './state'
-import * as t                    from './types'
+import Vue                   from 'vue';
+import Vuex                  from 'vuex';
+import { MessageStore }      from './message';
+import { ReceptionistStore } from './receptionist';
 
-Vue.use(Vuex)
 
-export const store = new Vuex.Store({
-  state  : state as IRootStateFull,
-  strict : process.env.NODE_ENV === 'development',
-  modules: {
-    hello,
-  },
-})
+Vue.use(Vuex);
 
-export const types = t
+
+export interface FullState {
+  message: MessageStore.State;
+  receptionist: ReceptionistStore.State;
+}
+
+
+export const store = new Vuex.Store<FullState>({});

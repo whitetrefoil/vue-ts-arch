@@ -1,9 +1,9 @@
-import { state } from '../../src/store/state'
+import { state } from '../../src/store/state';
 
-jest.resetModules()
+jest.resetModules();
 
 describe('store :: hello', () => {
   it('should export state', () => {
-    expect(state.errorMessages.length).toBe(0)
-  })
-})
+    expect(state.errorMessages.length).toBe(0);
+  });
+});

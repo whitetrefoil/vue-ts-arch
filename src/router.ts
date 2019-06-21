@@ -1,34 +1,40 @@
-import { Vue }                    from 'av-ts'
-import VueRouter, { RouteConfig } from 'vue-router'
-import MyGlobalComp               from './components/my-global-comp'
-import HelloComponent             from './modules/hello'
+import Vue                        from 'vue';
+import VueRouter, { RouteConfig } from 'vue-router';
 
-Vue.use(VueRouter)
+
+const Hello  = () =>
+  import(/*webpackChunkName:"components|pages|Hello"*/'./components/pages/Hello').then(m => m.default);
+const Shared = () =>
+  import(/*webpackChunkName:"components|shared|Shared"*/'./components/shared/Shared').then(m => m.default);
+
 
 const routes: RouteConfig[] = [
   {
     name     : 'hello',
     path     : '/',
-    component: HelloComponent,
+    component: Hello,
     children : [
       {
         name      : 'inner',
         path      : '/:name',
         components: {
-          'my-global-comp': MyGlobalComp,
+          'shared-comp-here': Shared,
         },
         props     : {
-          'my-global-comp': true,
+          'shared-comp-here': true,
         },
       },
     ],
   },
-]
+];
+
+
+Vue.use(VueRouter);
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.VUE_ROUTER_BASE,
   routes,
-})
+});
 
-export default router
+export default router;

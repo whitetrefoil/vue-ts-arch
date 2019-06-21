@@ -1,9 +1,9 @@
-import { state } from '../../../src/store/hello/state'
+import { state } from '../../../src/store/hello/state';
 
-jest.resetModules()
+jest.resetModules();
 
 describe('store :: hello', () => {
   it('should export state', () => {
-    expect(state.receptionist).toBeDefined()
-  })
-})
+    expect(state.receptionist).toBeDefined();
+  });
+});

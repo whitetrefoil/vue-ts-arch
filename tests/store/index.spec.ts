@@ -1,10 +1,10 @@
-import Vuex      from 'vuex'
-import { store } from '../../src/store'
+import Vuex      from 'vuex';
+import { store } from '../../src/store';
 
-jest.resetModules()
+jest.resetModules();
 
 describe('store', () => {
   it('should export a Vuex.Store names store', () => {
-    expect(store).toBeInstanceOf(Vuex.Store)
-  })
-})
+    expect(store).toBeInstanceOf(Vuex.Store);
+  });
+});

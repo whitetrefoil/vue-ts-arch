@@ -1,21 +1,19 @@
-import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
-import * as fs                    from 'fs-extra'
-import HtmlWebpackPlugin          from 'html-webpack-plugin'
-import * as _                     from 'lodash'
-import MiniCssExtractPlugin       from 'mini-css-extract-plugin'
-import * as path                  from 'path'
-import { VueLoaderPlugin }        from 'vue-loader'
-import * as webpack               from 'webpack'
-import { BundleAnalyzerPlugin }   from 'webpack-bundle-analyzer'
-import config                     from '../config'
-import excludeFor                 from './configs/exclude'
-import lodashPlugin               from './configs/lodash'
-import { sassLoader, scssLoader } from './configs/sass'
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import * as fs                    from 'fs-extra';
+import HtmlWebpackPlugin          from 'html-webpack-plugin';
+import MiniCssExtractPlugin       from 'mini-css-extract-plugin';
+import * as path                  from 'path';
+import { VueLoaderPlugin }        from 'vue-loader';
+import * as webpack               from 'webpack';
+import { BundleAnalyzerPlugin }   from 'webpack-bundle-analyzer';
+import config                     from '../config';
+import lodashPlugin               from './configs/lodash';
+import { sassLoader, scssLoader } from './configs/sass';
 
-const SIZE_14KB = 14336
+const SIZE_14KB = 14336;
 
 // See https://github.com/vuejs/vue-loader/issues/678#issuecomment-370965224
-const babelrc = fs.readJsonSync(path.join(__dirname, '../../.babelrc'))
+const babelrc = fs.readJsonSync(path.join(__dirname, '../../.babelrc'));
 
 
 const prodConf: webpack.Configuration = {
@@ -31,7 +29,7 @@ const prodConf: webpack.Configuration = {
   },
 
   resolve: {
-    extensions: ['.vue', '.ts', '.js', '.json'],
+    extensions: ['.vue', '.ts', '.es6', '.js', '.json'],
     mainFields: ['webpack', 'jsnext:main', 'module', 'browser', 'web', 'browserify', 'main'],
   },
 
@@ -51,9 +49,8 @@ const prodConf: webpack.Configuration = {
         use    : ['html-loader?interpolate'],
       },
       {
-        test   : /\.ts$/,
-        exclude: excludeFor('ts'),
-        use    : [
+        test: /\.ts$/,
+        use : [
           {
             loader : 'babel-loader',
             options: babelrc,
@@ -68,12 +65,27 @@ const prodConf: webpack.Configuration = {
         ],
       },
       {
-        test   : /\.js$/,
-        exclude: excludeFor('babel'),
-        use    : [
+        test : /\.js$/,
+        oneOf: [
           {
-            loader : 'babel-loader',
-            options: babelrc,
+            test: /\/esm\/.*\.js$/,
+            use : [
+              {
+                loader : 'babel-loader',
+                options: babelrc,
+              },
+            ],
+          },
+          {
+            include: [
+              config.absSource(),
+            ],
+            use    : [
+              {
+                loader : 'babel-loader',
+                options: babelrc,
+              },
+            ],
           },
         ],
       },
@@ -157,6 +169,11 @@ const prodConf: webpack.Configuration = {
     ],
   },
 
+  stats: {
+    // See: https://github.com/TypeStrong/ts-loader#transpileonly-boolean-defaultfalse
+    warningsFilter: /export .* was not found in/,
+  },
+
   node: {
     __dirname : true,
     __filename: true,
@@ -192,6 +209,6 @@ const prodConf: webpack.Configuration = {
       chunksSortMode: 'auto',
     }),
   ],
-}
+};
 
-export default prodConf
+export default prodConf;

@@ -312,3 +312,4 @@ dist/
 docs/
 lib/
 test_results/
+!packages-cache/**/*.tgz

@@ -3,11 +3,9 @@
     [
       "@babel/env",
       {
-        "targets"           : {
-          "browsers": "Android >= 5.0, iOS >= 8.0, last 5 Chrome versions, last 5 Firefox versions, last 5 Opera versions, IE >= 10, last 2 Edge versions"
-        },
-        "modules"           : false,
-        "useBuiltIns"       : "entry"
+        "modules"    : false,
+        "useBuiltIns": "usage",
+        "corejs": 3
       }
     ]
   ],
@@ -27,9 +25,6 @@
         [
           "@babel/env",
           {
-            "targets"    : {
-              "browsers": "Android >= 5.0, iOS >= 8.0, last 5 Chrome versions, last 5 Firefox versions, last 5 Opera versions, IE >= 10, last 2 Edge versions"
-            },
             "modules"    : "commonjs",
             "useBuiltIns": false
           }

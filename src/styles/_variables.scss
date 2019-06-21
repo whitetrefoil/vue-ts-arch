@@ -1,0 +1,29 @@
+@charset "UTF-8";
+
+
+@import "functions";
+
+
+// Colors
+// ----------
+
+// Dimensions
+// ----------
+
+// Rates
+// ----------
+
+// Text styles & Fonts
+// ----------
+
+// Bootstrap custom variables
+// ----------
+
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft YaHei", "MicrosoftYaHei", "微软雅黑", sans-serif;
+
+$font-family-serif: Georgia, "Times New Roman", Times, "Microsoft YaHei", "MicrosoftYaHei", "微软雅黑", serif;
+
+$font-family-monospace: "Sarasa Mono T SC", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+
+@import "~bootstrap/scss/variables";

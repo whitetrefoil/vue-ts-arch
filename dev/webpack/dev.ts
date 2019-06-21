@@ -1,19 +1,17 @@
-import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
-import * as fs                    from 'fs-extra'
-import HtmlWebpackPlugin          from 'html-webpack-plugin'
-import * as _                     from 'lodash'
-import * as path                  from 'path'
-import { VueLoaderPlugin }        from 'vue-loader'
-import * as webpack               from 'webpack'
-import config                     from '../config'
-import excludeFor                 from './configs/exclude'
-import lodashPlugin               from './configs/lodash'
-import { sassLoader, scssLoader } from './configs/sass'
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import * as fs                    from 'fs-extra';
+import HtmlWebpackPlugin          from 'html-webpack-plugin';
+import * as path                  from 'path';
+import { VueLoaderPlugin }        from 'vue-loader';
+import * as webpack               from 'webpack';
+import config                     from '../config';
+import lodashPlugin               from './configs/lodash';
+import { sassLoader, scssLoader } from './configs/sass';
 
-const SIZE_1KB = 1024
+const SIZE_14KB = 14336;
 
 // See https://github.com/vuejs/vue-loader/issues/678#issuecomment-370965224
-const babelrc = fs.readJsonSync(path.join(__dirname, '../../.babelrc'))
+const babelrc = fs.readJsonSync(path.join(__dirname, '../../.babelrc'));
 
 
 const devConfig: webpack.Configuration = {
@@ -29,7 +27,7 @@ const devConfig: webpack.Configuration = {
   },
 
   resolve: {
-    extensions : ['.vue', '.ts', '.js', '.json'],
+    extensions : ['.vue', '.ts', '.es6', '.js', '.json'],
     mainFields : ['webpack', 'jsnext:main', 'module', 'browser', 'web', 'browserify', 'main'],
     unsafeCache: false,
   },
@@ -39,6 +37,7 @@ const devConfig: webpack.Configuration = {
     publicPath   : '',
     filename     : '[name].js',
     chunkFilename: '[name].chunk.js',
+    globalObject : 'self',
   },
 
   module: {
@@ -62,7 +61,6 @@ const devConfig: webpack.Configuration = {
       },
       {
         test   : /\.ts$/,
-        exclude: excludeFor('ts'),
         use    : [
           {
             loader : 'babel-loader',
@@ -79,11 +77,26 @@ const devConfig: webpack.Configuration = {
       },
       {
         test   : /\.js$/,
-        exclude: excludeFor('babel'),
-        use    : [
+        oneOf: [
           {
-            loader : 'babel-loader',
-            options: babelrc,
+            test: /\/esm\/.*\.js$/,
+            use : [
+              {
+                loader : 'babel-loader',
+                options: babelrc,
+              },
+            ],
+          },
+          {
+            include: [
+              config.absSource(),
+            ],
+            use    : [
+              {
+                loader : 'babel-loader',
+                options: babelrc,
+              },
+            ],
           },
         ],
       },
@@ -144,7 +157,7 @@ const devConfig: webpack.Configuration = {
           {
             loader : 'url-loader',
             options: {
-              limit   : SIZE_1KB,
+              limit   : SIZE_14KB,
               name    : '[name].[ext]',
               fallback: 'file-loader',
             },
@@ -163,6 +176,11 @@ const devConfig: webpack.Configuration = {
         ],
       },
     ],
+  },
+
+  stats: {
+    // See: https://github.com/TypeStrong/ts-loader#transpileonly-boolean-defaultfalse
+    warningsFilter: /export .* was not found in/,
   },
 
   node: {
@@ -191,6 +209,6 @@ const devConfig: webpack.Configuration = {
       chunksSortMode: 'auto',
     }),
   ],
-}
+};
 
-export default devConfig
+export default devConfig;

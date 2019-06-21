@@ -1,7 +1,7 @@
-import { parallel, series, task } from 'gulp'
+import { parallel, task } from 'gulp';
 
-import './backend'
-import './dev-server'
-import './pre-check'
+import './backend';
+import './dev-server';
+import './pre-check';
 
-task('integration', series('preCheck', parallel('devServer', 'backend:proxy')))
+task('integration', parallel('devServer', 'backend'));
