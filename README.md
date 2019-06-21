@@ -6,6 +6,19 @@ A basic project structure built with Vue & TS.
 Changelog
 ---------
 
+### v0.10.0
+
+* Another overall upgrade, includes:
+    * Upgrade `@whitetrefoil/vuex-type-helpers` to a newer version with new syntax.
+    * Upgrade tslint rules.
+    * Semicolons are back!
+    * Switch from npm to yarn.
+    * Upgrade `core-js` to v3 and babel config around it.
+    * `.browserlistrc`.
+    * Use a real Koa app to replace the `mock-server-middleware`.
+    * Many naming / dir structuring changes.
+    
+
 ### v0.9.0
 
 * Upgrade many dependencies especially webpack to v4.
